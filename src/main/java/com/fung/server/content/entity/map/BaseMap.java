@@ -26,11 +26,19 @@ public abstract class BaseMap {
     private Map<Integer, Player> mapPlayers;
 
     /**
-     * 设置地图连接门
-     * @param coordinate 需要连接的坐标
-     * @param map 连接下一个地图
+     * 设置传送门
      */
-    public abstract void setGate (int[][] coordinate, BaseMap map);
+    private Map<int[][], BaseMap> gate;
+
+    /**
+     * 设置地图连接门
+     *
+     * @param coordinate 需要连接的坐标
+     * @param map        连接下一个地图
+     */
+    public void setGate(int[][] coordinate, BaseMap map) {
+
+    }
 
     public void addPlayer(Player player) {
         mapPlayers.put(player.getId(), player);
@@ -73,5 +81,13 @@ public abstract class BaseMap {
 
     public void setMapPlayers(Map<Integer, Player> mapPlayers) {
         this.mapPlayers = mapPlayers;
+    }
+
+    public Map<int[][], BaseMap> getGate() {
+        return gate;
+    }
+
+    public void setGate(Map<int[][], BaseMap> gate) {
+        this.gate = gate;
     }
 }
