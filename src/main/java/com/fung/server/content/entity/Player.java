@@ -1,4 +1,4 @@
-package com.fung.server.content.player;
+package com.fung.server.content.entity;
 
 /**
  * @author skytrc@163.com
