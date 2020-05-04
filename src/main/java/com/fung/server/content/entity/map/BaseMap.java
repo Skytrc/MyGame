@@ -1,6 +1,6 @@
-package com.fung.server.content.map;
+package com.fung.server.content.entity.map;
 
-import com.fung.server.content.player.Player;
+import com.fung.server.content.entity.Player;
 
 import java.util.Map;
 
@@ -10,46 +10,27 @@ import java.util.Map;
  */
 public abstract class BaseMap {
 
-//    private BaseMap() {}
     /**
      * 地图id
      */
-    public int id;
+    private int id;
 
     /**
      * 地图网格
      */
-    public int[][] grid = new int[3][3];
+    private int[][] grid = new int[3][3];
 
     /**
      * 地图中在线上的玩家
      */
-    public Map<Integer, Player> mapPlayers;
-
-    /**
-     * 设置地图id
-     */
-    public abstract void setId();
-
-    public void setGrid(int[][] grid) {
-        this.grid = grid;
-    }
-
+    private Map<Integer, Player> mapPlayers;
 
     /**
      * 设置地图连接门
-     * @param coordinate 需要连接的地图
+     * @param coordinate 需要连接的坐标
      * @param map 连接下一个地图
      */
     public abstract void setGate (int[][] coordinate, BaseMap map);
-
-    public int getId() {
-        return id;
-    }
-
-    public int[][] getGrid() {
-        return grid;
-    }
 
     public void addPlayer(Player player) {
         mapPlayers.put(player.getId(), player);
@@ -70,4 +51,27 @@ public abstract class BaseMap {
         newMap.addPlayer(player);
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int[][] getGrid() {
+        return grid;
+    }
+
+    public void setGrid(int[][] grid) {
+        this.grid = grid;
+    }
+
+    public Map<Integer, Player> getMapPlayers() {
+        return mapPlayers;
+    }
+
+    public void setMapPlayers(Map<Integer, Player> mapPlayers) {
+        this.mapPlayers = mapPlayers;
+    }
 }
