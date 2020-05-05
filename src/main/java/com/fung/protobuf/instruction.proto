@@ -3,5 +3,5 @@ syntax = "proto3";
 option java_outer_classname = "InstructionProto";
 
 message Instruction{
-    string instruction = 1;
+  string instruction = 1;
 }

@@ -11,7 +11,7 @@ import java.awt.event.*;
  * @author skytrc@163.com
  * @date 2020/4/28 10:50
  */
-public class GUIClient extends JFrame{
+public class GUIClient extends JFrame {
 
     boolean windowClosed = false;
 
@@ -21,7 +21,7 @@ public class GUIClient extends JFrame{
 
     private static GUIClient instace = new GUIClient();
 
-    private GUIClient(){
+    private GUIClient() {
         JPanel p1 = new JPanel();
         JPanel cards = new JPanel(new CardLayout());
         setTitle("My First Game");
@@ -29,7 +29,7 @@ public class GUIClient extends JFrame{
         JTextField jTextField = new JTextField("", 30);
 
         // 文本域设置
-        JTextArea jTextArea = new JTextArea("",20, 30);
+        JTextArea jTextArea = new JTextArea("", 20, 30);
         setjTextArea(jTextArea);
         jTextArea.setLineWrap(true);
         JScrollPane jScrollPane = new JScrollPane(jTextArea);

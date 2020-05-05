@@ -49,7 +49,8 @@ public class Client {
         if (args != null && args.length > 0) {
             try {
                 port = Integer.parseInt(args[0]);
-            } catch (NumberFormatException ignored) {}
+            } catch (NumberFormatException ignored) {
+            }
         }
         new Client().connect(port, "127.0.0.1");
     }
