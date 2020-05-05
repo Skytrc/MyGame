@@ -14,6 +14,8 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author skytrc@163.com
@@ -21,7 +23,7 @@ import io.netty.handler.logging.LoggingHandler;
  */
 public class GameServer {
 
-//    private static final Logger logger = LoggerFactory.getLogger(GameServer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GameServer.class);
 
     public void start(int port) throws InterruptedException {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -30,7 +32,7 @@ public class GameServer {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .option(ChannelOption.SO_BACKLOG,100)
+                    .option(ChannelOption.SO_BACKLOG, 100)
                     .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
@@ -42,6 +44,7 @@ public class GameServer {
                         }
                     });
             ChannelFuture f = b.bind(port).sync();
+            LOGGER.info("服务端开启");
             f.channel().closeFuture().sync();
         } finally {
             bossGroup.shutdownGracefully();
