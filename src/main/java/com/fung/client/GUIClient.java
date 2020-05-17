@@ -13,8 +13,6 @@ import java.awt.event.*;
  */
 public class GUIClient extends JFrame {
 
-    boolean windowClosed = false;
-
     private Channel channel;
 
     private JTextArea jTextArea;
@@ -65,7 +63,7 @@ public class GUIClient extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                windowClosed = true;
+                channel.close();
             }
         });
     }

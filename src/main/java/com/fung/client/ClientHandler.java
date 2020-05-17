@@ -11,21 +11,16 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  */
 public class ClientHandler extends ChannelInboundHandlerAdapter {
 
-    InstructionPack instructionPack = new InstructionPack();
-
     GUIClient guiClient = GUIClient.getInstace();
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        ctx.write(instructionPack.decode("test"));
-        System.out.println("开始连接服务器");
-        ctx.flush();
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println("Receive server response: " + msg);
-        guiClient.response(instructionPack.encode((InstructionProto.Instruction) msg));
+        InstructionProto.Instruction message = (InstructionProto.Instruction) msg;
+        guiClient.response(message.getInstruction());
     }
 
     @Override
@@ -38,4 +33,5 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         cause.printStackTrace();
         ctx.close();
     }
+
 }

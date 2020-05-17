@@ -22,6 +22,7 @@ public class Client {
             Bootstrap b = new Bootstrap();
             b.group(group).channel(NioSocketChannel.class)
                     .option(ChannelOption.TCP_NODELAY, true)
+                    .option(ChannelOption.SO_KEEPALIVE, true)
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
@@ -35,9 +36,6 @@ public class Client {
             ChannelFuture f = b.connect(host, port).sync();
             GUIClient guiClient = GUIClient.getInstace();
             guiClient.setChannel(f.channel());
-            while (!guiClient.windowClosed) {
-            }
-            System.out.println("Close Window");
             f.channel().closeFuture().sync();
         } finally {
             group.shutdownGracefully();
