@@ -8,6 +8,7 @@ import java.util.Map;
  * @author skytrc@163.com
  * @date 2020/4/30 10:45
  */
+@Deprecated
 public abstract class BaseMap {
 
     /**

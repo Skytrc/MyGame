@@ -1,6 +1,8 @@
 package com.fung.server.content.entity.map;
 
 import com.fung.server.content.entity.Player;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,9 +13,12 @@ import java.util.Map;
  * @author skytrc@163.com
  * @date 2020/4/30 10:56
  */
+@Deprecated
+@Component
 public class InitialPlace extends BaseMap {
 
-    private static InitialPlace instance = new InitialPlace();
+    @Autowired
+    private Village village;
 
     private InitialPlace() {
         // 设置地图基本信息
@@ -26,14 +31,9 @@ public class InitialPlace extends BaseMap {
         setGates(gates);
     }
 
-    public static InitialPlace getInstance() {
-        return instance;
-    }
-
     @Override
     public void init() {
         // 设置地图传送门
-        Village village = Village.getInstance();
         addGate(village.getName(), village);
         addElement(4, 2, village.getName());
     }
