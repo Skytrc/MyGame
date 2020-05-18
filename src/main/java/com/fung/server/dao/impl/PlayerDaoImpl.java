@@ -1,17 +1,14 @@
 package com.fung.server.dao.impl;
 
 import com.fung.server.content.entity.Player;
-import com.fung.server.dao.UserDao;
+import com.fung.server.dao.PlayerDao;
 import org.hibernate.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 
@@ -21,7 +18,7 @@ import java.util.List;
  */
 @Transactional
 @Component
-public class UserDaoImpl extends HibernateDaoSupport implements UserDao {
+public class PlayerDaoImpl extends HibernateDaoSupport implements PlayerDao {
 
     @Autowired
     public void setSuperSessionFactory(SessionFactory superSessionFactory) {
@@ -55,6 +52,24 @@ public class UserDaoImpl extends HibernateDaoSupport implements UserDao {
     public Player getPlayerAllInfo(Player player) {
         List<Player> players = this.getHibernateTemplate().findByExample(player);
         return players.remove(0);
+    }
+
+    @Override
+    public Player getPlayerByPlayerName(String playerName) {
+        Session session = this.getSessionFactory().openSession();
+        try {
+            return session.createNativeQuery(
+                    "SELECT * " +
+                            "FROM player " +
+                            "WHERE player_name='" + playerName, Player.class).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public void updatePlayer(Player player) {
+        this.getHibernateTemplate().update(player);
     }
 
 }

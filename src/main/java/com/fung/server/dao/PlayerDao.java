@@ -6,7 +6,7 @@ import com.fung.server.content.entity.Player;
  * @author skytrc@163.com
  * @date 2020/5/12 16:58
  */
-public interface UserDao {
+public interface PlayerDao {
 
     /**
      * 注册玩家
@@ -37,4 +37,17 @@ public interface UserDao {
      */
     @Deprecated
     Player getPlayerAllInfo(Player player);
+
+    /**
+     * 通过玩家名字获得玩家实体
+     * @param PlayerName 玩家名字
+     * @return 玩家实体
+     */
+    Player getPlayerByPlayerName(String PlayerName);
+
+    /**
+     * 更新玩家
+     * @param player 玩家实体
+     */
+    void updatePlayer(Player player);
 }

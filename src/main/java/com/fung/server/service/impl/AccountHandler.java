@@ -2,7 +2,7 @@ package com.fung.server.service.impl;
 
 import com.fung.server.content.MapManager;
 import com.fung.server.content.entity.Player;
-import com.fung.server.dao.UserDao;
+import com.fung.server.dao.PlayerDao;
 import com.fung.server.service.BaseInstructionHandler;
 import com.fung.server.util.playerutil.OnlinePlayer;
 import com.fung.server.util.playerutil.PlayerUtil;
@@ -20,7 +20,7 @@ import java.util.List;
 public class AccountHandler extends BaseInstructionHandler {
 
     @Autowired
-    private UserDao userDao;
+    private PlayerDao playerDao;
 
     @Autowired
     private OnlinePlayer onlinePlayer;
@@ -44,7 +44,7 @@ public class AccountHandler extends BaseInstructionHandler {
     public String register(List<String> ins) {
         String playerName = ins.remove(0);
         String password = ins.remove(0);
-        if (userDao.getPlayerByPlayerNamePassword(playerName, password) != null) {
+        if (playerDao.getPlayerByPlayerNamePassword(playerName, password) != null) {
             return "角色已存在";
         } else {
             Player player = new Player();
@@ -55,7 +55,7 @@ public class AccountHandler extends BaseInstructionHandler {
             player.setInMapX(0);
             player.setInMapY(0);
             player.setCreatedDate(new Date());
-            userDao.playerRegister(player);
+            playerDao.playerRegister(player);
             return "角色创建完毕";
         }
     }
@@ -66,10 +66,10 @@ public class AccountHandler extends BaseInstructionHandler {
         }
         String playerName = ins.remove(0);
         String password = ins.remove(0);
-        if (userDao.getPlayerByPlayerNamePassword(playerName, password) == null) {
+        if (playerDao.getPlayerByPlayerNamePassword(playerName, password) == null) {
             return "角色名或密码错误";
         }
-        Player player = userDao.getPlayerByPlayerNamePassword(playerName, password);
+        Player player = playerDao.getPlayerByPlayerNamePassword(playerName, password);
         // channel 绑定 玩家
         onlinePlayer.getPlayerMap().put(getChannelId(), player);
         // 地图添加上线玩家
