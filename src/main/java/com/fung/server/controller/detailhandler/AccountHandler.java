@@ -1,9 +1,9 @@
-package com.fung.server.service.impl;
+package com.fung.server.controller.detailhandler;
 
 import com.fung.server.content.MapManager;
 import com.fung.server.content.entity.Player;
 import com.fung.server.dao.PlayerDao;
-import com.fung.server.service.BaseInstructionHandler;
+import com.fung.server.controller.detailhandler.BaseInstructionHandler;
 import com.fung.server.util.playerutil.OnlinePlayer;
 import com.fung.server.util.playerutil.PlayerUtil;
 import org.springframework.beans.factory.annotation.Autowired;

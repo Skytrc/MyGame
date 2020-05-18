@@ -1,7 +1,7 @@
-package com.fung.server.service.impl;
+package com.fung.server.controller.detailhandler;
 
 import com.fung.server.content.entity.GameMap;
-import com.fung.server.service.BaseInstructionHandler;
+import com.fung.server.controller.detailhandler.BaseInstructionHandler;
 import com.fung.server.util.maputil.MapInfoUtil;
 import com.fung.server.util.playerutil.OnlinePlayer;
 import com.fung.server.util.playerutil.PlayerUtil;

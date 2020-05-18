@@ -2,10 +2,10 @@ package com.fung.server.controller;
 
 import com.fung.protobuf.InstructionPack;
 import com.fung.server.init.GameServer;
-import com.fung.server.service.BaseInstructionHandler;
-import com.fung.server.service.impl.AccountHandler;
-import com.fung.server.service.impl.MoveHandler;
-import com.fung.server.service.impl.ShowInfoHandler;
+import com.fung.server.controller.detailhandler.BaseInstructionHandler;
+import com.fung.server.controller.detailhandler.AccountHandler;
+import com.fung.server.controller.detailhandler.MoveHandler;
+import com.fung.server.controller.detailhandler.ShowInfoHandler;
 import com.fung.server.util.playerutil.OnlinePlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

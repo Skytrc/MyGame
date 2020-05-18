@@ -1,4 +1,4 @@
-package com.fung.server.service;
+package com.fung.server.controller.detailhandler;
 
 import java.util.List;
 
