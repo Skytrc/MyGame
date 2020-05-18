@@ -15,14 +15,14 @@ import java.util.Map;
  * @date 2020/4/30 9:45
  */
 @Component
-public class MapManagement {
+public class MapManager {
 
     /**
      * 用于记录地图  key 地图id  value 地图
      */
     private Map<Integer, GameMap> gameMapCollection;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MapManagement.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MapManager.class);
 
     @Autowired
     public MapInitDao mapInitDao;

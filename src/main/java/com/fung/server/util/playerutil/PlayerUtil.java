@@ -1,6 +1,6 @@
 package com.fung.server.util.playerutil;
 
-import com.fung.server.content.MapManagement;
+import com.fung.server.content.MapManager;
 import com.fung.server.content.entity.GameMap;
 import com.fung.server.content.entity.Player;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class PlayerUtil {
 
     @Autowired
-    private MapManagement mapManagement;
+    private MapManager mapManager;
 
     @Autowired
     private OnlinePlayer onlinePlayer;
@@ -24,11 +24,11 @@ public class PlayerUtil {
      * @return 当前用户所在的地图
      */
     public GameMap getCurrentPlayerMap(String channelId) {
-        return mapManagement.getMapByMapId(onlinePlayer.getPlayerByChannelId(channelId).getInMapId());
+        return mapManager.getMapByMapId(onlinePlayer.getPlayerByChannelId(channelId).getInMapId());
     }
 
     public GameMap getGameMapById(int gameMapId) {
-        return mapManagement.getMapByMapId(gameMapId);
+        return mapManager.getMapByMapId(gameMapId);
     }
 
     public Player getCurrentPlayer(String channelId) {

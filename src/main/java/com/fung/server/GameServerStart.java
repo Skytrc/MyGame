@@ -1,9 +1,8 @@
 package com.fung.server;
 
-import com.fung.server.content.MapManagement;
+import com.fung.server.content.MapManager;
 import com.fung.server.controller.Controller;
-import com.fung.server.init.GameServer;
-import com.fung.server.util.UtilManagement;
+import com.fung.server.util.UtilManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +20,18 @@ public class GameServerStart {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameServerStart.class);
 
     @Autowired
-    private MapManagement mapManagement;
+    private MapManager mapManager;
 
     @Autowired
-    private UtilManagement utilManagement;
+    private UtilManager utilManager;
 
     @Autowired
     private Controller controller;
 
     public void start(int port) throws InterruptedException {
-        mapManagement.mapInit();
+        mapManager.mapInit();
 //        mapManagement.saveGameMap();
-        utilManagement.init();
+        utilManager.init();
         controller.init();
         controller.severStart(port);
     }

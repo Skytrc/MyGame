@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @date 2020/5/14 17:47
  */
 @Component
-public class UtilManagement {
+public class UtilManager {
 
     @Autowired
     private OnlinePlayer onlinePlayer;

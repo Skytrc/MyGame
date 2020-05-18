@@ -1,6 +1,6 @@
 package com.fung.server.service.impl;
 
-import com.fung.server.content.MapManagement;
+import com.fung.server.content.MapManager;
 import com.fung.server.content.entity.Player;
 import com.fung.server.dao.UserDao;
 import com.fung.server.service.BaseInstructionHandler;
@@ -26,7 +26,7 @@ public class AccountHandler extends BaseInstructionHandler {
     private OnlinePlayer onlinePlayer;
 
     @Autowired
-    private MapManagement mapManagement;
+    private MapManager mapManager;
 
     @Autowired
     private PlayerUtil playerUtil;
@@ -73,7 +73,7 @@ public class AccountHandler extends BaseInstructionHandler {
         // channel 绑定 玩家
         onlinePlayer.getPlayerMap().put(getChannelId(), player);
         // 地图添加上线玩家
-        mapManagement.getMapByMapId(player.getInMapId()).addPlayer(player);
+        mapManager.getMapByMapId(player.getInMapId()).addPlayer(player);
         return "登录成功\n" + playerUtil.showPlayerInfo(player);
     }
 
