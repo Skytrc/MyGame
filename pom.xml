@@ -115,6 +115,15 @@
             <version>1.1.21</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+        <!--   引入guava,使用其提供的本地缓存     -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.2-jre</version>
+        </dependency>
+
+
 
     </dependencies>
 
