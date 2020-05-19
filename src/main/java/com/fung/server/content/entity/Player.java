@@ -9,7 +9,10 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "player")
-public class Player {
+@AttributeOverrides(
+        @AttributeOverride(name = "name", column = @Column(name = "player_name"))
+)
+public class Player extends BaseCharacter{
 
     /**
      * 角色id
@@ -42,50 +45,6 @@ public class Player {
     @Temporal(TemporalType.TIMESTAMP)
     private Date loginDate;
 
-    /**
-     * 角色最大血量
-     */
-    @Column(name = "max_hit_point")
-    private int maxHitPoint;
-
-    /**
-     * 角色目前血量
-     */
-    @Column(name = "hit_point")
-    private int hitPoint;
-
-    /**
-     * 角色状态 0死亡， 1存活
-     */
-    @Column(name = "status")
-    private int status;
-
-    /**
-     * 玩家当前所在地图的Id
-     */
-    @Column(name = "in_map_id")
-    private int inMapId;
-
-    /**
-     * x坐標
-     */
-    @Column(name = "in_map_x")
-    private int inMapX;
-
-    /**
-     * y坐標
-     */
-    @Column(name = "in_map_y")
-    private int inMapY;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getPlayerName() {
         return playerName;
     }
@@ -100,54 +59,6 @@ public class Player {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public int getMaxHitPoint() {
-        return maxHitPoint;
-    }
-
-    public void setMaxHitPoint(int maxHitPoint) {
-        this.maxHitPoint = maxHitPoint;
-    }
-
-    public int getHitPoint() {
-        return hitPoint;
-    }
-
-    public void setHitPoint(int hitPoint) {
-        this.hitPoint = hitPoint;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public int getInMapId() {
-        return inMapId;
-    }
-
-    public void setInMapId(int inMapId) {
-        this.inMapId = inMapId;
-    }
-
-    public int getInMapX() {
-        return inMapX;
-    }
-
-    public void setInMapX(int inMapX) {
-        this.inMapX = inMapX;
-    }
-
-    public int getInMapY() {
-        return inMapY;
-    }
-
-    public void setInMapY(int inMapY) {
-        this.inMapY = inMapY;
     }
 
     public Date getCreatedDate() {
