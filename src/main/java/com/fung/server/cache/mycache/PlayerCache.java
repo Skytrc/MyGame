@@ -18,10 +18,13 @@ public class PlayerCache {
     @Autowired
     private PlayerDao playerDao;
 
+    /**
+     * key 玩家名  value 玩家实体
+     */
     private Cache<String, Player> playerCache = CacheBuilder.newBuilder().softValues().build();
 
     /**
-     * 通过玩家名字从缓存中获取玩家实体，如果缓存中没有，则到数据库中获取
+     * 通过玩家名字从缓存中获取玩家实体，如果缓存中没有，则到数据库中获取。如果数据库也没有返回null
      * @param playerName 玩家名字
      * @return 玩家实体
      */
@@ -37,11 +40,12 @@ public class PlayerCache {
     }
 
     /**
-     * 玩家注册，写入数据库和缓存中
+     * 玩家注册，先写入数据库，再重新从数据库中获得数据
      * @param player 玩家实体
      */
     public void createPlayer(Player player) {
         playerDao.playerRegister(player);
+        player = playerDao.getPlayerByPlayerName(player.getPlayerName());
         playerCache.asMap().putIfAbsent(player.getPlayerName(), player);
     }
 
