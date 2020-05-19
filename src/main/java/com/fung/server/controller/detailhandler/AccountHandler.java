@@ -4,6 +4,7 @@ import com.fung.server.content.MapManager;
 import com.fung.server.content.entity.Player;
 import com.fung.server.dao.PlayerDao;
 import com.fung.server.controller.detailhandler.BaseInstructionHandler;
+import com.fung.server.service.PlayerService;
 import com.fung.server.util.playerutil.OnlinePlayer;
 import com.fung.server.util.playerutil.PlayerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class AccountHandler extends BaseInstructionHandler {
 
     @Autowired
     private PlayerDao playerDao;
+
+    @Autowired
+    private PlayerService playerService;
 
     @Autowired
     private OnlinePlayer onlinePlayer;
@@ -44,20 +48,7 @@ public class AccountHandler extends BaseInstructionHandler {
     public String register(List<String> ins) {
         String playerName = ins.remove(0);
         String password = ins.remove(0);
-        if (playerDao.getPlayerByPlayerNamePassword(playerName, password) != null) {
-            return "角色已存在";
-        } else {
-            Player player = new Player();
-            player.setPlayerName(playerName);
-            player.setPassword(password);
-            player.setHitPoint(100);
-            player.setMaxHitPoint(100);
-            player.setInMapX(0);
-            player.setInMapY(0);
-            player.setCreatedDate(new Date());
-            playerDao.playerRegister(player);
-            return "角色创建完毕";
-        }
+        return playerService.register(playerName, password);
     }
 
     public String login(List<String> ins) {
@@ -66,22 +57,11 @@ public class AccountHandler extends BaseInstructionHandler {
         }
         String playerName = ins.remove(0);
         String password = ins.remove(0);
-        if (playerDao.getPlayerByPlayerNamePassword(playerName, password) == null) {
-            return "角色名或密码错误";
-        }
-        Player player = playerDao.getPlayerByPlayerNamePassword(playerName, password);
-        // channel 绑定 玩家
-        onlinePlayer.getPlayerMap().put(getChannelId(), player);
-        // 地图添加上线玩家
-        mapManager.getMapByMapId(player.getInMapId()).addPlayer(player);
-        return "登录成功\n" + playerUtil.showPlayerInfo(player);
+        return playerService.login(playerName, password, getChannelId());
     }
 
     public String logout() {
-        if (onlinePlayer.getPlayerMap().remove(getChannelId()) != null) {
-            return "登出成功";
-        }
-        return "没有角色登录";
+        return playerService.logout(getChannelId());
     }
 
 }

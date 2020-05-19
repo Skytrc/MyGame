@@ -8,26 +8,27 @@ import com.fung.server.content.entity.Player;
  */
 public interface PlayerService {
 
-    Player getPlayerByUsername();
-
     /**
      * 玩家注册
      * @param playerName 玩家名
      * @param password 密码
      * @return 是否注册成功
      */
-    boolean register(String playerName, String password);
+    String register(String playerName, String password);
 
     /**
      * 登录
      * @param playerName 玩家名
      * @param password 玩家密码
      * @param channelId 玩家channelId
+     * @return 登录状态
      */
-    void login(String playerName, String password, String channelId);
+    String login(String playerName, String password, String channelId);
 
     /**
      * 登出
+     * @param channelId channelId
+     * @return 登出状态
      */
-    void logout();
+    String logout(String channelId);
 }
