@@ -2,7 +2,6 @@ package com.fung.server.service.impl;
 
 import com.fung.server.cache.mycache.PlayerCache;
 import com.fung.server.content.MapManager;
-import com.fung.server.content.entity.GameMap;
 import com.fung.server.content.entity.Player;
 import com.fung.server.service.PlayerService;
 import com.fung.server.util.playerutil.OnlinePlayer;

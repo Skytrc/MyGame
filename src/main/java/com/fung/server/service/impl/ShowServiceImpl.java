@@ -2,7 +2,6 @@ package com.fung.server.service.impl;
 
 import com.fung.server.service.ShowService;
 import com.fung.server.util.maputil.MapInfoUtil;
-import com.fung.server.util.playerutil.OnlinePlayer;
 import com.fung.server.util.playerutil.PlayerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,9 +12,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ShowServiceImpl implements ShowService {
-
-    @Autowired
-    OnlinePlayer onlinePlayer;
 
     @Autowired
     PlayerUtil playerUtil;
