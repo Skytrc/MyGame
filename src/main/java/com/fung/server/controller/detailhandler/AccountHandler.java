@@ -1,16 +1,9 @@
 package com.fung.server.controller.detailhandler;
 
-import com.fung.server.content.MapManager;
-import com.fung.server.content.entity.Player;
-import com.fung.server.dao.PlayerDao;
-import com.fung.server.controller.detailhandler.BaseInstructionHandler;
 import com.fung.server.service.PlayerService;
-import com.fung.server.util.playerutil.OnlinePlayer;
-import com.fung.server.util.playerutil.PlayerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,19 +14,7 @@ import java.util.List;
 public class AccountHandler extends BaseInstructionHandler {
 
     @Autowired
-    private PlayerDao playerDao;
-
-    @Autowired
     private PlayerService playerService;
-
-    @Autowired
-    private OnlinePlayer onlinePlayer;
-
-    @Autowired
-    private MapManager mapManager;
-
-    @Autowired
-    private PlayerUtil playerUtil;
 
     @Override
     public String handler(List<String> ins) {

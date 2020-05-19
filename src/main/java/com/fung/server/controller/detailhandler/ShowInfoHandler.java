@@ -1,10 +1,7 @@
 package com.fung.server.controller.detailhandler;
 
-import com.fung.server.content.entity.GameMap;
-import com.fung.server.controller.detailhandler.BaseInstructionHandler;
-import com.fung.server.util.maputil.MapInfoUtil;
+import com.fung.server.service.ShowService;
 import com.fung.server.util.playerutil.OnlinePlayer;
-import com.fung.server.util.playerutil.PlayerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,10 +18,7 @@ public class ShowInfoHandler extends BaseInstructionHandler {
     OnlinePlayer onlinePlayer;
 
     @Autowired
-    PlayerUtil playerUtil;
-
-    @Autowired
-    MapInfoUtil mapInfoUtil;
+    ShowService showService;
 
     @Override
     public String handler(List<String> ins) {
@@ -45,7 +39,7 @@ public class ShowInfoHandler extends BaseInstructionHandler {
      * @return 玩家信息（String）
      */
     public String showPlayer() {
-        return playerUtil.showPlayerInfo(playerUtil.getCurrentPlayer(getChannelId()));
+        return showService.showPlayer(getChannelId());
     }
 
     /**
@@ -53,8 +47,7 @@ public class ShowInfoHandler extends BaseInstructionHandler {
      * @return 地图在线玩家信息（String）
      */
     public String onlinePlayer() {
-        GameMap gameMap = playerUtil.getCurrentPlayerMap(getChannelId());
-        return mapInfoUtil.showMapOnlinePlayer(gameMap);
+        return showService.showMapOnlinePlayer(getChannelId());
     }
 
     /**
@@ -62,7 +55,6 @@ public class ShowInfoHandler extends BaseInstructionHandler {
      * @return 地图元素（String）
      */
     public String showMapElement() {
-        GameMap gameMap = playerUtil.getCurrentPlayerMap(getChannelId());
-        return mapInfoUtil.showMapInfo(gameMap);
+        return showService.showMapElement(getChannelId());
     }
 }

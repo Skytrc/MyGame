@@ -58,6 +58,7 @@ public class PlayerServiceImpl implements PlayerService {
         }
         // 把登录的玩家放在onlinePlayerMap中，与channel捆绑，方便操作
         Player playerLogin = playerCache.getPlayerByPlayerName(playerName);
+        // onlinePlayer -> 指向PlayerCache的玩家实体
         onlinePlayer.getPlayerMap().put(channelId, playerLogin);
         // 地图Map捆绑线上玩家
         mapManager.getMapByMapId(playerLogin.getInMapId()).addPlayer(playerLogin);
