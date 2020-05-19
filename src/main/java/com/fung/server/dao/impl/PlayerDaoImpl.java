@@ -42,7 +42,7 @@ public class PlayerDaoImpl extends HibernateDaoSupport implements PlayerDao {
             return session.createNativeQuery(
                     "SELECT * " +
                             "FROM player " +
-                            "WHERE player_name='" + playerName + "' AND password='" + password + "'", Player.class).getSingleResult();
+                            "WHERE player_name= " + playerName + "' AND password='" + password + "'", Player.class).getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
@@ -61,7 +61,7 @@ public class PlayerDaoImpl extends HibernateDaoSupport implements PlayerDao {
             return session.createNativeQuery(
                     "SELECT * " +
                             "FROM player " +
-                            "WHERE player_name='" + playerName, Player.class).getSingleResult();
+                            "WHERE player_name= '" + playerName + "';", Player.class).getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
