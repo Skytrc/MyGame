@@ -29,7 +29,7 @@ public abstract class BaseMap {
     /**
      * 地图中在线上的玩家,以玩家id作为key，value为玩家
      */
-    private Map<Integer, Player> mapPlayers;
+    private Map<String, Player> mapPlayers;
 
     /**
      * 传送元素对应的地图
@@ -37,10 +37,10 @@ public abstract class BaseMap {
     private Map<String, BaseMap> gates;
 
     public void addPlayer(Player player) {
-        mapPlayers.put(player.getId(), player);
+        mapPlayers.put(player.getUuid(), player);
     }
 
-    public void removePlayer(int playerId) {
+    public void removePlayer(String playerId) {
         mapPlayers.remove(playerId);
     }
 
@@ -52,7 +52,7 @@ public abstract class BaseMap {
      * @param player 需要移动的角色
      */
     public void playerMove(BaseMap oldMap, BaseMap newMap, Player player) {
-        oldMap.removePlayer(player.getId());
+        oldMap.removePlayer(player.getUuid());
         newMap.addPlayer(player);
     }
 
@@ -141,11 +141,11 @@ public abstract class BaseMap {
         this.grid = grid;
     }
 
-    public Map<Integer, Player> getMapPlayers() {
+    public Map<String, Player> getMapPlayers() {
         return mapPlayers;
     }
 
-    public void setMapPlayers(Map<Integer, Player> mapPlayers) {
+    public void setMapPlayers(Map<String, Player> mapPlayers) {
         this.mapPlayers = mapPlayers;
     }
 

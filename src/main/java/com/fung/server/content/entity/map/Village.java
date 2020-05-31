@@ -30,7 +30,7 @@ public class Village extends BaseMap {
         setName("村庄");
         setGrid(new String[5][5]);
         Map<Integer, Player> mapPlayer = new HashMap<>();
-        setMapPlayers(mapPlayer);
+//        setMapPlayers(mapPlayer);
         Map<String, BaseMap>  gates = new HashMap<>();
         setGates(gates);
     }

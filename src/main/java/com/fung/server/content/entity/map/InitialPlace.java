@@ -26,7 +26,7 @@ public class InitialPlace extends BaseMap {
         setName("初始之地");
         setGrid(new String[5][5]);
         Map<Integer, Player> mapPlayer = new HashMap<>();
-        setMapPlayers(mapPlayer);
+//        setMapPlayers(mapPlayer);
         Map<String, BaseMap>  gates = new HashMap<>();
         setGates(gates);
     }
