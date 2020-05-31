@@ -2,8 +2,8 @@ package com.fung.server.init;
 
 import com.fung.protobuf.InstructionPack;
 import com.fung.protobuf.InstructionProto;
-import com.fung.server.controller.Controller;
-import com.fung.server.util.playerutil.OnlinePlayer;
+import com.fung.server.content.controller.Controller;
+import com.fung.server.content.util.playerutil.OnlinePlayer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;

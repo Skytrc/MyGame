@@ -1,14 +1,17 @@
 package com.fung.server;
 
-import com.fung.server.content.MapManager;
-import com.fung.server.controller.Controller;
-import com.fung.server.util.UtilManager;
+import com.fung.server.content.manager.MapManager;
+import com.fung.server.content.controller.Controller;
+import com.fung.server.content.util.UtilManager;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 
 /**
  * @author skytrc@163.com
@@ -28,15 +31,14 @@ public class GameServerStart {
     @Autowired
     private Controller controller;
 
-    public void start(int port) throws InterruptedException {
+    public void start(int port) throws InterruptedException, IOException, InvalidFormatException {
         mapManager.mapInit();
-//        mapManagement.saveGameMap();
         utilManager.init();
         controller.init();
         controller.severStart(port);
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException, InvalidFormatException {
         int port = 8080;
         if (args != null && args.length > 0) {
             port = Integer.parseInt(args[0]);

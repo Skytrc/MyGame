@@ -1,7 +1,7 @@
 package com.fung.server.cache.mycache;
 
 import com.fung.server.content.entity.Player;
-import com.fung.server.dao.PlayerDao;
+import com.fung.server.content.dao.PlayerDao;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.springframework.beans.factory.annotation.Autowired;

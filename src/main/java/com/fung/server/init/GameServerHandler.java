@@ -2,13 +2,12 @@ package com.fung.server.init;
 
 import com.fung.protobuf.InstructionPack;
 import com.fung.protobuf.InstructionProto;
-import com.fung.server.controller.Controller;
-import com.fung.server.util.playerutil.OnlinePlayer;
+import com.fung.server.content.controller.Controller;
+import com.fung.server.content.util.playerutil.OnlinePlayer;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author skytrc@163.com
