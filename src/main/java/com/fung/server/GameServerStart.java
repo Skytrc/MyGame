@@ -1,5 +1,6 @@
 package com.fung.server;
 
+import com.fung.server.content.manager.GoodManager;
 import com.fung.server.content.manager.MapManager;
 import com.fung.server.content.controller.Controller;
 import com.fung.server.content.util.UtilManager;
@@ -26,6 +27,9 @@ public class GameServerStart {
     private MapManager mapManager;
 
     @Autowired
+    private GoodManager goodManager;
+
+    @Autowired
     private UtilManager utilManager;
 
     @Autowired
@@ -33,6 +37,7 @@ public class GameServerStart {
 
     public void start(int port) throws InterruptedException, IOException, InvalidFormatException {
         mapManager.mapInit();
+        goodManager.goodInit();
         utilManager.init();
         controller.init();
         controller.severStart(port);
