@@ -16,6 +16,7 @@ import java.util.List;
  * @author skytrc@163.com
  * @date 2020/5/25 19:33
  * TODO 把Excel表格转化为MMap存储在Json，这样读取时不用再进行多一步的处理，可以直接用Map读取。
+ * TODO 根据Excel表格的目录自动生成对应的文件夹
  */
 @Component
 public class JsonUtil {
