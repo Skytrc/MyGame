@@ -45,4 +45,59 @@ public class Monster extends BaseElement implements Model {
      */
     private int defend;
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getMaxHealthPoint() {
+        return maxHealthPoint;
+    }
+
+    public void setMaxHealthPoint(int maxHealthPoint) {
+        this.maxHealthPoint = maxHealthPoint;
+    }
+
+    public int getHealthPoint() {
+        return healthPoint;
+    }
+
+    public void setHealthPoint(int healthPoint) {
+        this.healthPoint = healthPoint;
+    }
+
+    public int getAttackPower() {
+        return attackPower;
+    }
+
+    public void setAttackPower(int attackPower) {
+        this.attackPower = attackPower;
+    }
+
+    public int getMagicPower() {
+        return magicPower;
+    }
+
+    public void setMagicPower(int magicPower) {
+        this.magicPower = magicPower;
+    }
+
+    public int getDefend() {
+        return defend;
+    }
+
+    public void setDefend(int defend) {
+        this.defend = defend;
+    }
 }

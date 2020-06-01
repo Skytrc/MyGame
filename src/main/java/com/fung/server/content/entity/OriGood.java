@@ -10,6 +10,7 @@ import javax.persistence.*;
  * @date 2020/5/20 11:07
  */
 @Entity
+@Inheritance(strategy=InheritanceType.JOINED)
 @Table(name = "good")
 public class OriGood{
     /**
@@ -23,8 +24,8 @@ public class OriGood{
     /**
      * 物品拥有者id
      */
-    @Column(name = "player_name")
-    private String playerName;
+    @Column(name = "player_id")
+    private String playerId;
 
     /**
      * 物品配置id
@@ -43,13 +44,6 @@ public class OriGood{
     @Column(name = "get_time")
     private long getTime;
 
-    /**
-     * 如果是装备则关联外键
-     */
-    @OneToOne()
-    @JoinColumn(name = "equipment_id", nullable = false)
-    private EquipmentValue equipmentValue;
-
     public String getUuid() {
         return uuid;
     }
@@ -58,12 +52,12 @@ public class OriGood{
         this.uuid = uuid;
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public String getPlayerId() {
+        return playerId;
     }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+    public void setPlayerId(String playerName) {
+        this.playerId = playerName;
     }
 
     public int getGoodId() {
@@ -88,13 +82,5 @@ public class OriGood{
 
     public void setGetTime(long getTime) {
         this.getTime = getTime;
-    }
-
-    public EquipmentValue getEquipmentValue() {
-        return equipmentValue;
-    }
-
-    public void setEquipmentValue(EquipmentValue equipmentValue) {
-        this.equipmentValue = equipmentValue;
     }
 }

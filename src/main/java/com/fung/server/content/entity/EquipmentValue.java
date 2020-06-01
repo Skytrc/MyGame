@@ -1,6 +1,6 @@
 package com.fung.server.content.entity;
 
-import com.fung.server.content.domain.EquipmentType;
+import com.fung.server.content.domain.equipment.EquipmentType;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -11,8 +11,7 @@ import java.util.List;
  * @author skytrc@163.com
  * @date 2020/5/28 16:34
  */
-@Entity
-@Table(name = "equipment_value")
+@Deprecated
 public class EquipmentValue {
 
     /**
@@ -22,6 +21,11 @@ public class EquipmentValue {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
     private String uuid;
+
+    /**
+     * 对应装备模型id
+     */
+    private int equipmentId;
 
     /**
      * 强化等级
@@ -81,6 +85,14 @@ public class EquipmentValue {
      */
     @Column(name = "entries_num")
     private String entriesNum;
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
     public int getLevel() {
         return level;
@@ -160,5 +172,13 @@ public class EquipmentValue {
 
     public void setEntriesNum(String entriesNum) {
         this.entriesNum = entriesNum;
+    }
+
+    public int getEquipmentId() {
+        return equipmentId;
+    }
+
+    public void setEquipmentId(int equipmentId) {
+        this.equipmentId = equipmentId;
     }
 }

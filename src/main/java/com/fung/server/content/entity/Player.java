@@ -8,7 +8,6 @@ import javax.persistence.*;
  * 玩家
  * @author skytrc@163.com
  * @date 2020/4/30 11:45
- * TODO 时间戳处理
  */
 @Entity
 @Table(name = "player")
