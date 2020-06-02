@@ -26,6 +26,8 @@ public class Medicine implements Model {
      */
     private int time;
 
+    private String description;
+
     @Override
     public int getId() {
         return id;
@@ -73,5 +75,13 @@ public class Medicine implements Model {
 
     public void setMaxStacks(int maxStacks) {
         this.maxStacks = maxStacks;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

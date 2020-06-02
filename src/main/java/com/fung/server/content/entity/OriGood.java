@@ -34,6 +34,11 @@ public class OriGood{
     private int goodId;
 
     /**
+     * 在玩家背包的位置
+     */
+    private int position;
+
+    /**
      * 拥有数量
      */
     private int quantity;
@@ -82,5 +87,13 @@ public class OriGood{
 
     public void setGetTime(long getTime) {
         this.getTime = getTime;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 }
