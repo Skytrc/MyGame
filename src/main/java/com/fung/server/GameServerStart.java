@@ -1,7 +1,7 @@
 package com.fung.server;
 
-import com.fung.server.content.manager.GoodManager;
-import com.fung.server.content.manager.MapManager;
+import com.fung.server.content.config.manager.GoodManager;
+import com.fung.server.content.config.manager.MapManager;
 import com.fung.server.content.controller.Controller;
 import com.fung.server.content.util.UtilManager;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;

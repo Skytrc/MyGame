@@ -1,7 +1,7 @@
-package com.fung.server.content.manager;
+package com.fung.server.content.config.manager;
 
-import com.fung.server.content.config.ConfigEquipmentCreated;
-import com.fung.server.content.domain.equipment.EquipmentCreated;
+import com.fung.server.content.config.read.ReadCreated;
+import com.fung.server.content.config.equipment.EquipmentCreated;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class EquipmentCreatedManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(EquipmentCreatedManager.class);
 
     @Autowired
-    private ConfigEquipmentCreated configEquipmentCreated;
+    private ReadCreated readCreated;
 
     /**
      * 存储 key 装备对应id  value EquipmentCreated
@@ -27,7 +27,7 @@ public class EquipmentCreatedManager {
     private Map<Integer, EquipmentCreated> equipmentCreatedMap;
 
     public void equipmentCreatedInit() {
-        equipmentCreatedMap = configEquipmentCreated.getModelMap();
+        equipmentCreatedMap = readCreated.getModelMap();
     }
 
     public Map<Integer, EquipmentCreated> getEquipmentCreatedMap() {

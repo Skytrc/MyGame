@@ -1,7 +1,7 @@
 package com.fung.server.content.service.impl;
 
 import com.fung.server.cache.mycache.PlayerCache;
-import com.fung.server.content.manager.MapManager;
+import com.fung.server.content.config.manager.MapManager;
 import com.fung.server.content.entity.Player;
 import com.fung.server.content.service.PlayerService;
 import com.fung.server.content.util.playerutil.OnlinePlayer;

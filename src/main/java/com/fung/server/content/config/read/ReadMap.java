@@ -1,6 +1,6 @@
-package com.fung.server.content.config;
+package com.fung.server.content.config.read;
 
-import com.fung.server.content.domain.GameMap;
+import com.fung.server.content.config.GameMap;
 import com.fung.server.excel2class.AbstractJsonModelListManager;
 import org.springframework.stereotype.Component;
 
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
  * @date 2020/5/28 9:52
  */
 @Component
-public class ConfigMap extends AbstractJsonModelListManager<GameMap> {
-    public ConfigMap() {
+public class ReadMap extends AbstractJsonModelListManager<GameMap> {
+    public ReadMap() {
         super("map", "map");
     }
 }

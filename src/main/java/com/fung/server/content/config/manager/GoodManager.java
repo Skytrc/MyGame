@@ -1,4 +1,4 @@
-package com.fung.server.content.manager;
+package com.fung.server.content.config.manager;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;

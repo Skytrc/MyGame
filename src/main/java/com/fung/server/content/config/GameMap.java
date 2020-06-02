@@ -1,4 +1,4 @@
-package com.fung.server.content.domain;
+package com.fung.server.content.config;
 
 import com.fung.server.content.entity.Player;
 import com.fung.server.content.entity.base.BaseElement;

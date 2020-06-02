@@ -1,6 +1,6 @@
 package com.fung.server.content.entity;
 
-import com.fung.server.content.domain.equipment.EquipmentType;
+import com.fung.server.content.config.equipment.EquipmentType;
 
 import javax.persistence.*;
 

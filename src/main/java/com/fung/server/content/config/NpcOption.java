@@ -1,4 +1,4 @@
-package com.fung.server.content.domain;
+package com.fung.server.content.config;
 
 /**
  * @author skytrc@163.com

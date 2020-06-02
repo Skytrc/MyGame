@@ -1,4 +1,4 @@
-package com.fung.server.content.domain.equipment;
+package com.fung.server.content.config.equipment;
 
 import com.fung.server.excel2class.Model;
 
@@ -12,6 +12,11 @@ public class EquipmentCreated implements Model {
     private int id;
 
     private String name;
+
+    /**
+     * 装备类型
+     */
+    private String type;
 
     /**
      * 耐久度
@@ -196,5 +201,13 @@ public class EquipmentCreated implements Model {
 
     public void setDurable(int durable) {
         this.durable = durable;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

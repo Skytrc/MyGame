@@ -1,9 +1,9 @@
-package com.fung.server.content.manager;
+package com.fung.server.content.config.manager;
 
-import com.fung.server.content.config.ConfigMap;
-import com.fung.server.content.config.ConfigMapGates;
-import com.fung.server.content.domain.GameMap;
-import com.fung.server.content.domain.GameMapGates;
+import com.fung.server.content.config.read.ReadMap;
+import com.fung.server.content.config.read.ReadMapGates;
+import com.fung.server.content.config.GameMap;
+import com.fung.server.content.config.GameMapGates;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,17 +29,17 @@ public class MapManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(MapManager.class);
 
     @Autowired
-    private ConfigMap configMap;
+    private ReadMap readMap;
 
     @Autowired
-    private ConfigMapGates configMapGates;
+    private ReadMapGates readMapGates;
 
     public void mapInit() throws IOException, InvalidFormatException {
-        configMap.init();
-        configMapGates.init();
+        readMap.init();
+        readMapGates.init();
 
         // 初始化各张地图实体
-        gameMapCollection = configMap.getModelMap();
+        gameMapCollection = readMap.getModelMap();
         gameMapCollection.forEach((id,item) -> {
             item.setElements(new HashMap<>());
             item.setGates(new HashMap<>());
@@ -47,7 +47,7 @@ public class MapManager {
         });
 
         // 增加传送门
-        Map<Integer, GameMapGates> gamMapGates = configMapGates.getModelMap();
+        Map<Integer, GameMapGates> gamMapGates = readMapGates.getModelMap();
         gamMapGates.forEach((id, item) -> {
             gameMapCollection.get(item.getThisMap()).addGate(item.getLocation(), gameMapCollection.get(item.getNextMap()));
         });

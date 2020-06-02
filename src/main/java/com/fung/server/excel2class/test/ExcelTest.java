@@ -1,6 +1,6 @@
 package com.fung.server.excel2class.test;
 
-import com.fung.server.content.manager.MapManager;
+import com.fung.server.content.config.manager.MapManager;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

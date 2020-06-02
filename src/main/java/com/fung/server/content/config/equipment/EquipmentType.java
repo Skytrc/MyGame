@@ -1,4 +1,4 @@
-package com.fung.server.content.domain.equipment;
+package com.fung.server.content.config.equipment;
 
 /**
  * 武器类型
@@ -26,7 +26,7 @@ public enum EquipmentType {
     /**
      * 裤子
      */
-    pants(3, "pants"),
+    PANTS(3, "pants"),
 
     /**
      * 鞋子

@@ -1,6 +1,6 @@
 package com.fung.server.content.dao;
 
-import com.fung.server.content.domain.GameMap;
+import com.fung.server.content.config.GameMap;
 
 /**
  * @author skytrc@163.com

@@ -1,7 +1,7 @@
-package com.fung.server.content.manager;
+package com.fung.server.content.config.manager;
 
-import com.fung.server.content.config.ConfigMedicine;
-import com.fung.server.content.domain.Medicine;
+import com.fung.server.content.config.read.ReadMedicine;
+import com.fung.server.content.config.Medicine;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,13 +28,13 @@ public class MedicineManager{
     private static final Logger LOGGER = LoggerFactory.getLogger(MedicineManager.class);
 
     @Autowired
-    ConfigMedicine configMedicine;
+    ReadMedicine readMedicine;
 
     public void medicineInit() throws IOException, InvalidFormatException {
         // 从配置中读取药品
-        configMedicine.init();
+        readMedicine.init();
 
-        medicineMap = configMedicine.getModelMap();
+        medicineMap = readMedicine.getModelMap();
     }
 
     public String getGoodName() {

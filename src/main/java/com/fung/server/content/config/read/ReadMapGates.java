@@ -1,6 +1,6 @@
-package com.fung.server.content.config;
+package com.fung.server.content.config.read;
 
-import com.fung.server.content.domain.GameMapGates;
+import com.fung.server.content.config.GameMapGates;
 import com.fung.server.excel2class.AbstractJsonModelListManager;
 import org.springframework.stereotype.Component;
 
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
  * @date 2020/5/28 11:57
  */
 @Component
-public class ConfigMapGates extends AbstractJsonModelListManager<GameMapGates> {
-    public ConfigMapGates() {
+public class ReadMapGates extends AbstractJsonModelListManager<GameMapGates> {
+    public ReadMapGates() {
         super("mapGates", "map");
     }
 }

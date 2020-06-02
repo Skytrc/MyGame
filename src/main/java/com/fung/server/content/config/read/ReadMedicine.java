@@ -1,6 +1,6 @@
-package com.fung.server.content.config;
+package com.fung.server.content.config.read;
 
-import com.fung.server.content.domain.Medicine;
+import com.fung.server.content.config.Medicine;
 import com.fung.server.excel2class.AbstractJsonModelListManager;
 import org.springframework.stereotype.Component;
 
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
  * @date 2020/6/1 10:40
  */
 @Component
-public class ConfigMedicine extends AbstractJsonModelListManager<Medicine> {
-    public ConfigMedicine() {
+public class ReadMedicine extends AbstractJsonModelListManager<Medicine> {
+    public ReadMedicine() {
         super("medicine", "good");
     }
 }
