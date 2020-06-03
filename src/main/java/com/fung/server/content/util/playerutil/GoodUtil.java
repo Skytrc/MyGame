@@ -1,7 +1,7 @@
 package com.fung.server.content.util.playerutil;
 
 import com.fung.server.content.entity.Equipment;
-import com.fung.server.content.config.equipment.EquipmentCreated;
+import com.fung.server.content.config.good.equipment.EquipmentCreated;
 import com.fung.server.content.config.manager.EquipmentCreatedManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.fung.server.content.config;
+package com.fung.server.content.config.good;
 
 /**
  * Id范围

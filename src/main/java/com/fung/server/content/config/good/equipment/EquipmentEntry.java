@@ -1,4 +1,4 @@
-package com.fung.server.content.config.equipment;
+package com.fung.server.content.config.good.equipment;
 
 /**
  * @author skytrc@163.com

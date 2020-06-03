@@ -1,7 +1,7 @@
 package com.fung.server.content.util.playerutil;
 
 import com.fung.server.content.config.manager.MapManager;
-import com.fung.server.content.config.GameMap;
+import com.fung.server.content.config.map.GameMap;
 import com.fung.server.content.entity.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

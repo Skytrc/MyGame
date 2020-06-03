@@ -3,7 +3,6 @@ package com.fung.server.content.domain.backpack;
 import com.fung.server.content.config.manager.GoodManager;
 import com.fung.server.content.entity.OriGood;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -13,8 +12,8 @@ import java.util.Map;
  * 在使用前先给playerId、maxBackpackGrid赋值
  * @author skytrc@163.com
  * @date 2020/6/2 10:47
+ * TODO 需要配置到玩家身上
  */
-@Component
 public class PersonalBackpack {
     private Map<Integer, OriGood> backpack;
 

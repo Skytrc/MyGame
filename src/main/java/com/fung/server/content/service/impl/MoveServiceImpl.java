@@ -1,7 +1,7 @@
 package com.fung.server.content.service.impl;
 
 import com.fung.server.cache.mycache.PlayerCache;
-import com.fung.server.content.config.GameMap;
+import com.fung.server.content.config.map.GameMap;
 import com.fung.server.content.entity.Player;
 import com.fung.server.content.service.MoveService;
 import com.fung.server.content.util.maputil.MapInfoUtil;

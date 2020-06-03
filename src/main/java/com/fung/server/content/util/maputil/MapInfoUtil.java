@@ -1,7 +1,7 @@
 package com.fung.server.content.util.maputil;
 
 import com.fung.server.content.entity.base.BaseElement;
-import com.fung.server.content.config.GameMap;
+import com.fung.server.content.config.map.GameMap;
 import com.fung.server.content.entity.Player;
 import org.springframework.stereotype.Component;
 

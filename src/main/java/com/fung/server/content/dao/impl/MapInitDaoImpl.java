@@ -1,6 +1,6 @@
 package com.fung.server.content.dao.impl;
 
-import com.fung.server.content.config.GameMap;
+import com.fung.server.content.config.map.GameMap;
 import com.fung.server.content.dao.MapInitDao;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

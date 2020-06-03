@@ -1,5 +1,6 @@
-package com.fung.server.content.config;
+package com.fung.server.content.config.map;
 
+import com.fung.server.content.config.monster.Monster;
 import com.fung.server.content.entity.Player;
 import com.fung.server.content.entity.base.BaseElement;
 import com.fung.server.excel2class.Model;
@@ -37,6 +38,11 @@ public class GameMap extends BaseElement implements Model {
      * 地图中在线上的玩家,以玩家id作为key，value为玩家
      */
     private Map<String, Player> mapPlayers;
+
+    /**
+     * key position  value 怪物 地图存储
+     */
+    private Map<Integer, Monster> monsterMap;
 
     /**
      * 元素对应的地图坐标（坐标需要计算）key location  value 基础元素
@@ -195,6 +201,14 @@ public class GameMap extends BaseElement implements Model {
         mapPlayers.remove(playerUuid);
     }
 
+    public Monster getMonsterByPosition(int position) {
+        return monsterMap.get(position);
+    }
+
+    public void putMonsterInMap(int position, Monster monster) {
+        monsterMap.put(position, monster);
+    }
+
     public int getX() {
         return x;
     }
@@ -233,5 +247,13 @@ public class GameMap extends BaseElement implements Model {
 
     public void setElements(Map<Integer, BaseElement> elements) {
         this.elements = elements;
+    }
+
+    public Map<Integer, Monster> getMonsterMap() {
+        return monsterMap;
+    }
+
+    public void setMonsterMap(Map<Integer, Monster> monsterMap) {
+        this.monsterMap = monsterMap;
     }
 }

@@ -1,4 +1,4 @@
-package com.fung.server.content.config;
+package com.fung.server.content.config.npc;
 
 /**
  * @author skytrc@163.com

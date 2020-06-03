@@ -1,8 +1,8 @@
 package com.fung.server.content.service.impl;
 
 import com.fung.server.content.dao.EquipmentDao;
-import com.fung.server.content.config.equipment.EquipmentCreated;
-import com.fung.server.content.config.equipment.EquipmentType;
+import com.fung.server.content.config.good.equipment.EquipmentCreated;
+import com.fung.server.content.config.good.equipment.EquipmentType;
 import com.fung.server.content.entity.Equipment;
 import com.fung.server.content.config.manager.EquipmentCreatedManager;
 import com.fung.server.content.service.EquipmentService;

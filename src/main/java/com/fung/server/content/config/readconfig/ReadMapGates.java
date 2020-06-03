@@ -1,6 +1,6 @@
 package com.fung.server.content.config.readconfig;
 
-import com.fung.server.content.config.GameMapGates;
+import com.fung.server.content.config.map.GameMapGates;
 import com.fung.server.excel2class.AbstractJsonModelListManager;
 import org.springframework.stereotype.Component;
 
