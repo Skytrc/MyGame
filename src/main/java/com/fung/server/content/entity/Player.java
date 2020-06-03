@@ -1,5 +1,6 @@
 package com.fung.server.content.entity;
 
+import com.fung.server.content.domain.backpack.PersonalBackpack;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -95,6 +96,24 @@ public class Player{
      * 人物经验
      */
     private int exp;
+
+    /**
+     * 人物装备，需要在Service层处理
+     */
+    @Transient
+    private Equipment[] equipments;
+
+    /**
+     * 人物技能，需要在Service层处理
+     */
+    @Transient
+    private Skill[] skills;
+
+    /**
+     * 背包挂钩，需要在Service层处理
+     */
+    @Transient
+    private PersonalBackpack personalBackpack;
 
     /**
      * 人物所在地图id
@@ -276,5 +295,29 @@ public class Player{
 
     public void setMagicPower(int magicPower) {
         this.magicPower = magicPower;
+    }
+
+    public Equipment[] getEquipments() {
+        return equipments;
+    }
+
+    public void setEquipments(Equipment[] equipments) {
+        this.equipments = equipments;
+    }
+
+    public Skill[] getSkills() {
+        return skills;
+    }
+
+    public void setSkills(Skill[] skills) {
+        this.skills = skills;
+    }
+
+    public PersonalBackpack getPersonalBackpack() {
+        return personalBackpack;
+    }
+
+    public void setPersonalBackpack(PersonalBackpack personalBackpack) {
+        this.personalBackpack = personalBackpack;
     }
 }

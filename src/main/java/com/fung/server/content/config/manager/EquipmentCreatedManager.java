@@ -1,7 +1,7 @@
 package com.fung.server.content.config.manager;
 
 import com.fung.server.content.config.readconfig.ReadCreated;
-import com.fung.server.content.config.equipment.EquipmentCreated;
+import com.fung.server.content.config.good.equipment.EquipmentCreated;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
