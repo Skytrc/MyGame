@@ -2,8 +2,8 @@ package com.fung.server.content.config.manager;
 
 import com.fung.server.content.config.readconfig.ReadMap;
 import com.fung.server.content.config.readconfig.ReadMapGates;
-import com.fung.server.content.config.GameMap;
-import com.fung.server.content.config.GameMapGates;
+import com.fung.server.content.config.map.GameMap;
+import com.fung.server.content.config.map.GameMapGates;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +53,6 @@ public class MapManager {
         });
 
         // 增加Element
-
 
         LOGGER.info("地图初始化成功");
     }
