@@ -1,4 +1,4 @@
-package com.fung.server.content.config;
+package com.fung.server.content.config.monster;
 
 import com.fung.server.content.entity.base.BaseElement;
 import com.fung.server.excel2class.Model;
@@ -10,10 +10,7 @@ import com.fung.server.excel2class.Model;
  */
 public class Monster extends BaseElement implements Model {
 
-    /**
-     * 每个怪兽实体唯一ID
-     */
-    private String uuid;
+    private int id;
 
     /**
      * 怪物等级
@@ -45,13 +42,10 @@ public class Monster extends BaseElement implements Model {
      */
     private int defend;
 
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
+    /**
+     * 经验值
+     */
+    private int exp;
 
     public int getLevel() {
         return level;
@@ -99,5 +93,23 @@ public class Monster extends BaseElement implements Model {
 
     public void setDefend(int defend) {
         this.defend = defend;
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getExp() {
+        return exp;
+    }
+
+    public void setExp(int exp) {
+        this.exp = exp;
     }
 }
