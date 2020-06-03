@@ -1,6 +1,6 @@
 package com.fung.server.content.config.manager;
 
-import com.fung.server.content.config.read.ReadMedicine;
+import com.fung.server.content.config.readconfig.ReadMedicine;
 import com.fung.server.content.config.Medicine;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;

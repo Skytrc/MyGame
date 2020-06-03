@@ -1,7 +1,7 @@
 package com.fung.server.content.config.manager;
 
-import com.fung.server.content.config.read.ReadMap;
-import com.fung.server.content.config.read.ReadMapGates;
+import com.fung.server.content.config.readconfig.ReadMap;
+import com.fung.server.content.config.readconfig.ReadMapGates;
 import com.fung.server.content.config.GameMap;
 import com.fung.server.content.config.GameMapGates;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;

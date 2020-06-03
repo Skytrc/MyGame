@@ -1,4 +1,4 @@
-package com.fung.server.content.config.read;
+package com.fung.server.content.config.readconfig;
 
 import com.fung.server.content.config.equipment.EquipmentCreated;
 import com.fung.server.excel2class.AbstractJsonModelListManager;

@@ -1,6 +1,6 @@
 package com.fung.server.content.config.manager;
 
-import com.fung.server.content.config.read.ReadCreated;
+import com.fung.server.content.config.readconfig.ReadCreated;
 import com.fung.server.content.config.equipment.EquipmentCreated;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
