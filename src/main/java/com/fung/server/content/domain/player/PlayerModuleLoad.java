@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * @date 2020/6/3 18:20
  */
 @Component
-public class PlayerToolLoad {
+public class PlayerModuleLoad {
 
     public void playerEquipEquipments(int playerId, Equipment[] equipments) {
 
