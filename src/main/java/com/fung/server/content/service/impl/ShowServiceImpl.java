@@ -1,8 +1,8 @@
 package com.fung.server.content.service.impl;
 
 import com.fung.server.content.service.ShowService;
-import com.fung.server.content.util.maputil.MapInfoUtil;
-import com.fung.server.content.util.playerutil.PlayerUtil;
+import com.fung.server.content.domain.map.MapInfo;
+import com.fung.server.content.domain.player.PlayeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,23 +14,23 @@ import org.springframework.stereotype.Component;
 public class ShowServiceImpl implements ShowService {
 
     @Autowired
-    PlayerUtil playerUtil;
+    PlayeInfo playeInfo;
 
     @Autowired
-    MapInfoUtil mapInfoUtil;
+    MapInfo mapInfo;
 
     @Override
     public String showPlayer(String channelId) {
-        return playerUtil.showPlayerInfo(playerUtil.getCurrentPlayer(channelId));
+        return playeInfo.showPlayerInfo(playeInfo.getCurrentPlayer(channelId));
     }
 
     @Override
     public String showMapOnlinePlayer(String channelId) {
-        return mapInfoUtil.showMapOnlinePlayer(playerUtil.getCurrentPlayerMap(channelId));
+        return mapInfo.showMapOnlinePlayer(playeInfo.getCurrentPlayerMap(channelId));
     }
 
     @Override
     public String showMapElement(String channelId) {
-        return mapInfoUtil.showMapInfo(playerUtil.getCurrentPlayerMap(channelId));
+        return mapInfo.showMapInfo(playeInfo.getCurrentPlayerMap(channelId));
     }
 }

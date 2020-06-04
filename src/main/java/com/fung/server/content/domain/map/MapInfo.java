@@ -1,4 +1,4 @@
-package com.fung.server.content.util.maputil;
+package com.fung.server.content.domain.map;
 
 import com.fung.server.content.entity.base.BaseElement;
 import com.fung.server.content.config.map.GameMap;
@@ -12,7 +12,7 @@ import java.util.Map;
  * @date 2020/5/15 11:53
  */
 @Component
-public class MapInfoUtil {
+public class MapInfo {
 
     /** 展示地图上的元素
      * @param gameMap 游戏地图实体

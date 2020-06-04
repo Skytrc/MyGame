@@ -1,4 +1,4 @@
-package com.fung.server.content.util.playerutil;
+package com.fung.server.content.domain.good;
 
 import com.fung.server.content.entity.Equipment;
 import com.fung.server.content.config.good.equipment.EquipmentCreated;
@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @date 2020/6/1 16:45
  */
 @Component
-public class GoodUtil {
+public class GoodValue {
 
     @Autowired
     EquipmentCreatedManager equipmentCreatedManager;

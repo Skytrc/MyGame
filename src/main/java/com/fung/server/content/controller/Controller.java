@@ -6,7 +6,7 @@ import com.fung.server.content.controller.detailhandler.BaseInstructionHandler;
 import com.fung.server.content.controller.detailhandler.AccountHandler;
 import com.fung.server.content.controller.detailhandler.MoveHandler;
 import com.fung.server.content.controller.detailhandler.ShowInfoHandler;
-import com.fung.server.content.util.playerutil.OnlinePlayer;
+import com.fung.server.content.domain.player.OnlinePlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

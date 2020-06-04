@@ -5,7 +5,7 @@ import com.fung.server.content.config.manager.MapManager;
 import com.fung.server.content.config.manager.MonsterCreateManager;
 import com.fung.server.content.config.manager.SkillManager;
 import com.fung.server.content.controller.Controller;
-import com.fung.server.content.util.UtilManager;
+import com.fung.server.content.domain.player.PlayerInit;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +38,7 @@ public class GameServerStart {
     private SkillManager skillManager;
 
     @Autowired
-    private UtilManager utilManager;
+    private PlayerInit playerInit;
 
     @Autowired
     private Controller controller;
@@ -49,7 +49,7 @@ public class GameServerStart {
         skillManager.skillInit();
         monsterCreateManager.monsterCreateInit();
 
-        utilManager.init();
+        playerInit.init();
         controller.init();
         controller.severStart(port);
     }

@@ -1,6 +1,6 @@
-package com.fung.server.content.util;
+package com.fung.server.content.domain.player;
 
-import com.fung.server.content.util.playerutil.OnlinePlayer;
+import com.fung.server.content.domain.player.OnlinePlayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @date 2020/5/14 17:47
  */
 @Component
-public class UtilManager {
+public class PlayerInit {
 
     @Autowired
     private OnlinePlayer onlinePlayer;

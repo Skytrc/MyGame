@@ -1,7 +1,8 @@
-package com.fung.server.content.util.playerutil;
+package com.fung.server.content.domain.player;
 
 import com.fung.server.content.config.manager.MapManager;
 import com.fung.server.content.config.map.GameMap;
+import com.fung.server.content.domain.player.OnlinePlayer;
 import com.fung.server.content.entity.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ import java.text.SimpleDateFormat;
  * @date 2020/5/14 20:59
  */
 @Component
-public class PlayerUtil {
+public class PlayeInfo {
 
     @Autowired
     private MapManager mapManager;

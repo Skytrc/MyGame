@@ -1,7 +1,7 @@
 package com.fung.server.content.controller.detailhandler;
 
 import com.fung.server.content.service.ShowService;
-import com.fung.server.content.util.playerutil.OnlinePlayer;
+import com.fung.server.content.domain.player.OnlinePlayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

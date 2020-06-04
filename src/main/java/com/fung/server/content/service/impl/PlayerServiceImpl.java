@@ -4,8 +4,8 @@ import com.fung.server.cache.mycache.PlayerCache;
 import com.fung.server.content.config.manager.MapManager;
 import com.fung.server.content.entity.Player;
 import com.fung.server.content.service.PlayerService;
-import com.fung.server.content.util.playerutil.OnlinePlayer;
-import com.fung.server.content.util.playerutil.PlayerUtil;
+import com.fung.server.content.domain.player.OnlinePlayer;
+import com.fung.server.content.domain.player.PlayeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +26,7 @@ public class PlayerServiceImpl implements PlayerService {
     MapManager mapManager;
 
     @Autowired
-    PlayerUtil playerUtil;
+    PlayeInfo playeInfo;
 
     @Override
     public String register(String playerName, String password) {
@@ -65,7 +65,7 @@ public class PlayerServiceImpl implements PlayerService {
         onlinePlayer.getPlayerMap().put(channelId, playerLogin);
         // 地图Map捆绑线上玩家
         mapManager.getMapByMapId(playerLogin.getInMapId()).addPlayer(playerLogin);
-        return "登录成功：\n " + playerUtil.showPlayerInfo(player);
+        return "登录成功：\n " + playeInfo.showPlayerInfo(player);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class PlayerServiceImpl implements PlayerService {
         if (onlinePlayer.getPlayerMap().containsKey(channelId)) {
             Player player = onlinePlayer.getPlayerMap().remove(channelId);
             // 地图 在线Map 移除该玩家
-            playerUtil.getCurrentPlayerMap(channelId).removePlayer(player.getUuid());
+            playeInfo.getCurrentPlayerMap(channelId).removePlayer(player.getUuid());
             return "登出成功";
         }
         return "没有角色登录";

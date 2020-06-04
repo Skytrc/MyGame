@@ -4,9 +4,9 @@ import com.fung.server.cache.mycache.PlayerCache;
 import com.fung.server.content.config.map.GameMap;
 import com.fung.server.content.entity.Player;
 import com.fung.server.content.service.MoveService;
-import com.fung.server.content.util.maputil.MapInfoUtil;
-import com.fung.server.content.util.playerutil.OnlinePlayer;
-import com.fung.server.content.util.playerutil.PlayerUtil;
+import com.fung.server.content.domain.map.MapInfo;
+import com.fung.server.content.domain.player.OnlinePlayer;
+import com.fung.server.content.domain.player.PlayeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,18 +21,18 @@ public class MoveServiceImpl implements MoveService {
     OnlinePlayer onlinePlayer;
 
     @Autowired
-    PlayerUtil playerUtil;
+    PlayeInfo playeInfo;
 
     @Autowired
     PlayerCache playerCache;
 
     @Autowired
-    MapInfoUtil mapInfoUtil;
+    MapInfo mapInfo;
 
     @Override
     public String move(int x, int y, String channelId) {
         Player player = onlinePlayer.getPlayerByChannelId(channelId);
-        GameMap gameMap = playerUtil.getCurrentPlayerMap(channelId);
+        GameMap gameMap = playeInfo.getCurrentPlayerMap(channelId);
         int newX = player.getInMapX() + x;
         int newY = player.getInMapY() + y;
         if (newX < 1 || newX > gameMap.getX() || newY < 1 || newY > gameMap.getY()) {
@@ -52,8 +52,8 @@ public class MoveServiceImpl implements MoveService {
 
     @Override
     public String mapTransfer(String channelId) {
-        GameMap currentGameMap = playerUtil.getCurrentPlayerMap(channelId);
-        Player player = playerUtil.getCurrentPlayer(channelId);
+        GameMap currentGameMap = playeInfo.getCurrentPlayerMap(channelId);
+        Player player = playeInfo.getCurrentPlayer(channelId);
         int nextMapId = currentGameMap.hasGate(player.getInMapX(), player.getInMapY());
         if (nextMapId == -1) {
             return "当前坐标没有传送门";
@@ -63,9 +63,9 @@ public class MoveServiceImpl implements MoveService {
         player.setInMapY(1);
         // 更新数据库
         playerCache.updatePlayer(player);
-        GameMap nextGameMap = playerUtil.getGameMapById(nextMapId);
+        GameMap nextGameMap = playeInfo.getGameMapById(nextMapId);
         currentGameMap.removePlayer(player.getUuid());
         nextGameMap.addPlayer(player);
-        return "转移成功\n" + mapInfoUtil.showMapInfo(nextGameMap);
+        return "转移成功\n" + mapInfo.showMapInfo(nextGameMap);
     }
 }

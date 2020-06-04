@@ -3,7 +3,7 @@ package com.fung.server.init;
 import com.fung.protobuf.InstructionPack;
 import com.fung.protobuf.InstructionProto;
 import com.fung.server.content.controller.Controller;
-import com.fung.server.content.util.playerutil.OnlinePlayer;
+import com.fung.server.content.domain.player.OnlinePlayer;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package com.fung.server.content.util.playerutil;
+package com.fung.server.content.domain.player;
 
 import com.fung.server.content.entity.Player;
 import org.springframework.stereotype.Component;

@@ -6,7 +6,7 @@ import com.fung.server.content.config.good.equipment.EquipmentType;
 import com.fung.server.content.entity.Equipment;
 import com.fung.server.content.config.manager.EquipmentCreatedManager;
 import com.fung.server.content.service.EquipmentService;
-import com.fung.server.content.util.playerutil.PlayerUtil;
+import com.fung.server.content.domain.player.PlayeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +23,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     EquipmentCreatedManager equipmentCreatedManager;
 
     @Autowired
-    PlayerUtil playerUtil;
+    PlayeInfo playeInfo;
 
     @Autowired
     EquipmentDao equipmentDao;
@@ -35,7 +35,7 @@ public class EquipmentServiceImpl implements EquipmentService {
         EquipmentCreated created = equipmentCreatedManager.getEquipmentCreatedMap().get(equipmentId);
         Equipment equipment = new Equipment();
         // 装备基础信息
-        equipment.setPlayerId(playerUtil.getCurrentPlayer(channelId).getUuid());
+        equipment.setPlayerId(playeInfo.getCurrentPlayer(channelId).getUuid());
         equipment.setGoodId(equipmentId);
         equipment.setGetTime(System.currentTimeMillis());
         equipment.setType(getType(created.getType()));
