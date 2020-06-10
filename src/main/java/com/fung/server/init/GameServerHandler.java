@@ -2,6 +2,7 @@ package com.fung.server.init;
 
 import com.fung.protobuf.InstructionPack;
 import com.fung.protobuf.InstructionProto;
+import com.fung.server.channelstore.StoredChannel;
 import com.fung.server.content.controller.Controller;
 import com.fung.server.content.domain.player.OnlinePlayer;
 import io.netty.channel.ChannelHandlerContext;
@@ -23,14 +24,18 @@ public class GameServerHandler extends ChannelInboundHandlerAdapter {
 
     private OnlinePlayer onlinePlayer;
 
-    public GameServerHandler(Controller controller, InstructionPack instructionPack, OnlinePlayer onlinePlayer) {
+    private StoredChannel storedChannel;
+
+    public GameServerHandler(Controller controller, InstructionPack instructionPack, OnlinePlayer onlinePlayer, StoredChannel storedChannel) {
         this.instructionPack = instructionPack;
         this.controller = controller;
         this.onlinePlayer = onlinePlayer;
+        this.storedChannel = storedChannel;
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        storedChannel.putChannelAndId(ctx.channel().id().asLongText(), ctx.channel());
 //        onlinePlayer.getPlayerMap().put(String.valueOf(ctx.channel().id()), null);
 //        LOGGER.info(String.valueOf(ctx.channel().id()));
     }
@@ -39,7 +44,7 @@ public class GameServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         System.out.println("Service accept client message : " + instructionPack.encode((InstructionProto.Instruction) msg));
         String response = controller.handleMessage(instructionPack.encode((InstructionProto.Instruction) msg),
-                String.valueOf(ctx.channel().id()));
+                ctx.channel().id().asLongText());
         ctx.writeAndFlush(instructionPack.decode(response));
 //        LOGGER.info(String.valueOf(ctx.channel().id()));
     }
@@ -52,6 +57,7 @@ public class GameServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        onlinePlayer.getPlayerMap().remove(String.valueOf(ctx.channel().id()));
+        onlinePlayer.getPlayerMap().remove(ctx.channel().id().asLongText());
+        storedChannel.removeChannelById(ctx.channel().id().asLongText());
     }
 }

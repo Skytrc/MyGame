@@ -2,6 +2,7 @@ package com.fung.server.init;
 
 import com.fung.protobuf.InstructionPack;
 import com.fung.protobuf.InstructionProto;
+import com.fung.server.channelstore.StoredChannel;
 import com.fung.server.content.controller.Controller;
 import com.fung.server.content.domain.player.OnlinePlayer;
 import io.netty.bootstrap.ServerBootstrap;
@@ -32,10 +33,13 @@ public class GameServer {
 
     private OnlinePlayer onlinePlayer;
 
-    public GameServer(Controller controller, InstructionPack instructionPack, OnlinePlayer onlinePlayer) {
+    private StoredChannel storedChannel;
+
+    public GameServer(Controller controller, InstructionPack instructionPack, OnlinePlayer onlinePlayer, StoredChannel storedChannel) {
         this.controller = controller;
         this.instructionPack = instructionPack;
         this.onlinePlayer = onlinePlayer;
+        this.storedChannel = storedChannel;
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GameServer.class);
@@ -57,7 +61,7 @@ public class GameServer {
                         ch.pipeline().addLast(new ProtobufDecoder(InstructionProto.Instruction.getDefaultInstance()));
                         ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
                         ch.pipeline().addLast(new ProtobufEncoder());
-                        ch.pipeline().addLast(new GameServerHandler(controller, instructionPack, onlinePlayer));
+                        ch.pipeline().addLast(new GameServerHandler(controller, instructionPack, onlinePlayer, storedChannel));
                     }
                 });
         ChannelFuture f = b.bind(port).sync();
