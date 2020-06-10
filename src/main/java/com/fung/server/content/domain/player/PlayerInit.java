@@ -1,6 +1,5 @@
 package com.fung.server.content.domain.player;
 
-import com.fung.server.content.domain.player.OnlinePlayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
