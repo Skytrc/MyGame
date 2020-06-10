@@ -2,6 +2,7 @@ package com.fung.server.content.dao.impl;
 
 import com.fung.server.content.entity.Player;
 import com.fung.server.content.dao.PlayerDao;
+import com.fung.server.content.entity.PlayerCommConfig;
 import org.hibernate.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
@@ -42,7 +43,7 @@ public class PlayerDaoImpl extends HibernateDaoSupport implements PlayerDao {
             return session.createNativeQuery(
                     "SELECT * " +
                             "FROM player " +
-                            "WHERE player_name= " + playerName + "' AND password='" + password + "'", Player.class).getSingleResult();
+                            "WHERE player_name= '" + playerName + "' AND password='" + password + "'", Player.class).getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
@@ -70,6 +71,26 @@ public class PlayerDaoImpl extends HibernateDaoSupport implements PlayerDao {
     @Override
     public void updatePlayer(Player player) {
         this.getHibernateTemplate().update(player);
+    }
+
+    @Override
+    public PlayerCommConfig getPlayerCommConfigByPlayerId(String playerId) {
+        Session session = this.getSessionFactory().openSession();
+        try {
+            return session.createNativeQuery(
+                    "SELECT * " +
+                            "FROM player_config " +
+                            "WHERE player_id='" + playerId + "';"
+                    , PlayerCommConfig.class)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public void insertPlayerCommConfig(PlayerCommConfig playerCommConfig) {
+        this.getHibernateTemplate().save(playerCommConfig);
     }
 
 }

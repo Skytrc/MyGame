@@ -1,7 +1,7 @@
 package com.fung.server.content.dao.impl;
 
-import com.fung.server.content.dao.EquipmentDao;
-import com.fung.server.content.entity.Equipment;
+import com.fung.server.content.dao.SkillDao;
+import com.fung.server.content.entity.Skill;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +14,11 @@ import java.util.List;
 
 /**
  * @author skytrc@163.com
- * @date 2020/6/1 19:29
+ * @date 2020/6/4 12:58
  */
 @Transactional
 @Component
-public class EquipmentDaoImpl extends HibernateDaoSupport implements EquipmentDao {
+public class SkillDaoImpl extends HibernateDaoSupport implements SkillDao{
 
     @Autowired
     public void setSuperSessionFactory(SessionFactory superSessionFactory) {
@@ -26,27 +26,25 @@ public class EquipmentDaoImpl extends HibernateDaoSupport implements EquipmentDa
     }
 
     @Override
-    public void insertEquipment(Equipment equipment) {
-        this.getHibernateTemplate().save(equipment);
+    public void insertSkill(Skill skill) {
+        this.getHibernateTemplate().save(skill);
     }
 
     @Override
-    public void updateEquipment(Equipment equipment) {
-        this.getHibernateTemplate().update(equipment);
+    public void updateSkill(Skill skill) {
+        this.getHibernateTemplate().update(skill);
     }
 
     @Override
-    public List<Equipment> findEquipmentsByPlayerId(String playerId) {
+    public List<Skill> findSkillsByPlayerId(String playerId) {
         Session session = this.getSessionFactory().openSession();
         try {
             return session.createNativeQuery(
                     "SELECT * " +
-                            "FROM good,equipment " +
-                            "WHERE player_id='" + playerId + "' " +
-                            "AND equipment.uuid=good.uuid " +
-                            "AND position=-1;"
-                    , Equipment.class
-            ).getResultList();
+                            "FROM skill " +
+                            "WHERE player_id='" + playerId + "';"
+                    , Skill.class)
+                    .getResultList();
         } catch (NoResultException e) {
             return null;
         }

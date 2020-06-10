@@ -1,6 +1,7 @@
 package com.fung.server.content.dao;
 
 import com.fung.server.content.entity.Player;
+import com.fung.server.content.entity.PlayerCommConfig;
 
 /**
  * @author skytrc@163.com
@@ -40,14 +41,27 @@ public interface PlayerDao {
 
     /**
      * 通过玩家名字获得玩家实体
-     * @param PlayerName 玩家名字
+     * @param playerName 玩家名字
      * @return 玩家实体
      */
-    Player getPlayerByPlayerName(String PlayerName);
+    Player getPlayerByPlayerName(String playerName);
 
     /**
      * 更新玩家
      * @param player 玩家实体
      */
     void updatePlayer(Player player);
+
+    /**
+     * 获取玩家通常配置信息
+     * @param playerId 玩家Id
+     * @return 玩家通常配置信息
+     */
+    PlayerCommConfig getPlayerCommConfigByPlayerId(String playerId);
+
+    /**
+     * 插入玩家通常配置
+     * @param playerCommConfig 玩家通常配置
+     */
+    void insertPlayerCommConfig(PlayerCommConfig playerCommConfig);
 }

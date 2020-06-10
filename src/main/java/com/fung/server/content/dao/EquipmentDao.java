@@ -21,5 +21,10 @@ public interface EquipmentDao {
      */
     void updateEquipment(Equipment equipment);
 
-    List<Equipment> findEquipmentsByPlayerId(String PlayerId);
+    /**
+     * 获取玩家所有装备信息
+     * @param playerId 玩家id
+     * @return 玩家拥有的所有装备
+     */
+    List<Equipment> findEquipmentsByPlayerId(String playerId);
 }
