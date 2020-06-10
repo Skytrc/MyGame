@@ -18,7 +18,7 @@ public abstract class BaseInstructionHandler {
      * @param ins 指令
      * @return 处理结果
      */
-    public abstract String handler(List<String> ins);
+    public abstract String handler(List<String> ins) throws InterruptedException;
 
     public String getChannelId() {
         return channelId;

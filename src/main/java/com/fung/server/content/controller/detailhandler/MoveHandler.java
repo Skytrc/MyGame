@@ -21,7 +21,7 @@ public class MoveHandler extends BaseInstructionHandler {
     MoveService moveService;
 
     @Override
-    public String handler(List<String> ins) {
+    public String handler(List<String> ins) throws InterruptedException {
         // 检测登录
         if (onlinePlayer.getPlayerMap().get(getChannelId()) == null) {
             return "用户尚未登录";
@@ -42,7 +42,7 @@ public class MoveHandler extends BaseInstructionHandler {
         }
     }
 
-    public String up(List<String> ins) {
+    public String up(List<String> ins) throws InterruptedException {
         try {
             int distance = Integer.parseInt(ins.remove(0));
             return moveService.move(-distance, 0, getChannelId());
@@ -51,7 +51,7 @@ public class MoveHandler extends BaseInstructionHandler {
         }
     }
 
-    public String down(List<String> ins) {
+    public String down(List<String> ins) throws InterruptedException {
         try {
             int distance = Integer.parseInt(ins.remove(0));
             return moveService.move(distance, 0, getChannelId());
@@ -60,7 +60,7 @@ public class MoveHandler extends BaseInstructionHandler {
         }
     }
 
-    public String left(List<String> ins) {
+    public String left(List<String> ins) throws InterruptedException {
         try {
             int distance = Integer.parseInt(ins.remove(0));
             return moveService.move(0, -distance, getChannelId());
@@ -69,7 +69,7 @@ public class MoveHandler extends BaseInstructionHandler {
         }
     }
 
-    public String right(List<String> ins) {
+    public String right(List<String> ins) throws InterruptedException {
         try {
             int distance = Integer.parseInt(ins.remove(0));
             return moveService.move(0, distance, getChannelId());

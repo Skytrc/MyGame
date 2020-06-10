@@ -30,6 +30,10 @@ public class ShowInfoHandler extends BaseInstructionHandler {
             case "player" : return showPlayer();
             case "map" : return showMapElement();
             case "online" : return onlinePlayer();
+            case "backpack" : return showBackpack();
+            case "skill" : return showSkill();
+            case "body" : return showBodyEquipment();
+            case "monster" : return showMonster(ins);
             default: return "展示指令错误";
         }
     }
@@ -57,4 +61,31 @@ public class ShowInfoHandler extends BaseInstructionHandler {
     public String showMapElement() {
         return showService.showMapElement(getChannelId());
     }
+
+    /**
+     * 所有的背包物品
+     * @return 背包物品
+     */
+    public String showBackpack() {
+        return showService.showBackpack(getChannelId());
+    }
+
+    public String showSkill() {
+        return showService.showSkill(getChannelId());
+    }
+
+    public String showBodyEquipment() {
+        return showService.showBodyEquipment(getChannelId());
+    }
+
+    public String showMonster(List<String> ins) {
+        try {
+            int x = Integer.parseInt(ins.remove(0));
+            int y = Integer.parseInt(ins.remove(0));
+            return showService.showMonster(getChannelId(), x, y);
+        } catch (NumberFormatException ignored) {
+            return "格子数必须为数字";
+        }
+    }
+
 }
