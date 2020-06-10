@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ReadMedicine extends AbstractJsonModelListManager<Medicine> {
+
     public ReadMedicine() {
         super("medicine", "good");
     }

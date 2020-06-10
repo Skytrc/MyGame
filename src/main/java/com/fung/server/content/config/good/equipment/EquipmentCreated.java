@@ -11,6 +11,8 @@ public class EquipmentCreated implements Model {
 
     private int id;
 
+    private int goodId;
+
     private String name;
 
     /**
@@ -53,12 +55,12 @@ public class EquipmentCreated implements Model {
     /**
      * 装备最小暴击率
      */
-    private int minCriticalRate;
+    private float minCriticalRate;
 
     /**
      * 装备最大暴击率
      */
-    private int maxCriticalRate;
+    private float maxCriticalRate;
 
     private int minDefense;
 
@@ -139,19 +141,19 @@ public class EquipmentCreated implements Model {
         this.maxMagicPower = maxMagicPower;
     }
 
-    public int getMinCriticalRate() {
+    public float getMinCriticalRate() {
         return minCriticalRate;
     }
 
-    public void setMinCriticalRate(int minCriticalRate) {
+    public void setMinCriticalRate(float minCriticalRate) {
         this.minCriticalRate = minCriticalRate;
     }
 
-    public int getMaxCriticalRate() {
+    public float getMaxCriticalRate() {
         return maxCriticalRate;
     }
 
-    public void setMaxCriticalRate(int maxCriticalRate) {
+    public void setMaxCriticalRate(float maxCriticalRate) {
         this.maxCriticalRate = maxCriticalRate;
     }
 
@@ -209,5 +211,13 @@ public class EquipmentCreated implements Model {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public int getGoodId() {
+        return goodId;
+    }
+
+    public void setGoodId(int goodId) {
+        this.goodId = goodId;
     }
 }

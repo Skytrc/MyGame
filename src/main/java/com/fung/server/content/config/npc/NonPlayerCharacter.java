@@ -32,6 +32,10 @@ public class NonPlayerCharacter extends BaseElement implements Model {
      */
     private Map<Integer, NpcOption> npcOptionMap;
 
+    public NonPlayerCharacter() {
+        this.setFriendly(true);
+    }
+
     public int getLevel() {
         return level;
     }

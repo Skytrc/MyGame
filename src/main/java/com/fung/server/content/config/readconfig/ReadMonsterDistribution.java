@@ -11,6 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReadMonsterDistribution extends AbstractJsonModelListManager<MonsterDistribution> {
     public ReadMonsterDistribution() {
-        super("monster", "monsterDistribution");
+        super("monsterDistribution", "monster");
     }
 }

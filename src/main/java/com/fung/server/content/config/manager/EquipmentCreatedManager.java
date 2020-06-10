@@ -2,11 +2,14 @@ package com.fung.server.content.config.manager;
 
 import com.fung.server.content.config.readconfig.ReadCreated;
 import com.fung.server.content.config.good.equipment.EquipmentCreated;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,8 +29,10 @@ public class EquipmentCreatedManager {
      */
     private Map<Integer, EquipmentCreated> equipmentCreatedMap;
 
-    public void equipmentCreatedInit() {
+    public void equipmentCreatedInit() throws IOException, InvalidFormatException {
+        readCreated.init();
         equipmentCreatedMap = readCreated.getModelMap();
+        LOGGER.info("装备生成模块初始化");
     }
 
     public Map<Integer, EquipmentCreated> getEquipmentCreatedMap() {

@@ -25,6 +25,7 @@ public class GoodManager {
 
     public void goodInit() throws IOException, InvalidFormatException {
         medicineManager.medicineInit();
+        equipmentCreatedManager.equipmentCreatedInit();
     }
 
     @SuppressWarnings({"rawtypes"})
@@ -43,19 +44,19 @@ public class GoodManager {
      * 获取物品模板信息
      */
     public String[] getGoodInfoById(int id) {
+        String[] res = new String[3];
         if (id > GoodNumber.MEDICINE_START.getPosition() && id < GoodNumber.MEDICINE_END.getPosition()) {
             Map<Integer, Medicine> medicineMap = medicineManager.getMedicineMap();
             Medicine medicine = medicineMap.get(id);
-            String[] res = new String[2];
             res[0] = medicine.getName();
             res[1] = medicine.getDescription();
             return res;
-        } else if (id > GoodNumber.EQUIPMENT_START.getPosition() && id < GoodNumber.EQUIPMENT_END.getPosition()) {
+        } else if (id >= GoodNumber.EQUIPMENT_START.getPosition() && id < GoodNumber.EQUIPMENT_END.getPosition()) {
             Map<Integer, EquipmentCreated> createdMap = equipmentCreatedManager.getEquipmentCreatedMap();
             EquipmentCreated equipmentCreated = createdMap.get(id);
-            String[] res = new String[2];
             res[0] = equipmentCreated.getName();
             res[1] = equipmentCreated.getDescription();
+            res[2] = equipmentCreated.getType();
             return res;
         } else {
             return null;

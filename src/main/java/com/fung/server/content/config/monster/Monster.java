@@ -10,8 +10,6 @@ import com.fung.server.excel2class.Model;
  */
 public class Monster extends BaseElement implements Model {
 
-    private int id;
-
     /**
      * 怪物等级
      */
@@ -46,6 +44,10 @@ public class Monster extends BaseElement implements Model {
      * 经验值
      */
     private int exp;
+
+    public Monster() {
+        this.setFriendly(false);
+    }
 
     public int getLevel() {
         return level;
@@ -93,16 +95,6 @@ public class Monster extends BaseElement implements Model {
 
     public void setDefend(int defend) {
         this.defend = defend;
-    }
-
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getExp() {

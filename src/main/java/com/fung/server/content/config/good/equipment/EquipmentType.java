@@ -1,5 +1,10 @@
 package com.fung.server.content.config.good.equipment;
 
+import com.fung.server.content.entity.Equipment;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 武器类型
  * @author skytrc@163.com
@@ -44,6 +49,9 @@ public enum EquipmentType {
      */
     private final String type;
 
+
+    public static int[] ATTACK_TYPE = {1};
+
     EquipmentType(int position, String type) {
 
         this.position = position;
@@ -56,5 +64,28 @@ public enum EquipmentType {
 
     public String getType() {
         return type;
+    }
+
+    public static EquipmentType getEquipmentTypeByPartName(String name) {
+        switch (name) {
+            case "hat": return HAT;
+            case "weapon": return WEAPON;
+            case "coat": return COAT;
+            case "pants": return PANTS;
+            case "shoe": return SHOE;
+            default: return null;
+        }
+    }
+
+    public static boolean isDefenseType(Equipment equipment) {
+        EquipmentType type = equipment.getType();
+        switch (type) {
+            case HAT :
+            case COAT :
+            case SHOE :
+            case PANTS :
+                return true;
+            default: return false;
+        }
     }
 }

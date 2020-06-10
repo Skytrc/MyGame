@@ -1,18 +1,15 @@
 package com.fung.server.content.config.skill;
 
+import com.fung.server.content.entity.Skill;
 import com.fung.server.excel2class.Model;
 
 /**
  * @author skytrc@163.com
  * @date 2020/6/3 11:17
  */
-public class DamageSkill implements Model {
-
-    private int id;
+public class DamageSkill extends Skill implements Model {
 
     private String name;
-
-    private int level;
 
     /**
      * 基础物理攻击
@@ -34,29 +31,12 @@ public class DamageSkill implements Model {
      */
     private String description;
 
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
     }
 
     public int getPhysicalDamage() {

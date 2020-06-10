@@ -49,6 +49,10 @@ public class GameMap extends BaseElement implements Model {
      */
     private Map<Integer, BaseElement> elements;
 
+    public GameMap() {
+        this.setFriendly(true);
+    }
+
     /**
      * @param x x轴坐标
      * @param y y轴坐标
@@ -172,6 +176,19 @@ public class GameMap extends BaseElement implements Model {
         return elements.get(xy2Location(x, y)).getName() != null;
     }
 
+    /**
+     * 从地图中获取元素 x, y
+     */
+    public BaseElement getElementByXy(int x, int y) {
+        return elements.get(xy2Location(x, y));
+    }
+
+    /**
+     * 从地图中获取元素 position
+     */
+    public BaseElement getElementByLocation(int position) {
+        return elements.get(position);
+    }
 
     /**
      * 角色地图移动
@@ -199,6 +216,13 @@ public class GameMap extends BaseElement implements Model {
      */
     public void removePlayer(String playerUuid) {
         mapPlayers.remove(playerUuid);
+    }
+
+    /**
+     * 获取怪兽实体 x y
+     */
+    public Monster getMonsterByXy(int x, int y) {
+        return monsterMap.get(xy2Location(x, y));
     }
 
     public Monster getMonsterByPosition(int position) {

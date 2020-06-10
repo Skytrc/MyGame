@@ -1,14 +1,13 @@
 package com.fung.server.content.config.good;
 
+import com.fung.server.content.entity.Good;
 import com.fung.server.excel2class.Model;
 
 /**
  * @author skytrc@163.com
  * @date 2020/6/1 10:30
  */
-public class Medicine implements Model {
-
-    private int id;
+public class Medicine extends Good implements Model{
 
     private String name;
 
@@ -27,15 +26,6 @@ public class Medicine implements Model {
     private int time;
 
     private String description;
-
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -83,5 +73,10 @@ public class Medicine implements Model {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public int getId() {
+        return getGoodId();
     }
 }

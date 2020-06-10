@@ -44,6 +44,7 @@ public class MapManager {
             item.setElements(new HashMap<>());
             item.setGates(new HashMap<>());
             item.setMapPlayers(new HashMap<>());
+            item.setMonsterMap(new HashMap<>());
         });
 
         // 增加传送门
