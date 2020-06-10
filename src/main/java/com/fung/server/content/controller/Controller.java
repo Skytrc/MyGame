@@ -1,11 +1,9 @@
 package com.fung.server.content.controller;
 
 import com.fung.protobuf.InstructionPack;
+import com.fung.server.channelstore.StoredChannel;
+import com.fung.server.content.controller.detailhandler.*;
 import com.fung.server.init.GameServer;
-import com.fung.server.content.controller.detailhandler.BaseInstructionHandler;
-import com.fung.server.content.controller.detailhandler.AccountHandler;
-import com.fung.server.content.controller.detailhandler.MoveHandler;
-import com.fung.server.content.controller.detailhandler.ShowInfoHandler;
 import com.fung.server.content.domain.player.OnlinePlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +33,13 @@ public class Controller {
     private ShowInfoHandler showInfoHandler;
 
     @Autowired
+    private AttackHandler attackHandler;
+
+    @Autowired
     private InstructionPack instructionPack;
+
+    @Autowired
+    private BackpackHandler backpackHandler;
 
     @Autowired
     private Controller controller;
@@ -43,14 +47,19 @@ public class Controller {
     @Autowired
     private OnlinePlayer onlinePlayer;
 
+    @Autowired
+    private StoredChannel storedChannel;
+
     public void init() {
         map = new HashMap<>();
         map.put("move", moveHandler);
         map.put("account", accountHandler);
         map.put("show", showInfoHandler);
+        map.put("backpack", backpackHandler);
+        map.put("attack", attackHandler);
     }
 
-    public String handleMessage(String msg, String channelId) {
+    public String handleMessage(String msg, String channelId) throws InterruptedException {
         List<String> messages = new LinkedList<>();
         msg = msg.replaceAll("\"|instruction:|\\n", "").trim();
         // 将string类型指令转换为list<String> 方便处理
@@ -66,7 +75,7 @@ public class Controller {
     }
 
     public void severStart(int port) throws InterruptedException {
-        GameServer gameServer = new GameServer(controller, instructionPack, onlinePlayer);
+        GameServer gameServer = new GameServer(controller, instructionPack, onlinePlayer, storedChannel);
         gameServer.start(port);
     }
 
