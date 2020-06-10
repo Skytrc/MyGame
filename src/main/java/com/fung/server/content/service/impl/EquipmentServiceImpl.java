@@ -6,7 +6,7 @@ import com.fung.server.content.config.good.equipment.EquipmentType;
 import com.fung.server.content.entity.Equipment;
 import com.fung.server.content.config.manager.EquipmentCreatedManager;
 import com.fung.server.content.service.EquipmentService;
-import com.fung.server.content.domain.player.PlayeInfo;
+import com.fung.server.content.domain.player.PlayerInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,25 +23,23 @@ public class EquipmentServiceImpl implements EquipmentService {
     EquipmentCreatedManager equipmentCreatedManager;
 
     @Autowired
-    PlayeInfo playeInfo;
+    PlayerInfo playerInfo;
 
     @Autowired
     EquipmentDao equipmentDao;
-
-    @Autowired
 
     @Override
     public void createNewEquipment(String channelId, int equipmentId) {
         EquipmentCreated created = equipmentCreatedManager.getEquipmentCreatedMap().get(equipmentId);
         Equipment equipment = new Equipment();
         // 装备基础信息
-        equipment.setPlayerId(playeInfo.getCurrentPlayer(channelId).getUuid());
+        equipment.setPlayerId(playerInfo.getCurrentPlayer(channelId).getUuid());
         equipment.setGoodId(equipmentId);
         equipment.setGetTime(System.currentTimeMillis());
         equipment.setType(getType(created.getType()));
         equipment.setQuantity(1);
         equipment.setName(created.getName());
-        equipment.setRank(0);
+        equipment.setLevel(0);
         equipment.setMaxDurable(created.getDurable());
         equipment.setDurable(created.getDurable());
         equipment.setMinLevel(created.getMinLevel());
@@ -51,9 +49,9 @@ public class EquipmentServiceImpl implements EquipmentService {
         equipment.setPlusMp(judgeMin(created.getMinMp(), created.getMaxMp()));
         equipment.setAttackPower(judgeMin(created.getMinPower(), created.getMaxPower()));
         equipment.setMagicPower(judgeMin(created.getMinMagicPower(), created.getMaxMagicPower()));
-        equipment.setCriticalRate(judgeMin(created.getMinCriticalRate(), created.getMaxCriticalRate()));
+        equipment.setCriticalRate(created.getMinCriticalRate());
         equipment.setDefense(judgeMin(created.getMinDefense(), created.getMaxDefense()));
-        equipmentDao.updateEquipment(equipment);
+        equipmentDao.insertEquipment(equipment);
     }
 
     /**
@@ -61,6 +59,7 @@ public class EquipmentServiceImpl implements EquipmentService {
      * @param maxValue 装备最高数值
      * @return 范围内随机值
      */
+    @Deprecated
     public int judgeMin(int minValue, int maxValue) {
         if (minValue == 0) {
             return 0;
@@ -73,6 +72,7 @@ public class EquipmentServiceImpl implements EquipmentService {
      * @param type 装备类型（String）
      * @return 装备类型（枚举类）
      */
+    @Deprecated
     public EquipmentType getType(String type) {
         switch (type){
             case "hat" : return EquipmentType.HAT;

@@ -26,4 +26,34 @@ public interface ShowService {
      * @return 地图元素
      */
     String showMapElement(String channelId);
+
+    /**
+     * 展示背包元素
+     * @param channelId channel id
+     * @return 背包元素
+     */
+    String showBackpack(String channelId);
+
+    /**
+     * 展示技能
+     * @param channelId  channel id
+     * @return 技能元素
+     */
+    String showSkill(String channelId);
+
+    /**
+     * 穿在身上的装备信息
+     * @param channelId channel Id
+     * @return 穿在身上装备的信息
+     */
+    String showBodyEquipment(String channelId);
+
+    /**
+     * 返回怪物信息
+     * @param channelId channelID
+     * @param x x轴
+     * @param y y轴
+     * @return 怪物信息
+     */
+    String showMonster(String channelId, int x, int y);
 }

@@ -13,7 +13,7 @@ public interface MoveService {
      * @param channelId channelId
      * @return 移动成功返回移动后坐标，
      */
-    String move(int x, int y, String channelId);
+    String move(int x, int y, String channelId) throws InterruptedException;
 
     /**
      * 给定坐标自动移动
