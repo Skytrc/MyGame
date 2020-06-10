@@ -31,7 +31,7 @@ public class GoodValue {
         equipment.setGetTime(System.currentTimeMillis());
         equipment.setQuantity(1);
         equipment.setName(created.getName());
-        equipment.setRank(0);
+        equipment.setLevel(0);
         equipment.setMaxDurable(created.getDurable());
         equipment.setDurable(created.getDurable());
         equipment.setMinLevel(created.getMinLevel());
@@ -41,7 +41,7 @@ public class GoodValue {
         equipment.setPlusMp(judgeMin(created.getMinMp(), created.getMaxMp()));
         equipment.setAttackPower(judgeMin(created.getMinPower(), created.getMaxPower()));
         equipment.setMagicPower(judgeMin(created.getMinMagicPower(), created.getMaxMagicPower()));
-        equipment.setCriticalRate(judgeMin(created.getMinCriticalRate(), created.getMaxCriticalRate()));
+        equipment.setCriticalRate(created.getMinCriticalRate());
         equipment.setDefense(judgeMin(created.getMinDefense(), created.getMaxDefense()));
 
         return equipment;
@@ -58,5 +58,4 @@ public class GoodValue {
         }
         return ThreadLocalRandom.current().nextInt(minValue, maxValue);
     }
-
 }
