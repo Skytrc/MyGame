@@ -1,6 +1,5 @@
 package com.fung.client;
 
-import com.fung.protobuf.InstructionPack;
 import com.fung.protobuf.InstructionProto;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

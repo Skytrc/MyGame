@@ -40,7 +40,7 @@ public class GUIClient extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String instruction = jTextField.getText();
-                jTextArea.append("发送指令: " + instruction);
+                jTextArea.append("\n发送指令: " + instruction);
                 jTextArea.append("\n");
                 // 滚动条自动滚动，滚动到倒数第二行
                 jTextArea.setSelectionStart(jTextArea.getText().length());
