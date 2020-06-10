@@ -9,14 +9,14 @@ import javax.persistence.*;
  * @date 2020/6/1 15:05
  */
 @Entity
+@PrimaryKeyJoinColumn()
 @Table(name = "equipment")
-@PrimaryKeyJoinColumn(name = "uuid")
-public class Equipment extends OriGood {
+public class Equipment extends Good {
 
     /**
      * 强化等级
      */
-    private int rank;
+    private int level;
 
     /**
      * 装备名称
@@ -70,7 +70,7 @@ public class Equipment extends OriGood {
     /**
      * 装备增加暴击率
      */
-    private int criticalRate;
+    private float criticalRate;
 
     /**
      * 装备增加防御力
@@ -88,12 +88,12 @@ public class Equipment extends OriGood {
      */
     private String entriesNum;
 
-    public int getRank() {
-        return rank;
+    public int getLevel() {
+        return level;
     }
 
-    public void setRank(int rank) {
-        this.rank = rank;
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public String getName() {
@@ -152,11 +152,11 @@ public class Equipment extends OriGood {
         this.magicPower = magicPower;
     }
 
-    public int getCriticalRate() {
+    public float getCriticalRate() {
         return criticalRate;
     }
 
-    public void setCriticalRate(int criticalRate) {
+    public void setCriticalRate(float criticalRate) {
         this.criticalRate = criticalRate;
     }
 

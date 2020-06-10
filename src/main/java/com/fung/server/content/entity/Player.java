@@ -4,6 +4,7 @@ import com.fung.server.content.domain.backpack.PersonalBackpack;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * 玩家
@@ -11,6 +12,7 @@ import javax.persistence.*;
  * @date 2020/4/30 11:45
  */
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "player")
 public class Player{
 
@@ -37,7 +39,7 @@ public class Player{
     /**
      * 角色状态 0死亡  1存货
      */
-    private byte status;
+    private int status;
 
     /**
      * 等级
@@ -49,6 +51,12 @@ public class Player{
      */
     @Column(name = "max_heath_point")
     private int maxHealthPoint;
+
+    /**
+     * 计算所有加成后的血量
+     */
+    @Transient
+    private int totalHealthPoint;
 
     /**
      * 当前血量
@@ -63,6 +71,12 @@ public class Player{
     private int maxMagicPoint;
 
     /**
+     * 计算所有加成后的魔法值
+     */
+    @Transient
+    private int totalMagicPoint;
+
+    /**
      * 当前魔法值
      */
     @Column(name = "magic_point")
@@ -75,10 +89,22 @@ public class Player{
     private int attackPower;
 
     /**
+     * 计算所有加成后的攻击力
+     */
+    @Transient
+    private int totalAttackPower;
+
+    /**
      * 魔法力
      */
     @Column(name = "magic_power")
     private int magicPower;
+
+    /**
+     * 计算所有加成后的魔法力
+     */
+    @Transient
+    private int totalMagicPower;
 
     /**
      * 暴击率
@@ -87,10 +113,34 @@ public class Player{
     private float criticalRate;
 
     /**
+     * 计算所有加成后的暴击率
+     */
+    @Transient
+    private float totalCriticalRate;
+
+    /**
      * 防御力
      */
     @Column(name = "defense")
     private int defense;
+
+    /**
+     * 计算所有加成后的防御力
+     */
+    @Transient
+    private int totalDefense;
+
+    /**
+     * 攻击距离 默认为1
+     */
+    @Transient
+    private int attackDistance = 1;
+
+    /**
+     * 移动速度，默认一秒一格
+     */
+    @Transient
+    private int moveSpeed = 1;
 
     /**
      * 人物经验
@@ -101,13 +151,13 @@ public class Player{
      * 人物装备，需要在Service层处理
      */
     @Transient
-    private Equipment[] equipments;
+    private List<Equipment> equipments;
 
     /**
      * 人物技能，需要在Service层处理
      */
     @Transient
-    private Skill[] skills;
+    private List<Skill> skills;
 
     /**
      * 背包挂钩，需要在Service层处理
@@ -145,6 +195,10 @@ public class Player{
     @Column(name = "login_date")
     private long loginDate;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    private PlayerCommConfig playerCommConfig;
+
     public String getUuid() {
         return uuid;
     }
@@ -173,7 +227,7 @@ public class Player{
         return status;
     }
 
-    public void setStatus(byte status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -297,19 +351,19 @@ public class Player{
         this.magicPower = magicPower;
     }
 
-    public Equipment[] getEquipments() {
+    public List<Equipment> getEquipments() {
         return equipments;
     }
 
-    public void setEquipments(Equipment[] equipments) {
+    public void setEquipments(List<Equipment> equipments) {
         this.equipments = equipments;
     }
 
-    public Skill[] getSkills() {
+    public List<Skill> getSkills() {
         return skills;
     }
 
-    public void setSkills(Skill[] skills) {
+    public void setSkills(List<Skill> skills) {
         this.skills = skills;
     }
 
@@ -319,5 +373,77 @@ public class Player{
 
     public void setPersonalBackpack(PersonalBackpack personalBackpack) {
         this.personalBackpack = personalBackpack;
+    }
+
+    public int getTotalHealthPoint() {
+        return totalHealthPoint;
+    }
+
+    public void setTotalHealthPoint(int totalHealthPoint) {
+        this.totalHealthPoint = totalHealthPoint;
+    }
+
+    public int getTotalMagicPoint() {
+        return totalMagicPoint;
+    }
+
+    public void setTotalMagicPoint(int totalMagicPoint) {
+        this.totalMagicPoint = totalMagicPoint;
+    }
+
+    public int getTotalAttackPower() {
+        return totalAttackPower;
+    }
+
+    public void setTotalAttackPower(int totalAttackPower) {
+        this.totalAttackPower = totalAttackPower;
+    }
+
+    public int getTotalMagicPower() {
+        return totalMagicPower;
+    }
+
+    public void setTotalMagicPower(int totalMagicPower) {
+        this.totalMagicPower = totalMagicPower;
+    }
+
+    public float getTotalCriticalRate() {
+        return totalCriticalRate;
+    }
+
+    public void setTotalCriticalRate(float totalCriticalRate) {
+        this.totalCriticalRate = totalCriticalRate;
+    }
+
+    public int getTotalDefense() {
+        return totalDefense;
+    }
+
+    public void setTotalDefense(int totalDefense) {
+        this.totalDefense = totalDefense;
+    }
+
+    public PlayerCommConfig getPlayerCommConfig() {
+        return playerCommConfig;
+    }
+
+    public void setPlayerCommConfig(PlayerCommConfig playerCommConfig) {
+        this.playerCommConfig = playerCommConfig;
+    }
+
+    public int getAttackDistance() {
+        return attackDistance;
+    }
+
+    public void setAttackDistance(int attackDistance) {
+        this.attackDistance = attackDistance;
+    }
+
+    public int getMoveSpeed() {
+        return moveSpeed;
+    }
+
+    public void setMoveSpeed(int moveSpeed) {
+        this.moveSpeed = moveSpeed;
     }
 }

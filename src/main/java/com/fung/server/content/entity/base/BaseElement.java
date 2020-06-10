@@ -17,6 +17,11 @@ public abstract class BaseElement {
      */
     private String name;
 
+    /**
+     * 是否友善生物
+     */
+    private boolean friendly;
+
     public String getName() {
         return name;
     }
@@ -31,5 +36,13 @@ public abstract class BaseElement {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean getFriendly() {
+        return friendly;
+    }
+
+    public void setFriendly(boolean friendly) {
+        this.friendly = friendly;
     }
 }

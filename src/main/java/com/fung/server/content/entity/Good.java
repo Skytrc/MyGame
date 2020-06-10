@@ -12,13 +12,11 @@ import javax.persistence.*;
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 @Table(name = "good")
-public class OriGood{
+public class Good {
     /**
      * 物品独有Id
      */
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
     private String uuid;
 
     /**
@@ -48,6 +46,9 @@ public class OriGood{
      */
     @Column(name = "get_time")
     private long getTime;
+
+    @Transient
+    private boolean hasEquipmentValue;
 
     public String getUuid() {
         return uuid;
@@ -95,5 +96,13 @@ public class OriGood{
 
     public void setPosition(int position) {
         this.position = position;
+    }
+
+    public boolean isHasEquipmentValue() {
+        return hasEquipmentValue;
+    }
+
+    public void setHasEquipmentValue(boolean hasEquipmentValue) {
+        this.hasEquipmentValue = hasEquipmentValue;
     }
 }
