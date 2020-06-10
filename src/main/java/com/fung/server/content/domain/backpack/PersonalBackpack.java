@@ -1,9 +1,11 @@
 package com.fung.server.content.domain.backpack;
 
 import com.fung.server.content.config.manager.GoodManager;
-import com.fung.server.content.entity.OriGood;
+import com.fung.server.content.entity.Equipment;
+import com.fung.server.content.entity.Good;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -12,10 +14,18 @@ import java.util.Map;
  * 在使用前先给playerId、maxBackpackGrid赋值
  * @author skytrc@163.com
  * @date 2020/6/2 10:47
- * TODO 需要配置到玩家身上
  */
 public class PersonalBackpack {
-    private Map<Integer, OriGood> backpack;
+
+    /**
+     * 背包 key position   value good
+     */
+    private Map<Integer, Good> backpack;
+
+    /**
+     * 存储装备详细信息， key position  value 装备信息
+     */
+    private Map<Integer, Equipment> equipmentMap;
 
     /**
      * 背包最大格子数
@@ -27,13 +37,18 @@ public class PersonalBackpack {
     @Autowired
     GoodManager goodManager;
 
+    public PersonalBackpack() {
+        backpack = new HashMap<>();
+        equipmentMap = new HashMap<>();
+    }
+
     /**
      * 获取背包所有的物品
      * 一个小的想法。这里遍历完的数据是否可以放入缓存中，
      * 在没有改变背包的前提下，可以重新使用？
      */
-    public List<OriGood> getAllGood() {
-        List<OriGood> list = new LinkedList<>();
+    public List<Good> getAllGood() {
+        List<Good> list = new LinkedList<>();
         for (int i = 0; i < maxBackpackGrid; i++) {
             if (!backpack.containsKey(i)) {
                 continue;
@@ -46,7 +61,7 @@ public class PersonalBackpack {
     /**
      * 获取某一个的物品信息，没有则返回空
      */
-    public OriGood getGoodByPosition(int position) {
+    public Good getGoodByPosition(int position) {
         if (!backpack.containsKey(position)){
             return null;
         }
@@ -57,20 +72,20 @@ public class PersonalBackpack {
      * 插入物品，判断背包中的物品是否有& if 背包中存在该物品，是否存在最大堆叠数
      * 插入不了返回null，注意处理空值
      */
-    public OriGood addGood(int id, int num) {
-        OriGood oriGood;
+    public Good addGood(int id, int num) {
+        Good good;
         // 直接判断数量是否大于最大堆叠数
         if (goodManager.getGoodMaxStack(id) <= num) {
             return null;
         }
         // 判断是否存在物品
-        for (OriGood value : backpack.values()) {
+        for (Good value : backpack.values()) {
             if (value.getGoodId() == id) {
                 int newNum = num + value.getQuantity();
                 if (newNum < goodManager.getGoodMaxStack(id)) {
                     value.setQuantity(newNum);
-                    oriGood = value;
-                    return oriGood;
+                    good = value;
+                    return good;
                 }
                 return null;
             }
@@ -79,16 +94,16 @@ public class PersonalBackpack {
         // 物品不存在背包
         for (int i = 0; i < maxBackpackGrid; i++) {
             if (!backpack.containsKey(i)) {
-                OriGood oriGood1 = new OriGood();
-                oriGood1.setGoodId(id);
-                oriGood1.setQuantity(num);
-                oriGood1.setGetTime(System.currentTimeMillis());
-                oriGood1.setPlayerId(playerId);
-                oriGood1.setPosition(i);
-                oriGood = oriGood1;
+                Good good1 = new Good();
+                good1.setGoodId(id);
+                good1.setQuantity(num);
+                good1.setGetTime(System.currentTimeMillis());
+                good1.setPlayerId(playerId);
+                good1.setPosition(i);
+                good = good1;
                 // 放入背包
-                backpack.put(i, oriGood1);
-                return oriGood;
+                backpack.put(i, good1);
+                return good;
             }
         }
         return null;
@@ -98,12 +113,12 @@ public class PersonalBackpack {
      *  直接把物品（如装备）加入背包
      *  背包满返回空值
      */
-    public OriGood addGood(OriGood oriGood) {
+    public Good addGood(Good good) {
         for (int i = 0; i < maxBackpackGrid; i++) {
             if (!backpack.containsKey(i)) {
-                oriGood.setPosition(i);
-                backpack.put(i, oriGood);
-                return oriGood;
+                good.setPosition(i);
+                backpack.put(i, good);
+                return good;
             }
         }
         return null;
@@ -114,28 +129,66 @@ public class PersonalBackpack {
      * 没有操作返回null
      * TODO Service层需要对num验证不能小于1
      */
-    public OriGood useGood(int position, int num ) {
+    public Good useGood(int position, int num) {
         if (backpack.containsKey(position)) {
             return null;
         }
-        OriGood oriGood = backpack.get(position);
-        int newNum = oriGood.getQuantity() - num;
+        Good good = backpack.get(position);
+        int newNum = good.getQuantity() - num;
         if (newNum < 0) {
             return null;
         } else if(newNum == 0) {
             return backpack.remove(position);
         }
-        oriGood.setQuantity(newNum);
+        good.setQuantity(newNum);
         // 重新把物品刷回背包
-        backpack.put(oriGood.getPosition(), oriGood);
-        return oriGood;
+        backpack.put(good.getPosition(), good);
+        return good;
     }
 
-    public void setBackpack(Map<Integer, OriGood> backpack) {
+    /**
+     * 添加装备，背包添加装备，在equipmentMap中添加
+     */
+    public Equipment addEquipment(Equipment equipment) {
+        Good good = addGood(equipment);
+        if (good == null) {
+            return null;
+        }
+        equipment.setPosition(good.getPosition());
+        equipmentMap.put(equipment.getPosition(), equipment);
+        return equipment;
+    }
+
+    /**
+     * 移除装备（一般将装备放到玩家身上）
+     */
+    public Equipment removeEquipment(int position) {
+        backpack.remove(position);
+        return equipmentMap.remove(position);
+    }
+
+    /**
+     * 获取装备信息，如果没有则返回空
+     */
+    public Equipment getEquipment(int position) {
+        if (isEquipment(position)) {
+            return equipmentMap.get(position);
+        }
+        return null;
+    }
+
+    /**
+     * 判断物品是否为装备
+     */
+    public boolean isEquipment(int position) {
+        return equipmentMap.containsKey(position);
+    }
+
+    public void setBackpack(Map<Integer, Good> backpack) {
         this.backpack = backpack;
     }
 
-    public Map<Integer, OriGood> getBackpack() {
+    public Map<Integer, Good> getBackpack() {
         return backpack;
     }
 
@@ -153,5 +206,13 @@ public class PersonalBackpack {
 
     public void setPlayerId(String playerId) {
         this.playerId = playerId;
+    }
+
+    public void setEquipmentMap(Map<Integer, Equipment> equipments) {
+        this.equipmentMap = equipments;
+    }
+
+    public Map<Integer, Equipment> getEquipmentMap() {
+        return equipmentMap;
     }
 }
