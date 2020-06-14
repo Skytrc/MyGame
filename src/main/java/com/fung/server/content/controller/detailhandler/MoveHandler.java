@@ -35,6 +35,8 @@ public class MoveHandler extends BaseInstructionHandler {
                 return left(ins);
             case "r":
                 return right(ins);
+            case "grid":
+                return grid(ins);
             case "map":
                 return map();
             default:
@@ -73,6 +75,17 @@ public class MoveHandler extends BaseInstructionHandler {
         try {
             int distance = Integer.parseInt(ins.remove(0));
             return moveService.move(0, distance, getChannelId());
+        } catch (NumberFormatException ignored) {
+            return "移动步数必须为数字";
+        }
+    }
+
+    public String grid(List<String> ins) throws InterruptedException {
+        try {
+            int[] xy = new int[2];
+            xy[0] = Integer.parseInt(ins.remove(0));
+            xy[1] = Integer.parseInt(ins.remove(0));
+            return moveService.move(xy, getChannelId());
         } catch (NumberFormatException ignored) {
             return "移动步数必须为数字";
         }

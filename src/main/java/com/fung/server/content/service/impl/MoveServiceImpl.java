@@ -48,8 +48,16 @@ public class MoveServiceImpl implements MoveService {
     }
 
     @Override
-    public void move(int[] xy, String channelId) {
-
+    public String move(int[] xy, String channelId) throws InterruptedException {
+        Player player = playerInfo.getCurrentPlayer(channelId);
+        GameMap gameMap = playerInfo.getCurrentPlayerMap(channelId);
+        int newX = player.getInMapX() + xy[0];
+        int newY = player.getInMapY() + xy[1];
+        if (newX < 1 || newX > gameMap.getX() || newY < 1 || newY > gameMap.getY()) {
+            return "移动超出地图限制";
+        }
+        moveCalculate.moveGrid(player, channelId, xy[0], xy[1]);
+        return "移动完成";
     }
 
     @Override

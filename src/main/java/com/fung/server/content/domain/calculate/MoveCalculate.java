@@ -3,7 +3,6 @@ package com.fung.server.content.domain.calculate;
 import com.fung.server.channelstore.AsynWriteMessage2Client;
 import com.fung.server.channelstore.StoredChannel;
 import com.fung.server.content.entity.Player;
-import io.netty.channel.Channel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -61,10 +60,25 @@ public class MoveCalculate {
         } else {
             player.setInMapY(oldAxis + y);
         }
-        writeMessage2Client.writeMessage(channelId, "\n最后玩家移动到坐标: [" + player.getInMapX() + " , " + player.getInMapY() + "] ");
+        writeMessage2Client.writeMessage(channelId, "\n玩家移动到坐标: [" + player.getInMapX() + " , " + player.getInMapY() + "] ");
     }
 
-    public void moveGrid(Player player, int x, int y) {
+    public void moveGrid(Player player, String channelId,int x1, int y1) throws InterruptedException {
 
+        int x0 = player.getInMapX();
+        int y0 = player.getInMapY();
+
+        float dx = x1 - x0;
+        float dy = y1 - y0;
+        float k = dy / dx;
+        float y = 0;
+        for (int x = x0; x <= x1; x++) {
+            Thread.sleep(1000);
+            // 四舍五入
+            player.setInMapX(x);
+            player.setInMapY((int) (y + 0.5));
+            y = y + k;
+            writeMessage2Client.writeMessage(channelId, "\n玩家移动到坐标: [" + player.getInMapX() + " , " + player.getInMapY() + "] ");
+        }
     }
 }

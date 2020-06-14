@@ -11,7 +11,7 @@ public interface MoveService {
      * @param x X轴距离
      * @param y Y轴距离
      * @param channelId channelId
-     * @return 移动成功返回移动后坐标，
+     * @return 是否成功
      */
     String move(int x, int y, String channelId) throws InterruptedException;
 
@@ -19,8 +19,9 @@ public interface MoveService {
      * 给定坐标自动移动
      * @param xy 坐标数组
      * @param channelId channelId
+     * @return 是否成功
      */
-    void move(int[] xy, String channelId);
+    String move(int[] xy, String channelId) throws InterruptedException;
 
     /**
      * 地图传送
