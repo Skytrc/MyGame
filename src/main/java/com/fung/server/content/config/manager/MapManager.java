@@ -43,7 +43,7 @@ public class MapManager {
         gameMapCollection.forEach((id,item) -> {
             item.setElements(new HashMap<>());
             item.setGates(new HashMap<>());
-            item.setMapPlayers(new HashMap<>());
+            item.setPlayerInPosition(new HashMap<>());
             item.setMonsterMap(new HashMap<>());
         });
 
@@ -74,7 +74,6 @@ public class MapManager {
         gameMap.setY(y);
         gameMap.setElements(new HashMap<>(x * y));
         gameMap.setGates(new HashMap<>());
-        gameMap.setMapPlayers(new HashMap<>());
     }
 
     public GameMap getMapByMapId(int i) {

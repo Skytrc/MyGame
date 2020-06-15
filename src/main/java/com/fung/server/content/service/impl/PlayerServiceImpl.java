@@ -113,7 +113,7 @@ public class PlayerServiceImpl implements PlayerService {
         if (onlinePlayer.getPlayerMap().containsKey(channelId)) {
             Player player = onlinePlayer.getPlayerMap().remove(channelId);
             // 地图 在线Map 移除该玩家
-            playerInfo.getCurrentPlayerMap(channelId).removePlayer(player.getUuid());
+            playerInfo.getCurrentPlayerMap(channelId).removePlayer(player);
             return "登出成功";
         }
         return "没有角色登录";

@@ -2,6 +2,8 @@ package com.fung.server.content.domain.calculate;
 
 import com.fung.server.channelstore.AsynWriteMessage2Client;
 import com.fung.server.channelstore.StoredChannel;
+import com.fung.server.content.config.map.GameMap;
+import com.fung.server.content.domain.player.PlayerInfo;
 import com.fung.server.content.entity.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,10 +16,10 @@ import org.springframework.stereotype.Component;
 public class MoveCalculate {
 
     @Autowired
-    StoredChannel storedChannel;
+    AsynWriteMessage2Client writeMessage2Client;
 
     @Autowired
-    AsynWriteMessage2Client writeMessage2Client;
+    PlayerInfo playerInfo;
 
     /**
      * 第一种情况，移动固定距离
@@ -67,18 +69,24 @@ public class MoveCalculate {
 
         int x0 = player.getInMapX();
         int y0 = player.getInMapY();
+        float length = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0));
 
-        float dx = x1 - x0;
-        float dy = y1 - y0;
-        float k = dy / dx;
-        float y = 0;
-        for (int x = x0; x <= x1; x++) {
-            Thread.sleep(1000);
-            // 四舍五入
-            player.setInMapX(x);
+        float dx = (x1 - x0) / length;
+        float dy = (y1 - y0) / length;
+        float x = x0;
+        float y = y0;
+        for (int i = 0; i <= length; i++) {
+            int oldX = player.getInMapX();
+            int oldY = player.getInMapY();
+            player.setInMapX((int) (x + 0.5));
             player.setInMapY((int) (y + 0.5));
-            y = y + k;
+            // 设置玩家在地图上的位置
+            GameMap currentPlayerMap = playerInfo.getCurrentPlayerMap(player);
+            currentPlayerMap.playerMove(player, oldX, oldY);
+            Thread.sleep(1000);
             writeMessage2Client.writeMessage(channelId, "\n玩家移动到坐标: [" + player.getInMapX() + " , " + player.getInMapY() + "] ");
+            x = x + dx;
+            y = y + dy;
         }
     }
 }

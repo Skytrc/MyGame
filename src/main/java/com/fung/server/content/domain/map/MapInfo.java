@@ -5,6 +5,7 @@ import com.fung.server.content.config.map.GameMap;
 import com.fung.server.content.entity.Player;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,9 +38,14 @@ public class MapInfo {
      * @return 该地图上在线的游戏玩家
      */
     public String showMapOnlinePlayer(GameMap gameMap) {
-        StringBuilder res = new StringBuilder("地图: " + gameMap.getName() + " 有玩家" );
-        for (Map.Entry<String, Player> entry: gameMap.getMapPlayers().entrySet()) {
-            res.append(entry.getValue().getUuid()).append(" 、");
+        StringBuilder res = new StringBuilder("地图: " + gameMap.getName() + " 有玩家: " );
+//        for (Map.Entry<String, Player> entry: gameMap.getMapPlayers().entrySet()) {
+//            res.append(entry.getValue().getUuid()).append(" 、");
+//        }
+        for (Map.Entry<Integer, List<Player>> entry : gameMap.getPlayerInPosition().entrySet()) {
+            entry.getValue().forEach(value -> {
+                res.append(value.getPlayerName()).append("、 ");
+            });
         }
         return res.toString();
     }

@@ -1,10 +1,12 @@
 package com.fung.server.content.config.map;
 
-import com.fung.server.content.config.monster.Monster;
+import com.fung.server.content.config.monster.NormalMonster;
 import com.fung.server.content.entity.Player;
 import com.fung.server.content.entity.base.BaseElement;
 import com.fung.server.excel2class.Model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -35,14 +37,15 @@ public class GameMap extends BaseElement implements Model {
     private Map<Integer, Integer> gates;
 
     /**
-     * 地图中在线上的玩家,以玩家id作为key，value为玩家
+     * 格子对应玩家
      */
-    private Map<String, Player> mapPlayers;
+    private Map<Integer, List<Player>> playerInPosition;
+
 
     /**
      * key position  value 怪物 地图存储
      */
-    private Map<Integer, Monster> monsterMap;
+    private Map<Integer, NormalMonster> monsterMap;
 
     /**
      * 元素对应的地图坐标（坐标需要计算）key location  value 基础元素
@@ -133,15 +136,6 @@ public class GameMap extends BaseElement implements Model {
         return "[" + x + "," + y + "]" + " 拥有 " + elements.get(xy2Location(x, y));
     }
 
-    @Deprecated
-    public String showPlayer () {
-        StringBuilder res = new StringBuilder("地图: " + getName() + " 有玩家" );
-        for (Map.Entry<String, Player> entry: mapPlayers.entrySet()) {
-            res.append(entry.getValue().getPlayerName()).append(" 、");
-        }
-        return res.toString();
-    }
-
     /**
      * 判断某个坐标中是否含有某个元素
      *
@@ -198,8 +192,13 @@ public class GameMap extends BaseElement implements Model {
      * @param player 需要移动的角色
      */
     public void playerMove(GameMap oldMap, GameMap newMap, Player player) {
-        oldMap.removePlayer(player.getUuid());
+        oldMap.removePlayer(player);
         newMap.addPlayer(player);
+    }
+
+    public void playerMove(Player player, int oldX, int oldY) {
+        playerInPosition.get(xy2Location(oldX, oldY)).remove(player);
+        addPlayer(player);
     }
 
     /**
@@ -207,30 +206,35 @@ public class GameMap extends BaseElement implements Model {
      * @param player 玩家信息
      */
     public void addPlayer(Player player) {
-        mapPlayers.put(player.getUuid(), player);
+        int position = xy2Location(player.getInMapX(), player.getInMapY());
+        if (!playerInPosition.containsKey(position)){
+            playerInPosition.put(position, new ArrayList<>());
+        }
+        playerInPosition.get(position).add(player);
+//        mapPlayers.put(player.getUuid(), player);
     }
 
     /**
      * 地图删除线上玩家信息
-     * @param playerUuid 玩家id
+     * @param player 玩家
      */
-    public void removePlayer(String playerUuid) {
-        mapPlayers.remove(playerUuid);
+    public void removePlayer(Player player) {
+        playerInPosition.get(xy2Location(player.getInMapX(), player.getInMapY())).remove(player);
     }
 
     /**
      * 获取怪兽实体 x y
      */
-    public Monster getMonsterByXy(int x, int y) {
+    public NormalMonster getMonsterByXy(int x, int y) {
         return monsterMap.get(xy2Location(x, y));
     }
 
-    public Monster getMonsterByPosition(int position) {
+    public NormalMonster getMonsterByPosition(int position) {
         return monsterMap.get(position);
     }
 
-    public void putMonsterInMap(int position, Monster monster) {
-        monsterMap.put(position, monster);
+    public void putMonsterInMap(int position, NormalMonster normalMonster) {
+        monsterMap.put(position, normalMonster);
     }
 
     public int getX() {
@@ -257,14 +261,6 @@ public class GameMap extends BaseElement implements Model {
         this.gates = gates;
     }
 
-    public Map<String, Player> getMapPlayers() {
-        return mapPlayers;
-    }
-
-    public void setMapPlayers(Map<String, Player> mapPlayers) {
-        this.mapPlayers = mapPlayers;
-    }
-
     public Map<Integer, BaseElement> getElements() {
         return elements;
     }
@@ -273,11 +269,19 @@ public class GameMap extends BaseElement implements Model {
         this.elements = elements;
     }
 
-    public Map<Integer, Monster> getMonsterMap() {
+    public Map<Integer, NormalMonster> getMonsterMap() {
         return monsterMap;
     }
 
-    public void setMonsterMap(Map<Integer, Monster> monsterMap) {
+    public void setMonsterMap(Map<Integer, NormalMonster> monsterMap) {
         this.monsterMap = monsterMap;
+    }
+
+    public Map<Integer, List<Player>> getPlayerInPosition() {
+        return playerInPosition;
+    }
+
+    public void setPlayerInPosition(Map<Integer, List<Player>> playerInPosition) {
+        this.playerInPosition = playerInPosition;
     }
 }
