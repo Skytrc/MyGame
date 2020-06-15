@@ -112,13 +112,15 @@ public class PlayerInfo {
         equipments.forEach(equipment -> {
             String[] goodInfoById = goodManager.getGoodInfoById(equipment.getGoodId());
             stringBuilder.append("\n装备名称: ").append(goodInfoById[0]).append(" 等级: ").append(equipment.getLevel())
-                    .append(" 装备部位: ").append(goodInfoById[2]).append(" 攻击力: ").append(equipment.getAttackPower())
-                    .append(" 魔法力: ").append(equipment.getMagicPower()).append(" 增加血量: ").append(equipment.getPlusHp())
-                    .append(" 增加魔法值: ").append(equipment.getPlusMp()).append(" 增加防御力: ").append(equipment.getDefense())
-                    .append(" 增加暴击率: ").append(equipment.getCriticalRate()).append(" 最大耐久度: ").append(equipment.getMaxDurable())
-                    .append(" 当前耐久度: ").append(equipment.getDurable()).append(" 使用最小等级: ").append(equipment.getMinLevel())
-                    .append(" 描述: ").append(goodInfoById[1]);
+                    .append(" 装备部位: ").append(" 描述: ").append(goodInfoById[1]);
         });
         return stringBuilder.toString();
     }
+
+    // .append(goodInfoById[2]).append(" 攻击力: ").append(equipment.getAttackPower())
+    //                    .append(" 魔法力: ").append(equipment.getMagicPower()).append(" 增加血量: ").append(equipment.getPlusHp())
+    //                    .append(" 增加魔法值: ").append(equipment.getPlusMp()).append(" 增加防御力: ").append(equipment.getDefense())
+    //                    .append(" 增加暴击率: ").append(equipment.getCriticalRate()).append(" 最大耐久度: ").append(equipment.getMaxDurable())
+    //                    .append(" 当前耐久度: ").append(equipment.getDurable()).append(" 使用最小等级: ").append(equipment.getMinLevel())
+    //
 }
