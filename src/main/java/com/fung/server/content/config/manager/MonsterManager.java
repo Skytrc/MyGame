@@ -1,6 +1,6 @@
 package com.fung.server.content.config.manager;
 
-import com.fung.server.content.config.monster.Monster;
+import com.fung.server.content.config.monster.NormalMonster;
 import com.fung.server.content.config.readconfig.ReadMonster;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.util.Map;
 @Component
 public class MonsterManager {
 
-    private Map<Integer, Monster> monsterMap;
+    private Map<Integer, NormalMonster> monsterMap;
 
     @Autowired
     private ReadMonster readMonster;
@@ -27,15 +27,15 @@ public class MonsterManager {
         monsterMap = readMonster.getModelMap();
     }
 
-    public Monster getMonsterById(int monsterId) {
+    public NormalMonster getMonsterById(int monsterId) {
         return monsterMap.get(monsterId);
     }
 
-    public Map<Integer, Monster> getMonsterMap() {
+    public Map<Integer, NormalMonster> getMonsterMap() {
         return monsterMap;
     }
 
-    public void setMonsterMap(Map<Integer, Monster> monsterMap) {
+    public void setMonsterMap(Map<Integer, NormalMonster> monsterMap) {
         this.monsterMap = monsterMap;
     }
 }

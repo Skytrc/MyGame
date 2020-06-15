@@ -1,5 +1,6 @@
 package com.fung.server.content.domain.calculate;
 
+import com.fung.server.content.config.monster.BaseMonster;
 import com.fung.server.content.entity.Player;
 import org.springframework.stereotype.Component;
 
@@ -36,5 +37,10 @@ public class AttackCalculate {
         int playerIny = player.getInMapY();
         int distance = Math.abs(monsterInx - playerInx) + Math.abs(monsterIny - playerIny);
         return distance <= player.getAttackDistance();
+    }
+
+    public boolean calculateAttackDistance(BaseMonster monster, Player player) {
+        int distance = Math.abs(monster.getInMapX() - player.getInMapX()) + Math.abs(monster.getInMapY() - player.getInMapY());
+        return distance <= monster.getAttackDistance();
     }
 }
