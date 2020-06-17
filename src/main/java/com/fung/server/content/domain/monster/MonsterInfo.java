@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 public class MonsterInfo {
     public String showMonster(NormalMonster normalMonster) {
         return "\n怪兽名称: " + normalMonster.getName() + "  最大生命值: " + normalMonster.getMaxHealthPoint() + "  目前生命值: " + normalMonster.getHealthPoint()
-                + "  攻击力: " + normalMonster.getAttackPower() + "  魔法力: " + normalMonster.getMagicPower() + "  防御力" + normalMonster.getDefend()
-                + "  击杀获得经验值: " +  normalMonster.getExp();
+                + "  攻击力: " + normalMonster.getAttackPower() + "  魔法力: " + normalMonster.getMagicPower() + "  防御力" + normalMonster.getDefend();
     }
 }

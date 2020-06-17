@@ -76,8 +76,7 @@ public class PlayerServiceImpl implements PlayerService {
         PlayerCommConfig playerCommConfig = playerCreated.playerCommConfigCreated(player1);
         playerCache.insertPlayerCommConfig(playerCommConfig);
         player1.setPlayerCommConfig(playerCommConfig);
-        player1 = playerCreated.playerModuleCreated(player1, goodDao, equipmentDao, skillDao);
-
+        playerCreated.playerModuleCreated(player1, goodDao, equipmentDao, skillDao);
 
         return "角色创建完毕";
     }

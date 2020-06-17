@@ -14,5 +14,5 @@ public interface AttackService {
      * @param skillId 技能编号
      * @return 攻击消息
      */
-    String attack(String channelId, int x, int y, int skillId);
+    String attack(String channelId, int x, int y, int skillId) throws InterruptedException;
 }

@@ -199,6 +199,12 @@ public class Player{
     @PrimaryKeyJoinColumn
     private PlayerCommConfig playerCommConfig;
 
+    /**
+     * 是否正在攻击
+     */
+    @Transient
+    private volatile boolean isAttacking;
+
     public String getUuid() {
         return uuid;
     }

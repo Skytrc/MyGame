@@ -60,6 +60,7 @@ public class PlayerCreated {
         PlayerCommConfig playerCommConfig = new PlayerCommConfig();
         playerCommConfig.setUuid(player.getUuid());
         playerCommConfig.setMaxBackpackGrid(50);
+        playerCommConfig.setMoney(1000);
         player.setPlayerCommConfig(playerCommConfig);
         return playerCommConfig;
     }

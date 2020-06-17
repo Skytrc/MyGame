@@ -47,8 +47,17 @@ public class Good {
     @Column(name = "get_time")
     private long getTime;
 
+    /**
+     * 是否有装备属性
+     */
     @Transient
     private boolean hasEquipmentValue;
+
+    /**
+     * 物品价值
+     */
+    @Transient
+    private int value;
 
     public String getUuid() {
         return uuid;
@@ -104,5 +113,13 @@ public class Good {
 
     public void setHasEquipmentValue(boolean hasEquipmentValue) {
         this.hasEquipmentValue = hasEquipmentValue;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 }
