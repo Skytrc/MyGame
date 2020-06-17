@@ -40,6 +40,8 @@ public class PlayerCache {
         return player;
     }
 
+    // TODO 每隔几分钟/下线时，把玩家身上挂载的物品or东西导入数据库
+
     /**
      * 玩家注册，先写入数据库，再重新从数据库中获得数据
      * @param player 玩家实体
