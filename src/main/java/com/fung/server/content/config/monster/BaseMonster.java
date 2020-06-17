@@ -58,11 +58,6 @@ public abstract class BaseMonster extends BaseElement {
     private int inMapY;
 
     /**
-     * 经验值
-     */
-    private int exp;
-
-    /**
      * 怪物攻击距离
      */
     private int attackDistance;
@@ -76,6 +71,11 @@ public abstract class BaseMonster extends BaseElement {
      * 当前攻击目标（玩家）
      */
     private Player currentAttackPlayer;
+
+    /**
+     * 是否正在攻击
+     */
+    private volatile boolean isAttacking;
 
     public int getLevel() {
         return level;
@@ -125,14 +125,6 @@ public abstract class BaseMonster extends BaseElement {
         this.defend = defend;
     }
 
-    public int getExp() {
-        return exp;
-    }
-
-    public void setExp(int exp) {
-        this.exp = exp;
-    }
-
     public int getAttackDistance() {
         return attackDistance;
     }
@@ -179,5 +171,13 @@ public abstract class BaseMonster extends BaseElement {
 
     public void setInMapY(int inMapY) {
         this.inMapY = inMapY;
+    }
+
+    public boolean isAttacking() {
+        return isAttacking;
+    }
+
+    public void setAttacking(boolean attacking) {
+        isAttacking = attacking;
     }
 }

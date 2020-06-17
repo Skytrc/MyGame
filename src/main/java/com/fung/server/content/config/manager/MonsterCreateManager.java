@@ -65,7 +65,6 @@ public class MonsterCreateManager {
         NormalMonster newNormalMonster = new NormalMonster();
         newNormalMonster.setAttackPower(normalMonster.getAttackPower());
         newNormalMonster.setDefend(normalMonster.getDefend());
-        newNormalMonster.setExp(normalMonster.getExp());
         newNormalMonster.setHealthPoint(normalMonster.getMaxHealthPoint());
         newNormalMonster.setMaxHealthPoint(normalMonster.getMaxHealthPoint());
         newNormalMonster.setId(monsterId);
@@ -73,9 +72,9 @@ public class MonsterCreateManager {
         newNormalMonster.setName(normalMonster.getName());
         newNormalMonster.setMonsterSkill(monsterSkillManager.getMonsterSkillByMonsterId(monsterId));
         // 设置怪物所在地图信息
-        normalMonster.setInMapId(gameMapId);
-        normalMonster.setInMapX(mapManager.getMapByMapId(gameMapId).location2xy(position)[0]);
-        normalMonster.setInMapY(mapManager.getMapByMapId(gameMapId).location2xy(position)[1]);
+        newNormalMonster.setInMapId(gameMapId);
+        newNormalMonster.setInMapX(mapManager.getMapByMapId(gameMapId).location2xy(position)[0]);
+        newNormalMonster.setInMapY(mapManager.getMapByMapId(gameMapId).location2xy(position)[1]);
         return newNormalMonster;
     }
 }
