@@ -14,7 +14,7 @@ import java.util.List;
 public class AccountHandler extends BaseInstructionHandler {
 
     @Autowired
-    private PlayerService playerService;
+    PlayerService playerService;
 
     @Override
     public String handler(List<String> ins) {

@@ -24,31 +24,34 @@ public class Controller {
     private Map<String, BaseInstructionHandler> map;
 
     @Autowired
-    private MoveHandler moveHandler;
+    MoveHandler moveHandler;
 
     @Autowired
-    private AccountHandler accountHandler;
+    AccountHandler accountHandler;
 
     @Autowired
-    private ShowInfoHandler showInfoHandler;
+    ShowInfoHandler showInfoHandler;
 
     @Autowired
-    private AttackHandler attackHandler;
+    AttackHandler attackHandler;
 
     @Autowired
-    private InstructionPack instructionPack;
+    InstructionPack instructionPack;
 
     @Autowired
-    private BackpackHandler backpackHandler;
+    BackpackHandler backpackHandler;
 
     @Autowired
-    private Controller controller;
+    NpcHandler npcHandler;
 
     @Autowired
-    private OnlinePlayer onlinePlayer;
+    Controller controller;
 
     @Autowired
-    private StoredChannel storedChannel;
+    OnlinePlayer onlinePlayer;
+
+    @Autowired
+    StoredChannel storedChannel;
 
     public void init() {
         map = new HashMap<>();
@@ -57,6 +60,7 @@ public class Controller {
         map.put("show", showInfoHandler);
         map.put("backpack", backpackHandler);
         map.put("attack", attackHandler);
+        map.put("npc", npcHandler);
     }
 
     public String handleMessage(String msg, String channelId) throws InterruptedException {

@@ -1,9 +1,6 @@
 package com.fung.server;
 
-import com.fung.server.content.config.manager.GoodManager;
-import com.fung.server.content.config.manager.MapManager;
-import com.fung.server.content.config.manager.MonsterCreateManager;
-import com.fung.server.content.config.manager.SkillManager;
+import com.fung.server.content.config.manager.*;
 import com.fung.server.content.controller.Controller;
 import com.fung.server.content.domain.player.PlayerInit;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -26,28 +23,32 @@ public class GameServerStart {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameServerStart.class);
 
     @Autowired
-    private MapManager mapManager;
+    MapManager mapManager;
 
     @Autowired
-    private GoodManager goodManager;
+    GoodManager goodManager;
 
     @Autowired
-    private MonsterCreateManager monsterCreateManager;
+    MonsterCreateManager monsterCreateManager;
 
     @Autowired
-    private SkillManager skillManager;
+    SkillManager skillManager;
 
     @Autowired
-    private PlayerInit playerInit;
+    NpcManager npcManager;
 
     @Autowired
-    private Controller controller;
+    PlayerInit playerInit;
+
+    @Autowired
+    Controller controller;
 
     public void start(int port) throws InterruptedException, IOException, InvalidFormatException {
         mapManager.mapInit();
         goodManager.goodInit();
         skillManager.skillInit();
         monsterCreateManager.monsterCreateInit();
+        npcManager.npcModelInit();
 
         playerInit.init();
         controller.init();

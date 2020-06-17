@@ -18,6 +18,8 @@ public class PlayerCommConfig {
     @Column(name = "max_backpack_grid")
     private int maxBackpackGrid;
 
+    private int money;
+
     public int getMaxBackpackGrid() {
         return maxBackpackGrid;
     }
@@ -32,5 +34,13 @@ public class PlayerCommConfig {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
 }

@@ -30,7 +30,7 @@ public class AttackHandler extends BaseInstructionHandler{
             int x = Integer.parseInt(ins.remove(0));
             int y = Integer.parseInt(ins.remove(0));
             return attackService.attack(getChannelId(), x, y, skillId);
-        } catch (NumberFormatException ignored) {
+        } catch (NumberFormatException | InterruptedException ignored) {
             return "格子数必须为数字";
         }
     }
