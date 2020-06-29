@@ -1,0 +1,8 @@
+// protoc --proto_path=./proto --java_out=./protoclass ./proto/TipsMessage.proto
+syntax = "proto3";
+
+option java_outer_classname = "TipsMessages";
+
+message TipsMessage{
+  int32 messageCode = 1;
+}

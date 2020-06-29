@@ -1,0 +1,9 @@
+// protoc --proto_path=./ --java_out=./ ./ChatServerMessage.proto
+syntax = "proto3";
+
+option java_outer_classname = "ChatMessage";
+
+message ChatServerMessage{
+  int32 code = 1;
+  bytes model = 2;
+}

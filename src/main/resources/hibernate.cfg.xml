@@ -22,7 +22,8 @@
             password
         </property>
 
-        <mapping class="com.fung.server.content.entity.Player"/>
+        <mapping class="com.fung.server.gameserver.content.entity.Player"/>
+        <mapping class="com.fung.server.chatserver.entity.ChatPlayer"/>
 
     </session-factory>
 </hibernate-configuration>

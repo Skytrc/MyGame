@@ -36,7 +36,8 @@
         <!-- 注解扫描的包 -->
         <property name="packagesToScan">
             <list>
-                <value>com.fung.server.content.entity</value>
+                <value>com.fung.server.gameserver.content.entity</value>
+                <value>com.fung.server.chatserver.entity</value>
             </list>
         </property>
     </bean>

@@ -1,0 +1,30 @@
+package com.fung.server.chatserver.code;
+
+/**
+ * @author skytrc@163.com
+ * @date 2020/6/29 10:41
+ */
+public interface TipsCode {
+
+    /**
+     * 登录成功
+     */
+    int LOGIN_SUCCESS = 101;
+
+    /**
+     * 玩家名字已存在
+     */
+    int PLAYER_NAME_EXISTS = 102;
+
+    /**
+     * 玩家名字不存在
+     */
+    int PLAYER_NAME_NOT_EXISTS = 103;
+
+    /**
+     * 玩家密码错误
+     */
+    int PLAYER_PASSWORD_WRONG = 104;
+
+
+}
