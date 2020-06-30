@@ -4,6 +4,7 @@ import com.fung.server.chatserver.entity.ChatPlayer;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +34,8 @@ public class ChatStoredChannel {
      */
     private Map<String, Channel> playerNameChannelMap;
 
+    private List<Channel> allChannel;
+
     public void storeChannelInit(Map<String, ChatPlayer> channelPlayerMap, Map<String, Channel> channelMap, Map<String, Channel> playerNameChannelMap) {
         this.channelMap = channelMap;
         this.channelPlayerMap = channelPlayerMap;
@@ -42,11 +45,13 @@ public class ChatStoredChannel {
     public void putPlayer(String channelId, ChatPlayer chatPlayer) {
         channelPlayerMap.put(channelId, chatPlayer);
         playerNameChannelMap.put(chatPlayer.getPlayerName(), channelMap.get(channelId));
+        allChannel.add(channelMap.get(channelId));
     }
 
     public void removePlayerByChannelId(String channelId) {
         ChatPlayer remove = channelPlayerMap.remove(channelId);
         playerNameChannelMap.remove(remove.getPlayerName());
+        allChannel.remove(channelMap.get(channelId));
     }
 
     public ChatPlayer getPlayerByChannelId(String channelId) {
@@ -62,8 +67,8 @@ public class ChatStoredChannel {
     }
 
     public void removeChannelById(String channelId) {
-        channelMap.remove(channelId);
         removePlayerByChannelId(channelId);
+        channelMap.remove(channelId);
     }
 
 
@@ -89,5 +94,13 @@ public class ChatStoredChannel {
 
     public void setPlayerNameChannelMap(Map<String, Channel> playerNameChannelMap) {
         this.playerNameChannelMap = playerNameChannelMap;
+    }
+
+    public List<Channel> getAllChannel() {
+        return allChannel;
+    }
+
+    public void setAllChannel(List<Channel> allChannel) {
+        this.allChannel = allChannel;
     }
 }
