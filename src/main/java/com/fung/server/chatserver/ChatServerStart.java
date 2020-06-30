@@ -1,7 +1,7 @@
 package com.fung.server.chatserver;
 
 import com.fung.server.chatserver.controller.Distribution;
-import com.fung.server.chatserver.stored.StoreChannel;
+import com.fung.server.chatserver.stored.ChatStoredChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +22,13 @@ public class ChatServerStart {
     private Distribution distribution;
 
     @Autowired
-    private StoreChannel storeChannel;
+    private ChatStoredChannel chatStoredChannel;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatServerStart.class);
 
     public void start(int port) throws InterruptedException {
-        ChatServer chatServer = new ChatServer(distribution, storeChannel);
-        storeChannel.storeChannelInit(new HashMap<>(), new HashMap<>());
+        ChatServer chatServer = new ChatServer(distribution, chatStoredChannel);
+        chatStoredChannel.storeChannelInit(new HashMap<>(), new HashMap<>(), new HashMap<>());
         chatServer.start(port);
     }
 

@@ -70,6 +70,12 @@ public final class ChatMessageRequest {
      */
     com.google.protobuf.ByteString
         getContentBytes();
+
+    /**
+     * <code>int64 chatCd = 6;</code>
+     * @return The chatCd.
+     */
+    long getChatCd();
   }
   /**
    * Protobuf type {@code ChatRequest}
@@ -147,6 +153,11 @@ public final class ChatMessageRequest {
               java.lang.String s = input.readStringRequireUtf8();
 
               content_ = s;
+              break;
+            }
+            case 48: {
+
+              chatCd_ = input.readInt64();
               break;
             }
             default: {
@@ -335,6 +346,16 @@ public final class ChatMessageRequest {
       }
     }
 
+    public static final int CHATCD_FIELD_NUMBER = 6;
+    private long chatCd_;
+    /**
+     * <code>int64 chatCd = 6;</code>
+     * @return The chatCd.
+     */
+    public long getChatCd() {
+      return chatCd_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -364,6 +385,9 @@ public final class ChatMessageRequest {
       if (!getContentBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, content_);
       }
+      if (chatCd_ != 0L) {
+        output.writeInt64(6, chatCd_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -388,6 +412,10 @@ public final class ChatMessageRequest {
       }
       if (!getContentBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, content_);
+      }
+      if (chatCd_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(6, chatCd_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -414,6 +442,8 @@ public final class ChatMessageRequest {
           .equals(other.getChannelId())) return false;
       if (!getContent()
           .equals(other.getContent())) return false;
+      if (getChatCd()
+          != other.getChatCd()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -435,6 +465,9 @@ public final class ChatMessageRequest {
       hash = (53 * hash) + getChannelId().hashCode();
       hash = (37 * hash) + CONTENT_FIELD_NUMBER;
       hash = (53 * hash) + getContent().hashCode();
+      hash = (37 * hash) + CHATCD_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getChatCd());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -578,6 +611,8 @@ public final class ChatMessageRequest {
 
         content_ = "";
 
+        chatCd_ = 0L;
+
         return this;
       }
 
@@ -609,6 +644,7 @@ public final class ChatMessageRequest {
         result.playerName_ = playerName_;
         result.channelId_ = channelId_;
         result.content_ = content_;
+        result.chatCd_ = chatCd_;
         onBuilt();
         return result;
       }
@@ -675,6 +711,9 @@ public final class ChatMessageRequest {
         if (!other.getContent().isEmpty()) {
           content_ = other.content_;
           onChanged();
+        }
+        if (other.getChatCd() != 0L) {
+          setChatCd(other.getChatCd());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1038,6 +1077,36 @@ public final class ChatMessageRequest {
         onChanged();
         return this;
       }
+
+      private long chatCd_ ;
+      /**
+       * <code>int64 chatCd = 6;</code>
+       * @return The chatCd.
+       */
+      public long getChatCd() {
+        return chatCd_;
+      }
+      /**
+       * <code>int64 chatCd = 6;</code>
+       * @param value The chatCd to set.
+       * @return This builder for chaining.
+       */
+      public Builder setChatCd(long value) {
+        
+        chatCd_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 chatCd = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearChatCd() {
+        
+        chatCd_ = 0L;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -1096,24 +1165,30 @@ public final class ChatMessageRequest {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>string playerName = 1;</code>
+     * <code>int32 code = 1;</code>
+     * @return The code.
+     */
+    int getCode();
+
+    /**
+     * <code>string playerName = 2;</code>
      * @return The playerName.
      */
     java.lang.String getPlayerName();
     /**
-     * <code>string playerName = 1;</code>
+     * <code>string playerName = 2;</code>
      * @return The bytes for playerName.
      */
     com.google.protobuf.ByteString
         getPlayerNameBytes();
 
     /**
-     * <code>string password = 2;</code>
+     * <code>string password = 3;</code>
      * @return The password.
      */
     java.lang.String getPassword();
     /**
-     * <code>string password = 2;</code>
+     * <code>string password = 3;</code>
      * @return The bytes for password.
      */
     com.google.protobuf.ByteString
@@ -1166,13 +1241,18 @@ public final class ChatMessageRequest {
             case 0:
               done = true;
               break;
-            case 10: {
+            case 8: {
+
+              code_ = input.readInt32();
+              break;
+            }
+            case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
               playerName_ = s;
               break;
             }
-            case 18: {
+            case 26: {
               java.lang.String s = input.readStringRequireUtf8();
 
               password_ = s;
@@ -1210,10 +1290,20 @@ public final class ChatMessageRequest {
               ChatMessageRequest.PlayerLoginInfo.class, ChatMessageRequest.PlayerLoginInfo.Builder.class);
     }
 
-    public static final int PLAYERNAME_FIELD_NUMBER = 1;
+    public static final int CODE_FIELD_NUMBER = 1;
+    private int code_;
+    /**
+     * <code>int32 code = 1;</code>
+     * @return The code.
+     */
+    public int getCode() {
+      return code_;
+    }
+
+    public static final int PLAYERNAME_FIELD_NUMBER = 2;
     private volatile java.lang.Object playerName_;
     /**
-     * <code>string playerName = 1;</code>
+     * <code>string playerName = 2;</code>
      * @return The playerName.
      */
     public java.lang.String getPlayerName() {
@@ -1229,7 +1319,7 @@ public final class ChatMessageRequest {
       }
     }
     /**
-     * <code>string playerName = 1;</code>
+     * <code>string playerName = 2;</code>
      * @return The bytes for playerName.
      */
     public com.google.protobuf.ByteString
@@ -1246,10 +1336,10 @@ public final class ChatMessageRequest {
       }
     }
 
-    public static final int PASSWORD_FIELD_NUMBER = 2;
+    public static final int PASSWORD_FIELD_NUMBER = 3;
     private volatile java.lang.Object password_;
     /**
-     * <code>string password = 2;</code>
+     * <code>string password = 3;</code>
      * @return The password.
      */
     public java.lang.String getPassword() {
@@ -1265,7 +1355,7 @@ public final class ChatMessageRequest {
       }
     }
     /**
-     * <code>string password = 2;</code>
+     * <code>string password = 3;</code>
      * @return The bytes for password.
      */
     public com.google.protobuf.ByteString
@@ -1296,11 +1386,14 @@ public final class ChatMessageRequest {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      if (code_ != 0) {
+        output.writeInt32(1, code_);
+      }
       if (!getPlayerNameBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, playerName_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, playerName_);
       }
       if (!getPasswordBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, password_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, password_);
       }
       unknownFields.writeTo(output);
     }
@@ -1311,11 +1404,15 @@ public final class ChatMessageRequest {
       if (size != -1) return size;
 
       size = 0;
+      if (code_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, code_);
+      }
       if (!getPlayerNameBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, playerName_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, playerName_);
       }
       if (!getPasswordBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, password_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, password_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1332,6 +1429,8 @@ public final class ChatMessageRequest {
       }
       ChatMessageRequest.PlayerLoginInfo other = (ChatMessageRequest.PlayerLoginInfo) obj;
 
+      if (getCode()
+          != other.getCode()) return false;
       if (!getPlayerName()
           .equals(other.getPlayerName())) return false;
       if (!getPassword()
@@ -1347,6 +1446,8 @@ public final class ChatMessageRequest {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + CODE_FIELD_NUMBER;
+      hash = (53 * hash) + getCode();
       hash = (37 * hash) + PLAYERNAME_FIELD_NUMBER;
       hash = (53 * hash) + getPlayerName().hashCode();
       hash = (37 * hash) + PASSWORD_FIELD_NUMBER;
@@ -1484,6 +1585,8 @@ public final class ChatMessageRequest {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        code_ = 0;
+
         playerName_ = "";
 
         password_ = "";
@@ -1514,6 +1617,7 @@ public final class ChatMessageRequest {
       @java.lang.Override
       public ChatMessageRequest.PlayerLoginInfo buildPartial() {
         ChatMessageRequest.PlayerLoginInfo result = new ChatMessageRequest.PlayerLoginInfo(this);
+        result.code_ = code_;
         result.playerName_ = playerName_;
         result.password_ = password_;
         onBuilt();
@@ -1564,6 +1668,9 @@ public final class ChatMessageRequest {
 
       public Builder mergeFrom(ChatMessageRequest.PlayerLoginInfo other) {
         if (other == ChatMessageRequest.PlayerLoginInfo.getDefaultInstance()) return this;
+        if (other.getCode() != 0) {
+          setCode(other.getCode());
+        }
         if (!other.getPlayerName().isEmpty()) {
           playerName_ = other.playerName_;
           onChanged();
@@ -1601,9 +1708,39 @@ public final class ChatMessageRequest {
         return this;
       }
 
+      private int code_ ;
+      /**
+       * <code>int32 code = 1;</code>
+       * @return The code.
+       */
+      public int getCode() {
+        return code_;
+      }
+      /**
+       * <code>int32 code = 1;</code>
+       * @param value The code to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCode(int value) {
+        
+        code_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 code = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCode() {
+        
+        code_ = 0;
+        onChanged();
+        return this;
+      }
+
       private java.lang.Object playerName_ = "";
       /**
-       * <code>string playerName = 1;</code>
+       * <code>string playerName = 2;</code>
        * @return The playerName.
        */
       public java.lang.String getPlayerName() {
@@ -1619,7 +1756,7 @@ public final class ChatMessageRequest {
         }
       }
       /**
-       * <code>string playerName = 1;</code>
+       * <code>string playerName = 2;</code>
        * @return The bytes for playerName.
        */
       public com.google.protobuf.ByteString
@@ -1636,7 +1773,7 @@ public final class ChatMessageRequest {
         }
       }
       /**
-       * <code>string playerName = 1;</code>
+       * <code>string playerName = 2;</code>
        * @param value The playerName to set.
        * @return This builder for chaining.
        */
@@ -1651,7 +1788,7 @@ public final class ChatMessageRequest {
         return this;
       }
       /**
-       * <code>string playerName = 1;</code>
+       * <code>string playerName = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearPlayerName() {
@@ -1661,7 +1798,7 @@ public final class ChatMessageRequest {
         return this;
       }
       /**
-       * <code>string playerName = 1;</code>
+       * <code>string playerName = 2;</code>
        * @param value The bytes for playerName to set.
        * @return This builder for chaining.
        */
@@ -1679,7 +1816,7 @@ public final class ChatMessageRequest {
 
       private java.lang.Object password_ = "";
       /**
-       * <code>string password = 2;</code>
+       * <code>string password = 3;</code>
        * @return The password.
        */
       public java.lang.String getPassword() {
@@ -1695,7 +1832,7 @@ public final class ChatMessageRequest {
         }
       }
       /**
-       * <code>string password = 2;</code>
+       * <code>string password = 3;</code>
        * @return The bytes for password.
        */
       public com.google.protobuf.ByteString
@@ -1712,7 +1849,7 @@ public final class ChatMessageRequest {
         }
       }
       /**
-       * <code>string password = 2;</code>
+       * <code>string password = 3;</code>
        * @param value The password to set.
        * @return This builder for chaining.
        */
@@ -1727,7 +1864,7 @@ public final class ChatMessageRequest {
         return this;
       }
       /**
-       * <code>string password = 2;</code>
+       * <code>string password = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearPassword() {
@@ -1737,7 +1874,7 @@ public final class ChatMessageRequest {
         return this;
       }
       /**
-       * <code>string password = 2;</code>
+       * <code>string password = 3;</code>
        * @param value The bytes for password to set.
        * @return This builder for chaining.
        */
@@ -1824,12 +1961,13 @@ public final class ChatMessageRequest {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\030ChatMessageRequest.proto\"i\n\013ChatReques" +
+      "\n\030ChatMessageRequest.proto\"y\n\013ChatReques" +
       "t\022\020\n\010playerId\030\001 \001(\t\022\020\n\010chatMode\030\002 \001(\005\022\022\n" +
       "\nplayerName\030\003 \001(\t\022\021\n\tchannelId\030\004 \001(\t\022\017\n\007" +
-      "content\030\005 \001(\t\"7\n\017PlayerLoginInfo\022\022\n\nplay" +
-      "erName\030\001 \001(\t\022\020\n\010password\030\002 \001(\tB\024B\022ChatMe" +
-      "ssageRequestb\006proto3"
+      "content\030\005 \001(\t\022\016\n\006chatCd\030\006 \001(\003\"E\n\017PlayerL" +
+      "oginInfo\022\014\n\004code\030\001 \001(\005\022\022\n\nplayerName\030\002 \001" +
+      "(\t\022\020\n\010password\030\003 \001(\tB\024B\022ChatMessageReque" +
+      "stb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1840,13 +1978,13 @@ public final class ChatMessageRequest {
     internal_static_ChatRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ChatRequest_descriptor,
-        new java.lang.String[] { "PlayerId", "ChatMode", "PlayerName", "ChannelId", "Content", });
+        new java.lang.String[] { "PlayerId", "ChatMode", "PlayerName", "ChannelId", "Content", "ChatCd", });
     internal_static_PlayerLoginInfo_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_PlayerLoginInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_PlayerLoginInfo_descriptor,
-        new java.lang.String[] { "PlayerName", "Password", });
+        new java.lang.String[] { "Code", "PlayerName", "Password", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

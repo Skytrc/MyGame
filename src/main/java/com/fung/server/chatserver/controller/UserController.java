@@ -2,7 +2,6 @@ package com.fung.server.chatserver.controller;
 
 import com.fung.protobuf.protoclass.ChatMessageRequest;
 import com.fung.server.chatserver.cache.ChatPlayerCache;
-import com.fung.server.chatserver.entity.ChatPlayer;
 import com.fung.server.chatserver.service.PlayerServer;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.springframework.beans.factory.annotation.Autowired;

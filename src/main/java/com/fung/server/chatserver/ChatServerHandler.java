@@ -2,8 +2,7 @@ package com.fung.server.chatserver;
 
 import com.fung.protobuf.protoclass.ChatMessage;
 import com.fung.server.chatserver.controller.Distribution;
-import com.fung.server.chatserver.stored.StoreChannel;
-import io.netty.channel.Channel;
+import com.fung.server.chatserver.stored.ChatStoredChannel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
@@ -19,16 +18,16 @@ public class ChatServerHandler extends ChannelInboundHandlerAdapter {
 
     private Distribution distribution;
 
-    private StoreChannel storeChannel;
+    private ChatStoredChannel chatStoredChannel;
 
-    public ChatServerHandler(Distribution distribution, StoreChannel storeChannel) {
+    public ChatServerHandler(Distribution distribution, ChatStoredChannel chatStoredChannel) {
         this.distribution = distribution;
-        this.storeChannel = storeChannel;
+        this.chatStoredChannel = chatStoredChannel;
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        storeChannel.addChannel(ctx.channel().id().asLongText(), ctx.channel());
+        chatStoredChannel.addChannel(ctx.channel().id().asLongText(), ctx.channel());
         LOGGER.info("Succeed connected client");
     }
 
@@ -41,7 +40,7 @@ public class ChatServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        storeChannel.removeChannelById(ctx.channel().id().asLongText());
+        chatStoredChannel.removeChannelById(ctx.channel().id().asLongText());
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.fung.client.newclient;
 
-import com.fung.client.newclient.messagehandle.WriteMessage;
+import com.fung.client.newclient.messagehandle.ChatServerWriteMessage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,32 +11,26 @@ import java.awt.*;
  * @author skytrc@163.com
  * @date 2020/6/23 15:45
  */
-public class MainPage extends JFrame{
+@Component
+public class MainPage {
 
-    private static MainPage mainPage;
+    @Autowired
+    private ChatServerWriteMessage chatServerWriteMessage;
 
-    public static MainPage getInstance() {
-        if (mainPage == null) {
-            mainPage = new MainPage();
-        }
-        return mainPage;
-    }
-
-    private WriteMessage writeMessage = WriteMessage.getInstance();
-
-    private MainPage () {
-        setTitle("Game");
+    public void mainPageInit() {
+        JFrame jFrame = new JFrame();
+        jFrame.setTitle("Game");
         JPanel displayPanel = displayPanel();
         JPanel chatPanel = chatPanel();
 
         JPanel jPanel = new JPanel(new FlowLayout());
         jPanel.add(displayPanel);
         jPanel.add(chatPanel);
-        add(jPanel);
 
-        setBounds(200, 100, 600, 700);
-        setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jFrame.add(jPanel);
+        jFrame.setBounds(200, 100, 600, 700);
+        jFrame.setVisible(true);
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     /**
@@ -97,7 +93,7 @@ public class MainPage extends JFrame{
         JButton chatButton = new JButton("发送");
         chatButton.addActionListener((actionEvent) -> {
             String chatMessage = chatTextField.getText();
-            writeMessage.sendChatMessage("playerId", cmb.getItemCount(), "playerName",
+            chatServerWriteMessage.sendChatMessage("playerId", cmb.getItemCount(), "playerName",
                     "channelId", chatMessage);
             chatTextArea.append("\n 发送聊天: " + chatMessage);
         });
@@ -114,8 +110,4 @@ public class MainPage extends JFrame{
         return chatPanel;
     }
 
-
-    public static void main(String[] args) {
-        new MainPage();
-    }
 }

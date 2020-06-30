@@ -1,7 +1,9 @@
 package com.fung.server.chatserver.writemessage;
 
+import com.fung.protobuf.protoclass.ChatMessage;
 import com.fung.protobuf.protoclass.TipsMessages;
-import com.fung.server.chatserver.stored.StoreChannel;
+import com.fung.server.chatserver.code.ModelCode;
+import com.fung.server.chatserver.stored.ChatStoredChannel;
 import io.netty.channel.Channel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,21 +16,26 @@ import org.springframework.stereotype.Component;
 public class WriteMessage {
 
     @Autowired
-    private StoreChannel storeChannel;
+    private ChatStoredChannel chatStoredChannel;
 
     public void writeMessage2Client(String channelId, Object message) {
-        Channel channel = storeChannel.getChannelById(channelId);
+        Channel channel = chatStoredChannel.getChannelById(channelId);
         channel.writeAndFlush(message);
     }
 
     /**
      * 返回客户端提示信息码
      */
-    public void writeTipsMessage(String channelId, int tipsCode) {
-        Channel channel = storeChannel.getChannelById(channelId);
+    public void writeLoginMessage(String channelId, int tipsCode) {
+        Channel channel = chatStoredChannel.getChannelById(channelId);
+        ChatMessage.ChatServerMessage.Builder builder1 = ChatMessage.ChatServerMessage.newBuilder();
+        builder1.setCode(ModelCode.LOGIN);
+
         TipsMessages.TipsMessage.Builder builder = TipsMessages.TipsMessage.newBuilder();
         builder.setMessageCode(tipsCode);
-        channel.writeAndFlush(builder.build());
+
+        builder1.setModel(builder.build().toByteString());
+        channel.writeAndFlush(builder1.build());
     }
 
 }

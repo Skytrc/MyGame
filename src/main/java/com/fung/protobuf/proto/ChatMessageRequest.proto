@@ -1,4 +1,4 @@
-// protoc --proto_path=./ --java_out=./ ./ChatMessageRequest.proto
+// protoc --proto_path=./proto/ --java_out=./protoclass ./proto/ChatMessageRequest.proto
 syntax = "proto3";
 
 option java_outer_classname = "ChatMessageRequest";
@@ -9,10 +9,12 @@ message ChatRequest{
   string playerName = 3;
   string channelId = 4;
   string content = 5;
+  int64 chatCd = 6;
 }
 
 message PlayerLoginInfo{
-  string playerName = 1;
-  string password = 2;
+  int32 code = 1;
+  string playerName = 2;
+  string password = 3;
 }
 

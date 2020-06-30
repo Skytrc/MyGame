@@ -3,19 +3,25 @@ package com.fung.client.newclient.eventhandler;
 import com.fung.client.newclient.Login;
 import com.fung.client.newclient.MainPage;
 import com.fung.client.newclient.code.ModelCode;
+import com.fung.client.newclient.code.TipsCode;
 import com.fung.protobuf.protoclass.ChatMessage;
 import com.fung.protobuf.protoclass.ChatMessageRequest;
 import com.google.protobuf.InvalidProtocolBufferException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author skytrc@163.com
  * @date 2020/6/29 11:53
  */
+@Component
 public class ServerMessageHandler {
 
-    private Login login = Login.getInstance();
+    @Autowired
+    private Login login;
 
-    private MainPage mainPage = MainPage.getInstance();
+    @Autowired
+    private MainPage mainPage;
 
     public void handleServerMessage(ChatMessage.ChatServerMessage message) throws InvalidProtocolBufferException {
         switch (message.getCode()) {
@@ -35,10 +41,18 @@ public class ServerMessageHandler {
 
     public void login(byte[] model) throws InvalidProtocolBufferException {
         ChatMessageRequest.PlayerLoginInfo playerLoginInfo = ChatMessageRequest.PlayerLoginInfo.parseFrom(model);
-        if (playerLoginInfo.getPlayerName() == null) {
-            login.showMessage("用户名或者密码错误");
-        } else {
-            login.openMainPage(playerLoginInfo.getPlayerName(), playerLoginInfo.getPassword());
+        switch (playerLoginInfo.getCode()) {
+            case(TipsCode.PLAYER_NAME_NOT_EXISTS):
+                login.showMessage("用户名不存在");
+                break;
+            case(TipsCode.PLAYER_PASSWORD_WRONG):
+                login.showMessage("密码错误");
+                break;
+            case(TipsCode.LOGIN_SUCCESS):
+                login.openMainPage(playerLoginInfo.getPlayerName(), playerLoginInfo.getPassword());
+                break;
+            default:
+                login.showMessage(playerLoginInfo.getCode() + ":代码错误");
         }
     }
 

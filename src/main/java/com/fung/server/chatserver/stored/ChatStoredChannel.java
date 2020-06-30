@@ -7,11 +7,16 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 /**
+ * 存储四个容器
+ * 第一个是根据channel id 查找对应的 channel
+ * 第二个是根据channel id 查找对应的 chatPlayer实体
+ * 第三个是根据chatPlayer名字 查找对应的 channel
+ * 第四个是存储所有的ChatPlayerChannel
  * @author skytrc@163.com
  * @date 2020/6/24 15:45
  */
 @Component
-public class StoreChannel {
+public class ChatStoredChannel {
 
     /**
      * key channel id  value player
@@ -23,17 +28,25 @@ public class StoreChannel {
      */
     private Map<String, Channel> channelMap;
 
-    public void storeChannelInit(Map<String, ChatPlayer> channelPlayerMap, Map<String, Channel> channelMap) {
+    /**
+     * key playerName  value Channel
+     */
+    private Map<String, Channel> playerNameChannelMap;
+
+    public void storeChannelInit(Map<String, ChatPlayer> channelPlayerMap, Map<String, Channel> channelMap, Map<String, Channel> playerNameChannelMap) {
         this.channelMap = channelMap;
         this.channelPlayerMap = channelPlayerMap;
+        this.playerNameChannelMap = playerNameChannelMap;
     }
 
     public void putPlayer(String channelId, ChatPlayer chatPlayer) {
         channelPlayerMap.put(channelId, chatPlayer);
+        playerNameChannelMap.put(chatPlayer.getPlayerName(), channelMap.get(channelId));
     }
 
     public void removePlayerByChannelId(String channelId) {
-
+        ChatPlayer remove = channelPlayerMap.remove(channelId);
+        playerNameChannelMap.remove(remove.getPlayerName());
     }
 
     public ChatPlayer getPlayerByChannelId(String channelId) {
@@ -50,6 +63,7 @@ public class StoreChannel {
 
     public void removeChannelById(String channelId) {
         channelMap.remove(channelId);
+        removePlayerByChannelId(channelId);
     }
 
 
@@ -67,5 +81,13 @@ public class StoreChannel {
 
     public void setChannelMap(Map<String, Channel> channelMap) {
         this.channelMap = channelMap;
+    }
+
+    public Map<String, Channel> getPlayerNameChannelMap() {
+        return playerNameChannelMap;
+    }
+
+    public void setPlayerNameChannelMap(Map<String, Channel> playerNameChannelMap) {
+        this.playerNameChannelMap = playerNameChannelMap;
     }
 }

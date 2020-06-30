@@ -1,54 +1,53 @@
 package com.fung.client.newclient;
 
-import com.fung.client.newclient.messagehandle.WriteMessage;
+import com.fung.client.newclient.messagehandle.ChatServerWriteMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author skytrc@163.com
  * @date 2020/6/23 15:09
  */
-public class Login extends JFrame implements ActionListener {
+@Component
+public class Login  {
 
-    private static Login login;
+    @Autowired
+    private ChatServerWriteMessage chatServerWriteMessage;
 
-    private WriteMessage writeMessage = WriteMessage.getInstance();
-
-    public static Login getInstance() {
-        if (login == null) {
-            login = new Login();
-        }
-        return login;
-    }
+    @Autowired
+    private MainPage mainPage;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Login.class);
 
-    private JPanel panel;
-    private JLabel label;
-    private JLabel label2;
+    private JFrame jFrame;
     private JButton loginButton;
     private JTextField jTextField;
     private JPasswordField passwordField;
 
-    private Login() {
-        this.setTitle("用户登录界面");
-        this.setSize(250,150);
-        this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public void loginInit() {
+        jFrame = new JFrame();
+        jFrame.setTitle("用户登录界面");
+        jFrame.setSize(250,150);
+        jFrame.setLocationRelativeTo(null);
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        panel = new JPanel();
+        JPanel panel = new JPanel();
         //设置为流式布局
         panel.setLayout(new FlowLayout());
-        label = new JLabel("玩家名");
-        label2 = new JLabel("密码");
+        JLabel label = new JLabel("玩家名");
+        JLabel label2 = new JLabel("密码");
         loginButton = new JButton("登录");
         //监听事件
-        loginButton.addActionListener(this);
+        loginButton.addActionListener((e) -> {
+            if (e.getSource()==loginButton) {
+                chatServerWriteMessage.sendLoginInfo(jTextField.getText(), String.valueOf(passwordField.getPassword()));
+            }
+        });
         //设置文本框的长度
         jTextField = new JTextField(16);
         //设置密码框
@@ -60,30 +59,21 @@ public class Login extends JFrame implements ActionListener {
         panel.add(label2);
         panel.add(passwordField);
         panel.add(loginButton);
-        panel.add(label);
 
         //实现面板panel
-        this.add(panel);
+        jFrame.add(panel);
 
         //设置可见
-        this.setVisible(true);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource()==loginButton) {
-            LOGGER.info("\n玩家名: " + jTextField.getText() + "\n密码: " + String.valueOf(passwordField.getPassword()));
-            writeMessage.sendLoginInfo(jTextField.getText(), String.valueOf(passwordField.getPassword()));
-        }
+        jFrame.setVisible(true);
     }
 
     public void showMessage(String message) {
-        JOptionPane.showConfirmDialog(null, message);
+        JOptionPane.showMessageDialog(null, message);
     }
 
     public void openMainPage(String playerName, String password) {
-        login.dispose();
+        jFrame.dispose();
         // TODO 初始玩家角色
-        MainPage.getInstance();
+        mainPage.mainPageInit();
     }
 }

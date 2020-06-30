@@ -4,7 +4,7 @@ import com.fung.server.chatserver.cache.ChatPlayerCache;
 import com.fung.server.chatserver.code.TipsCode;
 import com.fung.server.chatserver.entity.ChatPlayer;
 import com.fung.server.chatserver.service.PlayerServer;
-import com.fung.server.chatserver.stored.StoreChannel;
+import com.fung.server.chatserver.stored.ChatStoredChannel;
 import com.fung.server.chatserver.writemessage.WriteMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,19 +23,19 @@ public class PlayerServerImpl implements PlayerServer {
     private WriteMessage writeMessage;
 
     @Autowired
-    private StoreChannel storeChannel;
+    private ChatStoredChannel chatStoredChannel;
 
     @Override
     public void login(String playerName, String password, String channelId) {
         ChatPlayer chatPlayer = chatPlayerCache.getPlayerByPlayerName(playerName);
-        if (!playerName.equals(chatPlayer.getPlayerName())) {
-            writeMessage.writeTipsMessage(channelId, TipsCode.PLAYER_NAME_NOT_EXISTS);
+        if (chatPlayer == null) {
+            writeMessage.writeLoginMessage(channelId, TipsCode.PLAYER_NAME_NOT_EXISTS);
+        }else if (!password.equals(chatPlayer.getPassword())) {
+            writeMessage.writeLoginMessage(channelId, TipsCode.PLAYER_PASSWORD_WRONG);
+        } else {
+            writeMessage.writeLoginMessage(channelId, TipsCode.LOGIN_SUCCESS);
+            chatStoredChannel.putPlayer(channelId, chatPlayer);
         }
-        if (!password.equals(chatPlayer.getPassword())) {
-            writeMessage.writeTipsMessage(channelId, TipsCode.PLAYER_PASSWORD_WRONG);
-        }
-        writeMessage.writeTipsMessage(channelId, TipsCode.LOGIN_SUCCESS);
-        storeChannel.putPlayer(channelId, chatPlayer);
     }
 
     @Override

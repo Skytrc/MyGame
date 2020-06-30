@@ -25,6 +25,9 @@ public class ChatPlayer {
 
     private String password;
 
+    @Transient
+    private long chatCd;
+
     public String getUuid() {
         return uuid;
     }
@@ -47,5 +50,13 @@ public class ChatPlayer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public long getChatCd() {
+        return chatCd;
+    }
+
+    public void setChatCd(long chatCd) {
+        this.chatCd = chatCd;
     }
 }

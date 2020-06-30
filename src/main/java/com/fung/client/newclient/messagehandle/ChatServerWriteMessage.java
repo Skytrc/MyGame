@@ -5,25 +5,16 @@ import com.fung.protobuf.protoclass.ChatMessage;
 import com.fung.protobuf.protoclass.ChatMessageRequest;
 import com.google.protobuf.ByteString;
 import io.netty.channel.Channel;
+import org.springframework.stereotype.Component;
 
 /**
  * @author skytrc@163.com
  * @date 2020/6/23 20:22
  */
-public class WriteMessage {
-
-    private static WriteMessage writeMessage;
+@Component
+public class ChatServerWriteMessage {
 
     private Channel channel;
-
-    private WriteMessage(){}
-
-    public static WriteMessage getInstance() {
-        if (writeMessage == null) {
-            writeMessage = new WriteMessage();
-        }
-        return writeMessage;
-    }
 
     /**
      * 发送聊天消息

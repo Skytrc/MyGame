@@ -2,7 +2,7 @@ package com.fung.server.chatserver;
 
 import com.fung.protobuf.protoclass.ChatMessage;
 import com.fung.server.chatserver.controller.Distribution;
-import com.fung.server.chatserver.stored.StoreChannel;
+import com.fung.server.chatserver.stored.ChatStoredChannel;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -25,11 +25,11 @@ public class ChatServer {
 
     private Distribution distribution;
 
-    private StoreChannel storeChannel;
+    private ChatStoredChannel chatStoredChannel;
 
-    public ChatServer(Distribution distribution, StoreChannel storeChannel) {
+    public ChatServer(Distribution distribution, ChatStoredChannel chatStoredChannel) {
         this.distribution = distribution;
-        this.storeChannel = storeChannel;
+        this.chatStoredChannel = chatStoredChannel;
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatServer.class);
@@ -49,7 +49,7 @@ public class ChatServer {
                 ch.pipeline().addLast(new ProtobufDecoder(ChatMessage.ChatServerMessage.getDefaultInstance()));
                 ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
                 ch.pipeline().addLast(new ProtobufEncoder());
-                ch.pipeline().addLast(new ChatServerHandler(distribution, storeChannel));
+                ch.pipeline().addLast(new ChatServerHandler(distribution, chatStoredChannel));
             }
         });
         ChannelFuture f = b.bind(port).sync();
