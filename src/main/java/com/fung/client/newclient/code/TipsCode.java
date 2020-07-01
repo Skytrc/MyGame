@@ -26,5 +26,8 @@ public interface TipsCode {
      */
     int PLAYER_PASSWORD_WRONG = 104;
 
-
+    /**
+     * 玩家不存在或玩家未上线
+     */
+    int PLAYER_NOT_EXISTS_OR_NOT_ONLINE = 105;
 }

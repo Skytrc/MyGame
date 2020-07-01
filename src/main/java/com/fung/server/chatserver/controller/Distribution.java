@@ -32,6 +32,8 @@ public class Distribution {
             case(ModelCode.CHAT) :
                 chatController.chat(model, channelId);
                 break;
+            case(ModelCode.TIPS_MESSAGE) :
+                chatController.tip(model);
             default:
                 break;
         }

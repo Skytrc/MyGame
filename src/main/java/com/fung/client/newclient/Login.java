@@ -1,6 +1,7 @@
 package com.fung.client.newclient;
 
-import com.fung.client.newclient.messagehandle.ChatServerWriteMessage;
+import com.fung.client.newclient.messagehandle.ChatClientWriteMessage;
+import com.fung.client.newclient.entity.ClientChatPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,13 @@ import java.awt.*;
 public class Login  {
 
     @Autowired
-    private ChatServerWriteMessage chatServerWriteMessage;
+    private ChatClientWriteMessage chatClientWriteMessage;
 
     @Autowired
     private MainPage mainPage;
+
+    @Autowired
+    private ClientChatPlayer clientChatPlayer;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Login.class);
 
@@ -45,7 +49,7 @@ public class Login  {
         //监听事件
         loginButton.addActionListener((e) -> {
             if (e.getSource()==loginButton) {
-                chatServerWriteMessage.sendLoginInfo(jTextField.getText(), String.valueOf(passwordField.getPassword()));
+                chatClientWriteMessage.sendLoginInfo(jTextField.getText(), String.valueOf(passwordField.getPassword()));
             }
         });
         //设置文本框的长度
@@ -74,6 +78,7 @@ public class Login  {
     public void openMainPage(String playerName, String password) {
         jFrame.dispose();
         // TODO 初始玩家角色
+        clientChatPlayer.setPlayerName(playerName);
         mainPage.mainPageInit();
     }
 }

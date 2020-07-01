@@ -1,4 +1,4 @@
-package com.fung.server.chatserver.code;
+package com.fung.client.newclient.code;
 
 /**
  * @author skytrc@163.com

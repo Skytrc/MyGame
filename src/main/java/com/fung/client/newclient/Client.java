@@ -1,7 +1,7 @@
 package com.fung.client.newclient;
 
 import com.fung.client.newclient.eventhandler.ServerMessageHandler;
-import com.fung.client.newclient.messagehandle.ChatServerWriteMessage;
+import com.fung.client.newclient.messagehandle.ChatClientWriteMessage;
 import com.fung.protobuf.protoclass.ChatMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -33,7 +33,7 @@ public class Client {
     private Login login;
 
     @Autowired
-    private ChatServerWriteMessage chatServerWriteMessage;
+    private ChatClientWriteMessage chatClientWriteMessage;
 
     @Autowired
     private ServerMessageHandler serverMessageHandler;
@@ -68,7 +68,7 @@ public class Client {
 
     public void guiClientStart(Channel channel) {
         login.loginInit();
-        chatServerWriteMessage.setChannel(channel);
+        chatClientWriteMessage.setChannel(channel);
     }
 
     public void clientInit(int port, String host) {

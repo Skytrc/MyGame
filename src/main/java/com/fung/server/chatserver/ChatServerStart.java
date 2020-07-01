@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -28,7 +29,7 @@ public class ChatServerStart {
 
     public void start(int port) throws InterruptedException {
         ChatServer chatServer = new ChatServer(distribution, chatStoredChannel);
-        chatStoredChannel.storeChannelInit(new HashMap<>(), new HashMap<>(), new HashMap<>());
+        chatStoredChannel.storeChannelInit(new HashMap<>(), new HashMap<>(), new HashMap<>(), new ArrayList<>());
         chatServer.start(port);
     }
 

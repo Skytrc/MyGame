@@ -12,25 +12,24 @@ import org.springframework.stereotype.Component;
  * @date 2020/6/23 20:22
  */
 @Component
-public class ChatServerWriteMessage {
+public class ChatClientWriteMessage {
 
     private Channel channel;
 
     /**
      * 发送聊天消息
      */
-    public void sendChatMessage(String playerId, int chatMode, String playerName, String channelId, String content) {
+    public void sendChatMessage(int chatMode, String playerName,String content) {
         ChatMessage.ChatServerMessage.Builder builder = ChatMessage.ChatServerMessage.newBuilder();
         builder.setCode(ModelCode.CHAT);
-        builder.setModel(message2ChatMessageReq(playerId, chatMode, playerName, channelId, content));
+        builder.setModel(message2ChatMessageReq(chatMode, playerName,content));
         channel.writeAndFlush(builder.build());
     }
 
-    public ByteString message2ChatMessageReq(String playerId, int chatMode, String playerName, String channelId, String content) {
+    public ByteString message2ChatMessageReq(int chatMode, String playerName, String content) {
         ChatMessageRequest.ChatRequest.Builder builder = ChatMessageRequest.ChatRequest.newBuilder();
-        builder.setChannelId(channelId);
         builder.setContent(content);
-        builder.setPlayerId(playerId);
+        builder.setPlayerName(playerName);
         builder.setChatMode(chatMode);
         ChatMessageRequest.ChatRequest build = builder.build();
         return ByteString.copyFrom(build.toByteArray());

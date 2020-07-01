@@ -1,6 +1,7 @@
 package com.fung.client.newclient;
 
-import com.fung.client.newclient.messagehandle.ChatServerWriteMessage;
+import com.fung.client.newclient.eventhandler.ChatClientMessageHandler;
+import com.fung.client.newclient.messagehandle.ChatClientWriteMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,11 @@ import java.awt.*;
 public class MainPage {
 
     @Autowired
-    private ChatServerWriteMessage chatServerWriteMessage;
+    private ChatClientMessageHandler messageHandler;
+
+    private JTextArea chatTextArea;
+
+    private JTextArea gameTextArea;
 
     public void mainPageInit() {
         JFrame jFrame = new JFrame();
@@ -45,16 +50,16 @@ public class MainPage {
         JTextField displayTextField = new JTextField("", 30);
 
         // 文本域设置
-        JTextArea displayTextArea = new JTextArea("", 15, 40);
-        displayTextArea.setLineWrap(true);
-        JScrollPane displayScrollPane = new JScrollPane(displayTextArea);
-        Dimension size = displayTextArea.getPreferredSize();
+        gameTextArea = new JTextArea("", 15, 40);
+        gameTextArea.setLineWrap(true);
+        JScrollPane displayScrollPane = new JScrollPane(gameTextArea);
+        Dimension size = gameTextArea.getPreferredSize();
         displayScrollPane.setBounds(0, 0, size.width, size.height);
 
         JButton displayButton = new JButton("发送");
         displayButton.addActionListener((actionEvent) -> {
             String instruction = displayTextField.getText();
-            displayTextArea.append("\n 发送指令: " + instruction);
+            gameTextArea.append("\n 发送指令: " + instruction);
         });
 
         northPanel.add(new JLabel("指令"));
@@ -84,7 +89,7 @@ public class MainPage {
         cmb.addItem("私聊");
 
         // 文本域设置
-        JTextArea chatTextArea = new JTextArea("", 10, 40);
+        chatTextArea = new JTextArea("", 10, 40);
         chatTextArea.setLineWrap(true);
         JScrollPane chatScrollPane = new JScrollPane(chatTextArea);
         Dimension size1 = chatTextArea.getPreferredSize();
@@ -93,8 +98,7 @@ public class MainPage {
         JButton chatButton = new JButton("发送");
         chatButton.addActionListener((actionEvent) -> {
             String chatMessage = chatTextField.getText();
-            chatServerWriteMessage.sendChatMessage("playerId", cmb.getItemCount(), "playerName",
-                    "channelId", chatMessage);
+            messageHandler.handler(cmb.getSelectedIndex(), chatTextField.getText());
             chatTextArea.append("\n 发送聊天: " + chatMessage);
         });
 
@@ -108,6 +112,14 @@ public class MainPage {
         chatPanel.add(centerPanel, BorderLayout.CENTER);
 
         return chatPanel;
+    }
+
+    public void echoChatMessage(String message) {
+        chatTextArea.append("\n" + message + "\n");
+    }
+
+    public void echoGameMessage(String message) {
+        gameTextArea.append("\n" + message + "\n");
     }
 
 }

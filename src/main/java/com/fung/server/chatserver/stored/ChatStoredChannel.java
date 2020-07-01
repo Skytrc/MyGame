@@ -36,10 +36,11 @@ public class ChatStoredChannel {
 
     private List<Channel> allChannel;
 
-    public void storeChannelInit(Map<String, ChatPlayer> channelPlayerMap, Map<String, Channel> channelMap, Map<String, Channel> playerNameChannelMap) {
+    public void storeChannelInit(Map<String, ChatPlayer> channelPlayerMap, Map<String, Channel> channelMap, Map<String, Channel> playerNameChannelMap, List<Channel> allChannel) {
         this.channelMap = channelMap;
         this.channelPlayerMap = channelPlayerMap;
         this.playerNameChannelMap = playerNameChannelMap;
+        this.allChannel = allChannel;
     }
 
     public void putPlayer(String channelId, ChatPlayer chatPlayer) {
@@ -71,6 +72,9 @@ public class ChatStoredChannel {
         channelMap.remove(channelId);
     }
 
+    public Channel getChannelByPlayerName(String playerName) {
+        return playerNameChannelMap.get(playerName);
+    }
 
     public Map<String, ChatPlayer> getChannelPlayerMap() {
         return channelPlayerMap;

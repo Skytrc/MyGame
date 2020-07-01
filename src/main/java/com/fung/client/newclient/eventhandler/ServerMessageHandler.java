@@ -2,6 +2,7 @@ package com.fung.client.newclient.eventhandler;
 
 import com.fung.client.newclient.Login;
 import com.fung.client.newclient.MainPage;
+import com.fung.client.newclient.code.ChatCode;
 import com.fung.client.newclient.code.ModelCode;
 import com.fung.client.newclient.code.TipsCode;
 import com.fung.protobuf.protoclass.ChatMessage;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
+ * ChatClient 接受 消息
  * @author skytrc@163.com
  * @date 2020/6/29 11:53
  */
@@ -60,7 +62,15 @@ public class ServerMessageHandler {
 
     }
 
-    public void chat(byte[] model) {
+    public void chat(byte[] model) throws InvalidProtocolBufferException {
+        ChatMessageRequest.ChatRequest chatRequest = ChatMessageRequest.ChatRequest.parseFrom(model);
+        String message = "";
+        if (chatRequest.getChatMode() == ChatCode.PUBLIC_CHAT) {
+            message = "[公频] " + chatRequest.getPlayerName() + " : " + chatRequest.getContent();
 
+        } else if (chatRequest.getChatMode() == ChatCode.PRIVATE_CHAT) {
+            message = "[私聊] " + chatRequest.getPlayerName() + " : " + chatRequest.getContent();
+        }
+        mainPage.echoChatMessage(message);
     }
 }
