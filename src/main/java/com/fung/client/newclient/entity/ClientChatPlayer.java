@@ -18,6 +18,8 @@ public class ClientChatPlayer {
 
     private String playerName;
 
+    private String password;
+
     private List<Long> chatCds;
 
     public ClientChatPlayer() {
@@ -40,5 +42,13 @@ public class ClientChatPlayer {
 
     public void setChatCds(List<Long> chatCds) {
         this.chatCds = chatCds;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

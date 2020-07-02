@@ -46,4 +46,8 @@ public class ChatClientMessageHandler {
         }
         mainPage.echoChatMessage("发言冷却中，请稍后在发言");
     }
+
+    public void closeChannel() {
+        chatClientWriteMessage.closeChannel();
+    }
 }

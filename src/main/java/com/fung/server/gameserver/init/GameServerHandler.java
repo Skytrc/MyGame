@@ -56,5 +56,6 @@ public class GameServerHandler extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         onlinePlayer.getPlayerMap().remove(ctx.channel().id().asLongText());
         storedChannel.removeChannelById(ctx.channel().id().asLongText());
+        LOGGER.info("close channel");
     }
 }

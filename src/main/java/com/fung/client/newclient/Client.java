@@ -1,8 +1,11 @@
 package com.fung.client.newclient;
 
-import com.fung.client.newclient.eventhandler.ServerMessageHandler;
+import com.fung.client.newclient.eventhandler.ChatServerMessageHandler;
+import com.fung.client.newclient.eventhandler.GameClientMessageHandler;
 import com.fung.client.newclient.messagehandle.ChatClientWriteMessage;
+import com.fung.client.newclient.messagehandle.GameClientWriteMessage;
 import com.fung.protobuf.protoclass.ChatMessage;
+import com.fung.protobuf.protoclass.InstructionProto;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -36,16 +39,21 @@ public class Client {
     private ChatClientWriteMessage chatClientWriteMessage;
 
     @Autowired
-    private ServerMessageHandler serverMessageHandler;
+    private GameClientWriteMessage gameClientWriteMessage;
+
+    @Autowired
+    private ChatServerMessageHandler chatServerMessageHandler;
+
+    @Autowired
+    private GameClientMessageHandler gameClientMessageHandler;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Client.class);
 
-    public void connect(int port, String host) throws Exception {
+    public void chatServerConnect(int port, String host) throws Exception {
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             Bootstrap b = new Bootstrap();
             b.group(group).channel(NioSocketChannel.class)
-                    .option(ChannelOption.SO_BACKLOG, 128)
                     .option(ChannelOption.TCP_NODELAY, true)
                     .option(ChannelOption.SO_KEEPALIVE, true)
                     .handler(new ChannelInitializer<SocketChannel>() {
@@ -55,7 +63,7 @@ public class Client {
                                     ChatMessage.ChatServerMessage.getDefaultInstance()));
                             ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
                             ch.pipeline().addLast(new ProtobufEncoder());
-                            ch.pipeline().addLast(new ClientHandler(serverMessageHandler));
+                            ch.pipeline().addLast(new ChatClientHandler(chatServerMessageHandler));
                         }
                     });
             ChannelFuture f = b.connect(host, port).sync();
@@ -66,13 +74,36 @@ public class Client {
         }
     }
 
+    public void gameServerConnect(int port, String host) {
+        EventLoopGroup group = new NioEventLoopGroup();
+        try {
+            Bootstrap b = new Bootstrap();
+            b.group(group).channel(NioSocketChannel.class)
+                    .option(ChannelOption.TCP_NODELAY, true)
+                    .option(ChannelOption.SO_KEEPALIVE, true)
+                    .handler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        protected void initChannel(SocketChannel ch) throws Exception {
+                            ch.pipeline().addLast(new ProtobufDecoder(
+                                    InstructionProto.Instruction.getDefaultInstance()));
+                            ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
+                            ch.pipeline().addLast(new ProtobufEncoder());
+                            ch.pipeline().addLast(new GameClientHandler(gameClientMessageHandler));
+                        }
+                    });
+            ChannelFuture f = b.connect(host, port).sync();
+            gameClientWriteMessage.setChannel(f.channel());
+            f.channel().closeFuture().sync();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            group.shutdownGracefully();
+        }
+    }
+
     public void guiClientStart(Channel channel) {
         login.loginInit();
         chatClientWriteMessage.setChannel(channel);
-    }
-
-    public void clientInit(int port, String host) {
-
     }
 
     public static void main(String[] args) throws Exception {
@@ -81,6 +112,6 @@ public class Client {
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
         LOGGER.info("Spring 初始化");
         Client client = context.getBean(Client.class);
-        client.connect(port, host);
+        client.chatServerConnect(port, host);
     }
 }

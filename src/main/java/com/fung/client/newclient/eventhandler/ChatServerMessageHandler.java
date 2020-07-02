@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  * @date 2020/6/29 11:53
  */
 @Component
-public class ServerMessageHandler {
+public class ChatServerMessageHandler {
 
     @Autowired
     private Login login;
@@ -25,7 +25,7 @@ public class ServerMessageHandler {
     @Autowired
     private MainPage mainPage;
 
-    public void handleServerMessage(ChatMessage.ChatServerMessage message) throws InvalidProtocolBufferException {
+    public void handleServerMessage(ChatMessage.ChatServerMessage message) throws InvalidProtocolBufferException, InterruptedException {
         switch (message.getCode()) {
             case ModelCode.LOGIN :
                 login(message.getModel().toByteArray());
@@ -41,7 +41,7 @@ public class ServerMessageHandler {
         }
     }
 
-    public void login(byte[] model) throws InvalidProtocolBufferException {
+    public void login(byte[] model) throws InvalidProtocolBufferException, InterruptedException {
         ChatMessageRequest.PlayerLoginInfo playerLoginInfo = ChatMessageRequest.PlayerLoginInfo.parseFrom(model);
         switch (playerLoginInfo.getCode()) {
             case(TipsCode.PLAYER_NAME_NOT_EXISTS):
@@ -51,7 +51,7 @@ public class ServerMessageHandler {
                 login.showMessage("密码错误");
                 break;
             case(TipsCode.LOGIN_SUCCESS):
-                login.openMainPage(playerLoginInfo.getPlayerName(), playerLoginInfo.getPassword());
+                login.openMainPage();
                 break;
             default:
                 login.showMessage(playerLoginInfo.getCode() + ":代码错误");

@@ -41,6 +41,7 @@ public class ChatServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         chatStoredChannel.removeChannelById(ctx.channel().id().asLongText());
+        LOGGER.info("close channel");
     }
 
     @Override

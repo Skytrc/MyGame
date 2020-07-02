@@ -1,6 +1,6 @@
 package com.fung.client.newclient;
 
-import com.fung.client.newclient.eventhandler.ServerMessageHandler;
+import com.fung.client.newclient.eventhandler.ChatServerMessageHandler;
 import com.fung.protobuf.protoclass.ChatMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -11,19 +11,19 @@ import org.slf4j.LoggerFactory;
  * @author skytrc@163.com
  * @date 2020/6/24 10:25
  */
-public class ClientHandler extends ChannelInboundHandlerAdapter {
+public class ChatClientHandler extends ChannelInboundHandlerAdapter {
 
-    private ServerMessageHandler serverMessageHandler;
+    private ChatServerMessageHandler chatServerMessageHandler;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClientHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChatClientHandler.class);
 
-    public ClientHandler(ServerMessageHandler serverMessageHandler) {
-        this.serverMessageHandler = serverMessageHandler;
+    public ChatClientHandler(ChatServerMessageHandler chatServerMessageHandler) {
+        this.chatServerMessageHandler = chatServerMessageHandler;
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        serverMessageHandler.handleServerMessage((ChatMessage.ChatServerMessage) msg);
+        chatServerMessageHandler.handleServerMessage((ChatMessage.ChatServerMessage) msg);
         LOGGER.info(msg.toString());
     }
 

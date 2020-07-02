@@ -52,6 +52,10 @@ public class ChatClientWriteMessage {
         return ByteString.copyFrom(builder.build().toByteArray());
     }
 
+    public void closeChannel() {
+        channel.close();
+    }
+
     public void setChannel(Channel channel) {
         this.channel = channel;
     }

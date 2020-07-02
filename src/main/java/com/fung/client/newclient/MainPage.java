@@ -1,12 +1,14 @@
 package com.fung.client.newclient;
 
 import com.fung.client.newclient.eventhandler.ChatClientMessageHandler;
-import com.fung.client.newclient.messagehandle.ChatClientWriteMessage;
+import com.fung.client.newclient.messagehandle.GameClientWriteMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * @author skytrc@163.com
@@ -16,7 +18,10 @@ import java.awt.*;
 public class MainPage {
 
     @Autowired
-    private ChatClientMessageHandler messageHandler;
+    private ChatClientMessageHandler chatMessageHandler;
+
+    @Autowired
+    private GameClientWriteMessage gameClientWriteMessage;
 
     private JTextArea chatTextArea;
 
@@ -36,6 +41,12 @@ public class MainPage {
         jFrame.setBounds(200, 100, 600, 700);
         jFrame.setVisible(true);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                closeChannel();
+            }
+        });
     }
 
     /**
@@ -59,7 +70,8 @@ public class MainPage {
         JButton displayButton = new JButton("发送");
         displayButton.addActionListener((actionEvent) -> {
             String instruction = displayTextField.getText();
-            gameTextArea.append("\n 发送指令: " + instruction);
+            gameClientWriteMessage.sendInstruction2Server(instruction);
+            gameTextArea.append("\n 发送指令: " + instruction + "\n");
         });
 
         northPanel.add(new JLabel("指令"));
@@ -98,7 +110,7 @@ public class MainPage {
         JButton chatButton = new JButton("发送");
         chatButton.addActionListener((actionEvent) -> {
             String chatMessage = chatTextField.getText();
-            messageHandler.handler(cmb.getSelectedIndex(), chatTextField.getText());
+            chatMessageHandler.handler(cmb.getSelectedIndex(), chatTextField.getText());
             chatTextArea.append("\n 发送聊天: " + chatMessage);
         });
 
@@ -122,4 +134,8 @@ public class MainPage {
         gameTextArea.append("\n" + message + "\n");
     }
 
+    public void closeChannel() {
+        gameClientWriteMessage.closeChannel();
+        chatMessageHandler.closeChannel();
+    }
 }
