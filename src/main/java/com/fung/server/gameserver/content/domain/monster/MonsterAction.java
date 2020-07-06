@@ -1,6 +1,6 @@
 package com.fung.server.gameserver.content.domain.monster;
 
-import com.fung.server.gameserver.channelstore.AsynWriteMessage2Client;
+import com.fung.server.gameserver.channelstore.WriteMessage2Client;
 import com.fung.server.gameserver.content.config.manager.SkillManager;
 import com.fung.server.gameserver.content.config.monster.BaseMonster;
 import com.fung.server.gameserver.content.config.skill.DamageSkill;
@@ -28,7 +28,7 @@ public class MonsterAction {
     SkillManager skillManager;
 
     @Autowired
-    AsynWriteMessage2Client writeMessage2Client;
+    WriteMessage2Client writeMessage2Client;
 
     Lock lock;
 

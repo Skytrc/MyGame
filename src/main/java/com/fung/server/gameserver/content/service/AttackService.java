@@ -8,6 +8,7 @@ public interface AttackService {
 
     /**
      * 攻击
+     * @throws InterruptedException
      * @param channelId 通道Id,获取玩家信息
      * @param x x轴
      * @param y y轴

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @date 2020/6/10 16:30
  */
 @Component
-public class AsynWriteMessage2Client {
+public class WriteMessage2Client {
 
     @Autowired
     private StoredChannel storedChannel;

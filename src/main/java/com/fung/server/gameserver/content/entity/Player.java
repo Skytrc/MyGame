@@ -1,6 +1,7 @@
 package com.fung.server.gameserver.content.entity;
 
 import com.fung.server.gameserver.content.domain.backpack.PersonalBackpack;
+import com.fung.server.gameserver.content.domain.player.PlayerTempStatus;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -204,6 +205,13 @@ public class Player{
      */
     @Transient
     private volatile boolean isAttacking;
+
+    @Transient
+    private PlayerTempStatus tempStatus;
+
+    public Player() {
+        tempStatus = new PlayerTempStatus();
+    }
 
     public String getUuid() {
         return uuid;
@@ -451,5 +459,9 @@ public class Player{
 
     public void setMoveSpeed(int moveSpeed) {
         this.moveSpeed = moveSpeed;
+    }
+
+    public PlayerTempStatus getTempStatus() {
+        return tempStatus;
     }
 }

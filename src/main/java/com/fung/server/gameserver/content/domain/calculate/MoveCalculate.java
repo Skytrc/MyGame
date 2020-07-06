@@ -1,6 +1,6 @@
 package com.fung.server.gameserver.content.domain.calculate;
 
-import com.fung.server.gameserver.channelstore.AsynWriteMessage2Client;
+import com.fung.server.gameserver.channelstore.WriteMessage2Client;
 import com.fung.server.gameserver.content.config.map.GameMap;
 import com.fung.server.gameserver.content.domain.player.PlayerInfo;
 import com.fung.server.gameserver.content.entity.Player;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class MoveCalculate {
 
     @Autowired
-    AsynWriteMessage2Client writeMessage2Client;
+    WriteMessage2Client writeMessage2Client;
 
     @Autowired
     PlayerInfo playerInfo;
