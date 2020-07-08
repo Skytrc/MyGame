@@ -10,5 +10,5 @@ public interface IMessageHandler<H extends IMessageHandler<?>>{
      * 添加消息
      * @param msg 消息
      */
-    void addMessage(IMessageHandler<H> msg);
+    void addMessage(IMessage<H> msg);
 }

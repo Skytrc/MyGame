@@ -23,25 +23,25 @@ public class GameServerStart {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameServerStart.class);
 
     @Autowired
-    MapManager mapManager;
+    private MapManager mapManager;
 
     @Autowired
-    GoodManager goodManager;
+    private GoodManager goodManager;
 
     @Autowired
-    MonsterCreateManager monsterCreateManager;
+    private MonsterCreateManager monsterCreateManager;
 
     @Autowired
-    SkillManager skillManager;
+    private SkillManager skillManager;
 
     @Autowired
-    NpcManager npcManager;
+    private NpcManager npcManager;
 
     @Autowired
-    PlayerInit playerInit;
+    private PlayerInit playerInit;
 
     @Autowired
-    Controller controller;
+    private Controller controller;
 
     public void start(int port) throws InterruptedException, IOException, InvalidFormatException {
         mapManager.mapInit();

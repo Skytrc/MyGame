@@ -11,9 +11,9 @@ public class GameMapGates implements Model {
 
     private int id;
 
-    private int thisMap;
+    private int thisMapId;
 
-    private int nextMap;
+    private int nextMapId;
 
     private int location;
 
@@ -22,12 +22,12 @@ public class GameMapGates implements Model {
         return id;
     }
 
-    public int getThisMap() {
-        return thisMap;
+    public int getThisMapId() {
+        return thisMapId;
     }
 
-    public int getNextMap() {
-        return nextMap;
+    public int getNextMapId() {
+        return nextMapId;
     }
 
     public int getLocation() {
@@ -38,12 +38,12 @@ public class GameMapGates implements Model {
         this.id = id;
     }
 
-    public void setThisMap(int thisMap) {
-        this.thisMap = thisMap;
+    public void setThisMapId(int thisMapId) {
+        this.thisMapId = thisMapId;
     }
 
-    public void setNextMap(int nextMap) {
-        this.nextMap = nextMap;
+    public void setNextMapId(int nextMapId) {
+        this.nextMapId = nextMapId;
     }
 
     public void setLocation(int location) {

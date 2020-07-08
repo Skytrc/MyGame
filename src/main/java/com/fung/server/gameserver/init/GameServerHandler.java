@@ -43,7 +43,10 @@ public class GameServerHandler extends ChannelInboundHandlerAdapter {
         System.out.println("Service accept client message : " + instructionPack.encode((InstructionProto.Instruction) msg));
         String response = controller.handleMessage(instructionPack.encode((InstructionProto.Instruction) msg),
                 ctx.channel().id().asLongText());
-        ctx.writeAndFlush(instructionPack.decode(response));
+        // 如果返回消息为空，不传输消息给客户端
+        if (!"".equals(response)){
+            ctx.writeAndFlush(instructionPack.decode(response));
+        }
     }
 
     @Override

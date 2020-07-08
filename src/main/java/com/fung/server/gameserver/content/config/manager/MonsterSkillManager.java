@@ -26,7 +26,7 @@ public class MonsterSkillManager {
     private ReadMonsterSkill readMonsterSkill;
 
     @Autowired
-    SkillManager skillManager;
+    private SkillManager skillManager;
 
     public void monsterSkillInit() throws IOException, InvalidFormatException {
         readMonsterSkill.init();

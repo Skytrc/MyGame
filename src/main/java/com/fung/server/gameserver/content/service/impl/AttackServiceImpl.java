@@ -1,16 +1,21 @@
 package com.fung.server.gameserver.content.service.impl;
 
+import com.fung.server.gameserver.channelstore.WriteMessage2Client;
+import com.fung.server.gameserver.content.config.manager.MapManager;
 import com.fung.server.gameserver.content.config.manager.SkillManager;
 import com.fung.server.gameserver.content.config.map.GameMap;
 import com.fung.server.gameserver.content.config.monster.NormalMonster;
 import com.fung.server.gameserver.content.domain.calculate.AttackCalculate;
 import com.fung.server.gameserver.content.domain.equipment.EquipmentDurable;
+import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
 import com.fung.server.gameserver.content.domain.monster.MonsterAction;
 import com.fung.server.gameserver.content.domain.player.OnlinePlayer;
 import com.fung.server.gameserver.content.domain.player.PlayerInfo;
 import com.fung.server.gameserver.content.entity.Player;
 import com.fung.server.gameserver.content.service.AttackService;
 import com.fung.server.gameserver.content.threadpool.AttackThreadPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,25 +28,33 @@ import org.springframework.stereotype.Component;
 public class AttackServiceImpl implements AttackService {
 
     @Autowired
-    PlayerInfo playerInfo;
+    private PlayerInfo playerInfo;
 
     @Autowired
-    OnlinePlayer onlinePlayer;
+    private OnlinePlayer onlinePlayer;
 
     @Autowired
-    AttackCalculate attackCalculate;
+    private AttackCalculate attackCalculate;
 
     @Autowired
-    AttackThreadPool attackThreadPool;
+    private AttackThreadPool attackThreadPool;
 
     @Autowired
-    EquipmentDurable equipmentDurable;
+    private MapManager mapManager;
 
     @Autowired
-    MonsterAction monsterAction;
+    private EquipmentDurable equipmentDurable;
 
     @Autowired
-    SkillManager skillManager;
+    private MonsterAction monsterAction;
+
+    @Autowired
+    private SkillManager skillManager;
+
+    @Autowired
+    private WriteMessage2Client writeMessage2Client;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AttackService.class);
 
     @Override
     public String attack(String channelId, int x, int y, int skillId) throws InterruptedException {
@@ -79,7 +92,47 @@ public class AttackServiceImpl implements AttackService {
                 }
             });
         }
-
         return "\n对怪物: " + normalMonster.getName() + " 造成 " + minusHp + " 伤害" + "  怪物目前血量: " + normalMonster.getHealthPoint() + "\n";
+    }
+
+    @Override
+    public String attack1(String channelId, int x, int y, int skillId) {
+        Player player = onlinePlayer.getPlayerByChannelId(channelId);
+        GameMapActor mapActor = mapManager.getGameMapActorById(player.getInMapId());
+        // 丢到对应地图线程中处理
+        mapActor.addMessage(gameMapActor -> {
+            LOGGER.info(Thread.currentThread().getName());
+            GameMap currentPlayerMap = mapActor.getGameMap();
+            NormalMonster monster = currentPlayerMap.getMonsterByXy(x, y);
+            if (monster == null) {
+                writeMessage2Client.writeMessage(channelId, "\n位置[" + x + "," + y + "] 没有敌对生物");
+                return;
+            }
+            if (!attackCalculate.calculateAttackDistance(player, x, y)) {
+                writeMessage2Client.writeMessage(channelId, "\n攻击距离不够  当前攻击距离为: " + player.getAttackDistance());
+                return;
+            }
+            int minusHp = attackCalculate.defenderHpCalculate(player.getTotalAttackPower(),
+                    player.getTotalCriticalRate(), skillManager.getSkillById(skillId).getPhysicalDamage(),
+                    monster.getDefend());
+            // 装备耐久计算
+            equipmentDurable.equipmentDurableMinus(player, false);
+            if (monster.getHealthPoint() < minusHp) {
+                // TODO 死亡结算 包括装备掉落、经验、金钱掉落、怪物重生
+                monster.setHealthPoint(0);
+                monsterAction.rebirth(monster, gameMapActor);
+                writeMessage2Client.writeMessage(channelId, "\n对怪物: " + monster.getName() + "  造成" + minusHp +"伤害  击败怪物\n");
+                return;
+            }
+            monster.setHealthPoint(monster.getHealthPoint() - minusHp);
+            // 开启怪物攻击
+            if (!monster.isAttacking()) {
+                mapActor.addMessage(h -> {
+                    monsterAction.attackPlayer0(channelId, player, monster, gameMapActor);
+                });
+            }
+            writeMessage2Client.writeMessage(channelId, "\n对怪物: " + monster.getName() + " 造成 " + minusHp + " 伤害" + "  怪物目前血量: " + monster.getHealthPoint() + "\n");
+        });
+        return "";
     }
 }

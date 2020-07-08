@@ -19,19 +19,19 @@ import org.springframework.stereotype.Component;
 public class MoveServiceImpl implements MoveService {
 
     @Autowired
-    OnlinePlayer onlinePlayer;
+    private OnlinePlayer onlinePlayer;
 
     @Autowired
-    PlayerInfo playerInfo;
+    private PlayerInfo playerInfo;
 
     @Autowired
-    PlayerCache playerCache;
+    private PlayerCache playerCache;
 
     @Autowired
-    MapInfo mapInfo;
+    private MapInfo mapInfo;
 
     @Autowired
-    MoveCalculate moveCalculate;
+    private MoveCalculate moveCalculate;
 
     @Override
     public String move(int x, int y, String channelId) throws InterruptedException {

@@ -23,16 +23,16 @@ import java.text.SimpleDateFormat;
 public class PlayerInfo {
 
     @Autowired
-    MapManager mapManager;
+    private MapManager mapManager;
 
     @Autowired
-    OnlinePlayer onlinePlayer;
+    private OnlinePlayer onlinePlayer;
 
     @Autowired
-    GoodManager goodManager;
+    private GoodManager goodManager;
 
     @Autowired
-    SkillManager skillManager;
+    private SkillManager skillManager;
 
     /**
      * @param channelId 客户端channel id

@@ -14,7 +14,7 @@ import java.util.List;
 public class AttackHandler extends BaseInstructionHandler{
 
     @Autowired
-    AttackService attackService;
+    private AttackService attackService;
 
     @Override
     public String handler(List<String> ins) {
@@ -29,8 +29,8 @@ public class AttackHandler extends BaseInstructionHandler{
             int skillId = Integer.parseInt(ins.remove(0));
             int x = Integer.parseInt(ins.remove(0));
             int y = Integer.parseInt(ins.remove(0));
-            return attackService.attack(getChannelId(), x, y, skillId);
-        } catch (NumberFormatException | InterruptedException ignored) {
+            return attackService.attack1(getChannelId(), x, y, skillId);
+        } catch (NumberFormatException ignored) {
             return "格子数必须为数字";
         }
     }

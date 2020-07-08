@@ -15,5 +15,16 @@ public interface AttackService {
      * @param skillId 技能编号
      * @return 攻击消息
      */
+    @Deprecated
     String attack(String channelId, int x, int y, int skillId) throws InterruptedException;
+
+    /**
+     * 攻击 2.0()
+     * @param channelId 通道Id,获取玩家信息
+     * @param x x轴
+     * @param y y轴
+     * @param skillId 技能编号
+     * @return 攻击消息
+     */
+    String attack1(String channelId, int x, int y, int skillId);
 }
