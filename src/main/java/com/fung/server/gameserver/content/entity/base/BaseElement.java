@@ -17,6 +17,12 @@ public abstract class BaseElement {
      */
     private String name;
 
+    private int inMapId;
+
+    private int inMapX;
+
+    private int inMapY;
+
     /**
      * 是否友善生物
      */
@@ -43,6 +49,31 @@ public abstract class BaseElement {
     }
 
     public void setFriendly(boolean friendly) {
+
         this.friendly = friendly;
+    }
+
+    public int getInMapId() {
+        return inMapId;
+    }
+
+    public void setInMapId(int inMapId) {
+        this.inMapId = inMapId;
+    }
+
+    public int getInMapX() {
+        return inMapX;
+    }
+
+    public void setInMapX(int inMapX) {
+        this.inMapX = inMapX;
+    }
+
+    public int getInMapY() {
+        return inMapY;
+    }
+
+    public void setInMapY(int inMapY) {
+        this.inMapY = inMapY;
     }
 }

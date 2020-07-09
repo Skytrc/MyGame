@@ -19,7 +19,7 @@ import java.util.List;
 public class GoodLoad {
 
     @Autowired
-    EquipmentCreatedFactory factory;
+    private EquipmentCreatedFactory factory;
 
     @Autowired
     GoodManager goodManager;

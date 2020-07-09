@@ -32,8 +32,6 @@ public class NonPlayerCharacter extends BaseElement implements Model {
 
     private int magicPower;
 
-    private int inMapId;
-
     private int inMapX;
 
     private int inMapY;
@@ -95,30 +93,6 @@ public class NonPlayerCharacter extends BaseElement implements Model {
 
     public void setMagicPower(int magicPower) {
         this.magicPower = magicPower;
-    }
-
-    public int getInMapId() {
-        return inMapId;
-    }
-
-    public void setInMapId(int inMapId) {
-        this.inMapId = inMapId;
-    }
-
-    public int getInMapX() {
-        return inMapX;
-    }
-
-    public void setInMapX(int inMapX) {
-        this.inMapX = inMapX;
-    }
-
-    public int getInMapY() {
-        return inMapY;
-    }
-
-    public void setInMapY(int inMapY) {
-        this.inMapY = inMapY;
     }
 
     public List<Integer> getGoodsId() {

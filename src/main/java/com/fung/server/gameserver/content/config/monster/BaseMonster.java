@@ -43,21 +43,6 @@ public abstract class BaseMonster extends BaseElement {
     private int defend;
 
     /**
-     * 怪物所在地图
-     */
-    private int inMapId;
-
-    /**
-     * 怪物所在地图X轴
-     */
-    private int inMapX;
-
-    /**
-     * 怪物所在地图Y轴
-     */
-    private int inMapY;
-
-    /**
      * 怪物攻击距离
      */
     private int attackDistance;
@@ -147,30 +132,6 @@ public abstract class BaseMonster extends BaseElement {
 
     public void setCurrentAttackPlayer(Player currentAttackPlayer) {
         this.currentAttackPlayer = currentAttackPlayer;
-    }
-
-    public int getInMapId() {
-        return inMapId;
-    }
-
-    public void setInMapId(int inMapId) {
-        this.inMapId = inMapId;
-    }
-
-    public int getInMapX() {
-        return inMapX;
-    }
-
-    public void setInMapX(int inMapX) {
-        this.inMapX = inMapX;
-    }
-
-    public int getInMapY() {
-        return inMapY;
-    }
-
-    public void setInMapY(int inMapY) {
-        this.inMapY = inMapY;
     }
 
     public boolean isAttacking() {

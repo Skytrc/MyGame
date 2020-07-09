@@ -1,6 +1,7 @@
 package com.fung.server.gameserver.content.config.manager;
 
 import com.fung.server.gameserver.content.config.map.GameMap;
+import com.fung.server.gameserver.content.config.monster.MonsterDrop;
 import com.fung.server.gameserver.content.config.monster.NormalMonster;
 import com.fung.server.gameserver.content.config.monster.MonsterDistribution;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,21 +25,25 @@ public class MonsterCreateManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(MonsterCreateManager.class);
 
     @Autowired
-    MonsterManager monsterManager;
+    private MonsterManager monsterManager;
 
     @Autowired
-    MonsterDistributionManager monsterDistributionManager;
+    private MonsterDistributionManager monsterDistributionManager;
 
     @Autowired
-    MonsterSkillManager monsterSkillManager;
+    private MonsterSkillManager monsterSkillManager;
 
     @Autowired
-    MapManager mapManager;
+    private MonsterDropManager monsterDropManager;
+
+    @Autowired
+    private MapManager mapManager;
 
     public void monsterCreateInit() throws IOException, InvalidFormatException {
         monsterDistributionManager.monsterDistributionInit();
         monsterManager.monsterInit();
         monsterSkillManager.monsterSkillInit();
+        monsterDropManager.monsterDropInit(new HashMap<>());
         readMonsterDistribution2ConfigMonster();
         LOGGER.info("怪物生成完毕");
     }
@@ -76,5 +83,9 @@ public class MonsterCreateManager {
         newNormalMonster.setInMapX(mapManager.getMapByMapId(gameMapId).location2xy(position)[0]);
         newNormalMonster.setInMapY(mapManager.getMapByMapId(gameMapId).location2xy(position)[1]);
         return newNormalMonster;
+    }
+
+    public Map<Integer, List<MonsterDrop>> getMonsterDropByIdMap() {
+        return monsterDropManager.getMonsterDropByIdMap();
     }
 }

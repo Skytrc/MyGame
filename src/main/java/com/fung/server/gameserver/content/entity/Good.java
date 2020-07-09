@@ -51,6 +51,18 @@ public class Good {
     @Transient
     private boolean hasEquipmentValue;
 
+    /**
+     * 物品名称
+     */
+    @Transient
+    private String name;
+
+    /**
+     * 物品描述
+     */
+    @Transient
+    private String description;
+
     public String getUuid() {
         return uuid;
     }
@@ -103,7 +115,24 @@ public class Good {
         return hasEquipmentValue;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public void setHasEquipmentValue(boolean hasEquipmentValue) {
+
         this.hasEquipmentValue = hasEquipmentValue;
     }
 }

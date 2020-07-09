@@ -96,14 +96,6 @@ public class Equipment extends Good {
         this.level = level;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getDurable() {
         return durable;
     }
@@ -166,14 +158,6 @@ public class Equipment extends Good {
 
     public void setDefense(int defense) {
         this.defense = defense;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getEntriesNum() {

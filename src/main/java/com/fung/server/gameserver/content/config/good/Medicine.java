@@ -10,8 +10,6 @@ import com.fung.server.gameserver.excel2class.Model;
  */
 public class Medicine extends Good implements Model, GoodBaseInfo {
 
-    private String name;
-
     private int plusHp;
 
     private int plusMp;
@@ -27,17 +25,6 @@ public class Medicine extends Good implements Model, GoodBaseInfo {
      * 药物持续时间
      */
     private int time;
-
-    private String description;
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public int getPlusHp() {
         return plusHp;
@@ -70,15 +57,6 @@ public class Medicine extends Good implements Model, GoodBaseInfo {
 
     public void setMaxStacks(int maxStacks) {
         this.maxStacks = maxStacks;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     @Override
