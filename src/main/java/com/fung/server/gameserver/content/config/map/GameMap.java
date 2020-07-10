@@ -1,5 +1,6 @@
 package com.fung.server.gameserver.content.config.map;
 
+import com.fung.server.gameserver.content.config.good.FallingGood;
 import com.fung.server.gameserver.content.config.monster.NormalMonster;
 import com.fung.server.gameserver.content.entity.Player;
 import com.fung.server.gameserver.content.entity.base.BaseElement;
@@ -51,6 +52,11 @@ public class GameMap extends BaseElement implements Model {
      * 元素对应的地图坐标（坐标需要计算）key location  value 基础元素
      */
     private Map<Integer, BaseElement> elements;
+
+    /**
+     * 存储掉落物品
+     */
+    private Map<Integer, List<FallingGood>> fallingGoodMap;
 
     public GameMap() {
         this.setFriendly(true);
@@ -227,6 +233,72 @@ public class GameMap extends BaseElement implements Model {
      */
     public NormalMonster getMonsterByXy(int x, int y) {
         return monsterMap.get(xy2Location(x, y));
+    }
+
+    /**
+     * 获取该位置中的一件物品(无主，或自己的物品)
+     */
+    public FallingGood getFallingGood(int location, Player player) {
+        if (!fallingGoodMap.containsKey(location)) {
+            return null;
+        }
+        FallingGood fallingGood = fallingGoodMap.get(location).get(0);
+        if (fallingGood.getBeingToPlayer() == null || fallingGood.getBeingToPlayer() == player) {
+            fallingGoodMap.get(location).remove(fallingGood);
+            return fallingGood;
+        }
+        return null;
+    }
+
+    /**
+     * 根据物品名字拾取物品
+     */
+    public FallingGood getFallingGoodByName(int location, String fallingGoodName, Player player) {
+        if (!fallingGoodMap.containsKey(location)) {
+            return null;
+        }
+        List<FallingGood> fallingGoods = fallingGoodMap.get(location);
+        for (FallingGood fallingGood : fallingGoods) {
+            if (fallingGood.getName().equals(fallingGoodName)) {
+                if (fallingGood.getBeingToPlayer() == null || fallingGood.getBeingToPlayer() == player) {
+                    fallingGoods.remove(fallingGood);
+                    return fallingGood;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 把一组（List）掉落物品放入FallingGoodMap中
+     */
+    public void putFallingGoodInMap(List<FallingGood> fallingGoodList, int x, int y) {
+        putFallingGoodInMap(fallingGoodList, xy2Location(x, y));
+    }
+
+    public void putFallingGoodInMap(List<FallingGood> fallingGoodList, int location) {
+        if (fallingGoodMap.containsKey(location)) {
+            fallingGoodMap.get(location).addAll(fallingGoodList);
+        } else {
+            fallingGoodMap.put(location, fallingGoodList);
+        }
+    }
+
+    public void putFallingGoodInMap(FallingGood fallingGood, int x, int y) {
+        putFallingGoodInMap(fallingGood, xy2Location(x, y));
+    }
+
+    /**
+     * 添加掉落物品
+     */
+    public void putFallingGoodInMap(FallingGood fallingGood, int location) {
+        if (fallingGoodMap.containsKey(location)) {
+            fallingGoodMap.get(location).add(fallingGood);
+        } else {
+            List<FallingGood> fallingGoods = new ArrayList<>();
+            fallingGoods.add(fallingGood);
+            fallingGoodMap.put(location, fallingGoods);
+        }
     }
 
     public NormalMonster getMonsterByPosition(int position) {

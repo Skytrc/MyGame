@@ -6,9 +6,11 @@ import com.fung.server.gameserver.content.config.manager.EquipmentCreatedManager
 import com.fung.server.gameserver.content.domain.player.PlayerInfo;
 import com.fung.server.gameserver.content.entity.Equipment;
 import com.fung.server.gameserver.content.util.Uuid;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -19,17 +21,19 @@ import java.util.concurrent.ThreadLocalRandom;
 public class EquipmentCreatedFactory {
 
     @Autowired
-    EquipmentCreatedManager equipmentCreatedManager;
-
-    @Autowired
-    PlayerInfo playerInfo;
+    private EquipmentCreatedManager equipmentCreatedManager;
 
     public Equipment createNewEquipment(String playerId, int equipmentId) {
+        Equipment equipment = createNoBelongingEquipment(equipmentId);
+        equipment.setPlayerId(playerId);
+        return equipment;
+    }
+
+    public Equipment createNoBelongingEquipment(int equipmentId) {
         EquipmentCreated created = equipmentCreatedManager.getEquipmentCreatedMap().get(equipmentId);
         Equipment equipment = new Equipment();
         // 装备基础信息
         equipment.setUuid(Uuid.createUuid());
-        equipment.setPlayerId(playerId);
         equipment.setGoodId(equipmentId);
         equipment.setGetTime(System.currentTimeMillis());
         equipment.setType(getType(created.getType()));

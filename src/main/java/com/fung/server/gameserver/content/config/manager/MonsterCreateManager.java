@@ -4,6 +4,7 @@ import com.fung.server.gameserver.content.config.map.GameMap;
 import com.fung.server.gameserver.content.config.monster.MonsterDrop;
 import com.fung.server.gameserver.content.config.monster.NormalMonster;
 import com.fung.server.gameserver.content.config.monster.MonsterDistribution;
+import com.fung.server.gameserver.content.domain.monster.MonsterDropCreated;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,9 @@ public class MonsterCreateManager {
     private MonsterDropManager monsterDropManager;
 
     @Autowired
+    private MonsterDropCreated monsterDropCreated;
+
+    @Autowired
     private MapManager mapManager;
 
     public void monsterCreateInit() throws IOException, InvalidFormatException {
@@ -44,6 +48,7 @@ public class MonsterCreateManager {
         monsterManager.monsterInit();
         monsterSkillManager.monsterSkillInit();
         monsterDropManager.monsterDropInit(new HashMap<>());
+        monsterDropCreated.monsterDropCreatedInit(monsterDropManager.getMonsterDropByIdMap());
         readMonsterDistribution2ConfigMonster();
         LOGGER.info("怪物生成完毕");
     }

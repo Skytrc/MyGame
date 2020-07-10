@@ -18,6 +18,19 @@ public class PlayerCommConfig {
 
     private int money;
 
+    /**
+     * 增加钱
+     */
+    public int addMoney(int addMoney) {
+        money += addMoney;
+        return money;
+    }
+
+    public int minusMoney(int minusMoney) {
+        money -= minusMoney;
+        return money;
+    }
+
     public int getMaxBackpackGrid() {
         return maxBackpackGrid;
     }

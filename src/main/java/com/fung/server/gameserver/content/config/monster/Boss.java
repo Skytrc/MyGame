@@ -9,7 +9,7 @@ import java.util.Map;
  * @author skytrc@163.com
  * @date 2020/6/15 11:52
  */
-public class Boss extends BaseMonster implements Model {
+public class Boss extends BaseHostileMonster implements Model {
 
     /**
      * 仇恨榜

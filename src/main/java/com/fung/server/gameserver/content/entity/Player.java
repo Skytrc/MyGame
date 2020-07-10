@@ -209,6 +209,16 @@ public class Player{
     @Transient
     private PlayerTempStatus tempStatus;
 
+    public int addExp(int addExp) {
+        exp += addExp;
+        return exp;
+    }
+
+    public int minusExp(int minusExp) {
+        exp -= minusExp;
+        return exp;
+    }
+
     public Player() {
         tempStatus = new PlayerTempStatus();
     }

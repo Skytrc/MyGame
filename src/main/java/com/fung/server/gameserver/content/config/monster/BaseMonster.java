@@ -53,11 +53,6 @@ public abstract class BaseMonster extends BaseElement {
     private List<Skill> monsterSkill;
 
     /**
-     * 当前攻击目标（玩家）
-     */
-    private Player currentAttackPlayer;
-
-    /**
      * 是否正在攻击
      */
     private volatile boolean isAttacking;
@@ -124,14 +119,6 @@ public abstract class BaseMonster extends BaseElement {
 
     public void setMonsterSkill(List<Skill> monsterSkill) {
         this.monsterSkill = monsterSkill;
-    }
-
-    public Player getCurrentAttackPlayer() {
-        return currentAttackPlayer;
-    }
-
-    public void setCurrentAttackPlayer(Player currentAttackPlayer) {
-        this.currentAttackPlayer = currentAttackPlayer;
     }
 
     public boolean isAttacking() {

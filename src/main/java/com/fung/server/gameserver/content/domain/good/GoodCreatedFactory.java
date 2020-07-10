@@ -16,13 +16,13 @@ import java.util.List;
  * @date 2020/6/5 9:54
  */
 @Component
-public class GoodLoad {
+public class GoodCreatedFactory {
 
     @Autowired
     private EquipmentCreatedFactory factory;
 
     @Autowired
-    GoodManager goodManager;
+    private GoodManager goodManager;
 
     /**
      * TODO 这里可以用配置来优化
@@ -54,13 +54,31 @@ public class GoodLoad {
      * @param quantity 数量
      */
     public Good createdNewGood(String playerId, int goodId, int quantity) {
+        Good good = createNoBelongingGood(goodId, quantity);
+        good.setPlayerId(playerId);
+        return good;
+    }
+
+    /**
+     * 创建没有PlayerID的物品
+     */
+    public Good createNoBelongingGood(int goodId, int quantity) {
+        if (isEquipment(goodId)) {
+            return factory.createNoBelongingEquipment(goodId);
+        }
         Good good = new Good();
         good.setUuid(Uuid.createUuid());
         good.setGetTime(System.currentTimeMillis());
         good.setHasEquipmentValue(false);
         good.setGoodId(goodId);
         good.setQuantity(quantity);
-        good.setPlayerId(playerId);
         return good;
+    }
+
+    /**
+     * 判断是否为装备
+     */
+    public boolean isEquipment(int goodId) {
+        return goodManager.isEquipment(goodId);
     }
 }

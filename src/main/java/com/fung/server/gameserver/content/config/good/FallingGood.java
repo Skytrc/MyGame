@@ -15,6 +15,14 @@ public class FallingGood extends BaseElement {
 
     private Player beingToPlayer;
 
+    private long gettingTime;
+
+
+    public String getFallingGoodBaseInfo() {
+        return "\n物品: " + good.getName() + "  物品数量  " + good.getQuantity() +
+                " 在地图: [ " + getInMapX() + "," + getInMapY() +"]";
+    }
+
     public Good getGood() {
         return good;
     }
@@ -31,8 +39,11 @@ public class FallingGood extends BaseElement {
         this.beingToPlayer = beingToPlayer;
     }
 
-    public String getFallingGoodBaseInfo() {
-        return "\n物品: " + good.getName() + "  物品数量  " + good.getQuantity() +
-                " 在地图: [ " + getInMapX() + "," + getInMapY() +"]";
+    public long getGettingTime() {
+        return gettingTime;
+    }
+
+    public void setGettingTime(long gettingTime) {
+        this.gettingTime = gettingTime;
     }
 }

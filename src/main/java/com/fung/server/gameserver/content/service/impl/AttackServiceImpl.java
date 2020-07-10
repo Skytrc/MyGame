@@ -1,14 +1,17 @@
 package com.fung.server.gameserver.content.service.impl;
 
 import com.fung.server.gameserver.channelstore.WriteMessage2Client;
+import com.fung.server.gameserver.content.config.good.FallingGood;
 import com.fung.server.gameserver.content.config.manager.MapManager;
 import com.fung.server.gameserver.content.config.manager.SkillManager;
 import com.fung.server.gameserver.content.config.map.GameMap;
+import com.fung.server.gameserver.content.config.monster.BaseMonster;
 import com.fung.server.gameserver.content.config.monster.NormalMonster;
 import com.fung.server.gameserver.content.domain.calculate.AttackCalculate;
 import com.fung.server.gameserver.content.domain.equipment.EquipmentDurable;
 import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
 import com.fung.server.gameserver.content.domain.monster.MonsterAction;
+import com.fung.server.gameserver.content.domain.monster.MonsterDropCreated;
 import com.fung.server.gameserver.content.domain.player.OnlinePlayer;
 import com.fung.server.gameserver.content.domain.player.PlayerInfo;
 import com.fung.server.gameserver.content.entity.Player;
@@ -18,6 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 
 /**
@@ -47,6 +52,9 @@ public class AttackServiceImpl implements AttackService {
 
     @Autowired
     private MonsterAction monsterAction;
+
+    @Autowired
+    private MonsterDropCreated monsterDropCreated;
 
     @Autowired
     private SkillManager skillManager;
@@ -118,10 +126,9 @@ public class AttackServiceImpl implements AttackService {
             // 装备耐久计算
             equipmentDurable.equipmentDurableMinus(player, false);
             if (monster.getHealthPoint() < minusHp) {
-                // TODO 死亡结算 包括装备掉落、经验、金钱掉落、怪物重生
                 monster.setHealthPoint(0);
-                monsterAction.rebirth(monster, gameMapActor);
                 writeMessage2Client.writeMessage(channelId, "\n对怪物: " + monster.getName() + "  造成" + minusHp +"伤害  击败怪物\n");
+                monsterDeathSettlement(monster, player, channelId, gameMapActor);
                 return;
             }
             monster.setHealthPoint(monster.getHealthPoint() - minusHp);
@@ -134,5 +141,31 @@ public class AttackServiceImpl implements AttackService {
             writeMessage2Client.writeMessage(channelId, "\n对怪物: " + monster.getName() + " 造成 " + minusHp + " 伤害" + "  怪物目前血量: " + monster.getHealthPoint() + "\n");
         });
         return "";
+    }
+
+    public void monsterDeathSettlement(NormalMonster monster, Player player, String channelId, GameMapActor gameMapActor) {
+        // TODO 死亡结算 包括经验、数据库保存
+        player.getPlayerCommConfig().addMoney(monster.getValue());
+
+        monsterAction.rebirth(monster, gameMapActor);
+        monsterDrop(monster, player, channelId);
+    }
+
+    public void monsterDrop(NormalMonster monster, Player player, String channelId) {
+        List<FallingGood> fallingGoods = monsterDropCreated.goodsCreated(monster, player);
+        if (fallingGoods != null) {
+            GameMap map = mapManager.getMapByMapId(monster.getInMapId());
+            map.putFallingGoodInMap(fallingGoods, monster.getInMapX(), monster.getInMapY());
+            writeMessage2Client.writeMessage(channelId, monsterDropMessage(fallingGoods, monster.getInMapX(), monster.getInMapY()));
+        }
+    }
+
+    public String monsterDropMessage(List<FallingGood> fallingGoodList, int x, int y) {
+        StringBuilder stringBuilder = new StringBuilder("\n地图[ ");
+        stringBuilder.append(x).append(" , ").append(y).append(" ] 掉落: \n");
+        for (FallingGood fallingGood : fallingGoodList) {
+            stringBuilder.append(fallingGood.getName()).append(" 数量:").append(fallingGood.getGood().getQuantity()).append("\n");
+        }
+        return stringBuilder.toString();
     }
 }

@@ -4,7 +4,7 @@ import com.fung.server.gameserver.content.dao.EquipmentDao;
 import com.fung.server.gameserver.content.dao.GoodDao;
 import com.fung.server.gameserver.content.dao.SkillDao;
 import com.fung.server.gameserver.content.domain.backpack.PersonalBackpack;
-import com.fung.server.gameserver.content.domain.good.GoodLoad;
+import com.fung.server.gameserver.content.domain.good.GoodCreatedFactory;
 import com.fung.server.gameserver.content.domain.skill.SkillLoad;
 import com.fung.server.gameserver.content.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.List;
 public class PlayerCreated {
 
     @Autowired
-    GoodLoad goodLoad;
+    GoodCreatedFactory goodCreatedFactory;
 
     @Autowired
     SkillLoad skillLoad;
@@ -76,8 +76,8 @@ public class PlayerCreated {
         // 背包模块
         PersonalBackpack personalBackpack = new PersonalBackpack();
         personalBackpack.setMaxBackpackGrid(player.getPlayerCommConfig().getMaxBackpackGrid());
-        List<Good> goods = goodLoad.newPlayerGoodCreated(player.getUuid());
-        List<Equipment> equipments = goodLoad.newPlayerEquipmentCreated(player.getUuid());
+        List<Good> goods = goodCreatedFactory.newPlayerGoodCreated(player.getUuid());
+        List<Equipment> equipments = goodCreatedFactory.newPlayerEquipmentCreated(player.getUuid());
 
         // 物品、武器放入背包
         for (Good good : goods) {
