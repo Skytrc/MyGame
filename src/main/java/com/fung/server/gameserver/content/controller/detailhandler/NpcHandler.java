@@ -14,7 +14,7 @@ import java.util.List;
 public class NpcHandler extends BaseInstructionHandler{
 
     @Autowired
-    NpcService npcService;
+    private NpcService npcService;
 
     @Override
     public String handler(List<String> ins) throws InterruptedException {
@@ -45,5 +45,9 @@ public class NpcHandler extends BaseInstructionHandler{
 
     public String openShop() {
         return npcService.openShop(getChannelId());
+    }
+
+    public String openDungeon() {
+        return npcService.openDungeon(getChannelId());
     }
 }

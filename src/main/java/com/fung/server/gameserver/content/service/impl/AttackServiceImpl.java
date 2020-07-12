@@ -84,7 +84,6 @@ public class AttackServiceImpl implements AttackService {
                     normalMonster.getDefend());
             equipmentDurable.equipmentDurableMinus(player, false);
             if (normalMonster.getHealthPoint() < minusHp) {
-                // TODO 死亡结算 包括装备掉落、经验、金钱掉落
                 normalMonster.setHealthPoint(0);
                 return "\n对怪物: " + normalMonster.getName() + "  造成" + minusHp +"伤害  击败怪物\n";
             }
@@ -134,9 +133,7 @@ public class AttackServiceImpl implements AttackService {
             monster.setHealthPoint(monster.getHealthPoint() - minusHp);
             // 开启怪物攻击
             if (!monster.isAttacking()) {
-                mapActor.addMessage(h -> {
-                    monsterAction.attackPlayer0(channelId, player, monster, gameMapActor);
-                });
+                mapActor.addMessage(h -> monsterAction.attackPlayer0(channelId, player, monster, gameMapActor));
             }
             writeMessage2Client.writeMessage(channelId, "\n对怪物: " + monster.getName() + " 造成 " + minusHp + " 伤害" + "  怪物目前血量: " + monster.getHealthPoint() + "\n");
         });
@@ -144,9 +141,9 @@ public class AttackServiceImpl implements AttackService {
     }
 
     public void monsterDeathSettlement(NormalMonster monster, Player player, String channelId, GameMapActor gameMapActor) {
-        // TODO 死亡结算 包括经验、数据库保存
+        // 死亡结算 TODO  数据库保存
         player.getPlayerCommConfig().addMoney(monster.getValue());
-
+        player.addExp(monster.getExp());
         monsterAction.rebirth(monster, gameMapActor);
         monsterDrop(monster, player, channelId);
     }

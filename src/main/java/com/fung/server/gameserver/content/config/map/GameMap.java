@@ -356,4 +356,8 @@ public class GameMap extends BaseElement implements Model {
     public void setPlayerInPosition(Map<Integer, List<Player>> playerInPosition) {
         this.playerInPosition = playerInPosition;
     }
+
+    public void setFallingGoodMap(Map<Integer, List<FallingGood>> fallingGoodMap) {
+        this.fallingGoodMap = fallingGoodMap;
+    }
 }

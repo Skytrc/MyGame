@@ -27,4 +27,11 @@ public interface NpcService {
      * @return 商店列表
      */
     String openShop(String channelId);
+
+    /**
+     * 开启副本
+     * @param channel channel id
+     * @return 是否开启副本
+     */
+    String openDungeon(String channel);
 }

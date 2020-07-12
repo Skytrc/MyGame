@@ -10,11 +10,21 @@ public class PlayerTempStatus {
 
     private String teamId;
 
+    private String dungeonId;
+
     public String getTeamId() {
         return teamId;
     }
 
     public void setTeamId(String teamId) {
         this.teamId = teamId;
+    }
+
+    public String getDungeonId() {
+        return dungeonId;
+    }
+
+    public void setDungeonId(String dungeonId) {
+        this.dungeonId = dungeonId;
     }
 }

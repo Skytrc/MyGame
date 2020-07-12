@@ -3,6 +3,7 @@ package com.fung.server.gameserver.content.service.impl;
 import com.fung.server.gameserver.content.domain.npc.NpcInfo;
 import com.fung.server.gameserver.content.domain.player.PlayerInfo;
 import com.fung.server.gameserver.content.entity.Player;
+import com.fung.server.gameserver.content.service.DungeonService;
 import com.fung.server.gameserver.content.service.NpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,10 +16,13 @@ import org.springframework.stereotype.Component;
 public class NpcServiceImpl implements NpcService {
 
     @Autowired
-    PlayerInfo playerInfo;
+    private PlayerInfo playerInfo;
 
     @Autowired
-    NpcInfo npcInfo;
+    private NpcInfo npcInfo;
+
+    @Autowired
+    private DungeonService dungeonService;
 
     @Override
     public String allChoose(String channelId) {
@@ -39,5 +43,19 @@ public class NpcServiceImpl implements NpcService {
     public String openShop(String channelId) {
         Player currentPlayer = playerInfo.getCurrentPlayer(channelId);
         return npcInfo.openShop(currentPlayer);
+    }
+
+    @Override
+    public String openDungeon(String channel) {
+        Player player = playerInfo.getCurrentPlayer(channel);
+        if (!npcInfo.hasNpc(player)) {
+            return "当前玩家位置没有npc";
+        }
+        int dungeon = npcInfo.enterDungeon(player);
+        if (dungeon == -1) {
+            return "该Npc没有副本功能";
+        }
+        dungeonService.enterDungeon(channel, dungeon);
+        return null;
     }
 }

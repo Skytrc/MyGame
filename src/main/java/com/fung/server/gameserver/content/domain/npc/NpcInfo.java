@@ -23,13 +23,13 @@ import java.util.Map;
 public class NpcInfo {
 
     @Autowired
-    PlayerInfo playerInfo;
+    private PlayerInfo playerInfo;
 
     @Autowired
-    MapManager mapManager;
+    private MapManager mapManager;
 
     @Autowired
-    GoodManager goodManager;
+    private GoodManager goodManager;
 
     /**
      * TODO 初始化
@@ -83,6 +83,9 @@ public class NpcInfo {
      */
     public String getNpcChoose(Player player) {
         NonPlayerCharacter npc = getNpcByPlayerInfo(player);
+        if (npc == null) {
+            return "当前玩家位置没有npc";
+        }
         Map<Integer, NpcOption> npcOptionMap = npc.getNpcOptionMap();
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("\n").append(npc.getName()).append(" 选项: \n");
@@ -93,18 +96,26 @@ public class NpcInfo {
     }
 
     /**
+     * TODO
      * 获取某一选项
      */
     public String getNpcMessageByChoose(Player player, int choose) {
         NonPlayerCharacter npc = getNpcByPlayerInfo(player);
+        if (npc == null) {
+            return "当前玩家位置没有npc";
+        }
         return npc.getNpcOptionMap().get(choose).getContent();
     }
 
     /**
+     * TODO
      * 返回商店列表
      */
     public String openShop(Player player) {
         NonPlayerCharacter npc = getNpcByPlayerInfo(player);
+        if (npc == null) {
+            return "当前玩家位置没有npc";
+        }
         if (npc.getGoodsId()== null) {
             return "该npc没有商店功能";
         }
@@ -117,6 +128,21 @@ public class NpcInfo {
                     .append("  ").append(goodInfoById[GoodManager.GOOD_DESCRIPTION]).append("\n");
         });
         return stringBuilder.toString();
+    }
+
+    /**
+     * TODO 数字可以优化
+     */
+    public int enterDungeon(Player player) {
+        NonPlayerCharacter npc = getNpcByPlayerInfo(player);
+        int dungeonId = -1;
+        for (Integer integer : npc.getNpcOptionMap().keySet()) {
+            if (integer >= 100) {
+                dungeonId = 100;
+                break;
+            }
+        }
+        return dungeonId;
     }
 
     public void init() {

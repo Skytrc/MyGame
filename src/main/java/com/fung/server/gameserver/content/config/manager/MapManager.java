@@ -1,5 +1,6 @@
 package com.fung.server.gameserver.content.config.manager;
 
+import com.fung.server.gameserver.content.config.map.Dungeon;
 import com.fung.server.gameserver.content.config.readconfig.ReadMap;
 import com.fung.server.gameserver.content.config.readconfig.ReadMapGates;
 import com.fung.server.gameserver.content.config.map.GameMap;
@@ -28,7 +29,7 @@ public class MapManager {
     private Map<Integer, GameMap> gameMapCollection;
 
     /**
-     * GameMapActor 封装Map，用于申请多线程处理地图中的时间
+     * GameMapActor 封装Map，用于申请多线程处理地图中的事件
      */
     private Map<Integer, GameMapActor> gameMapActorMap;
 
@@ -51,10 +52,7 @@ public class MapManager {
         // 初始化各张地图实体
         gameMapCollection = readMap.getModelMap();
         gameMapCollection.forEach((id,item) -> {
-            item.setElements(new HashMap<>());
-            item.setGates(new HashMap<>());
-            item.setPlayerInPosition(new HashMap<>());
-            item.setMonsterMap(new HashMap<>());
+            gameMapInit(item);
 
             // 封装到MapActor中
             GameMapActor gameMapActor = new GameMapActor();
@@ -94,13 +92,27 @@ public class MapManager {
         gameMap.setGates(new HashMap<>());
     }
 
+    public void gameMapInit(GameMap gameMap) {
+        gameMap.setElements(new HashMap<>());
+        gameMap.setGates(new HashMap<>());
+        gameMap.setPlayerInPosition(new HashMap<>());
+        gameMap.setMonsterMap(new HashMap<>());
+        gameMap.setFallingGoodMap(new HashMap<>());
+    }
+
+    // todo
+
     public GameMap getMapByMapId(int i) {
         return gameMapCollection.get(i);
     }
-
-    public GameMapActor getGameMapActorById(int id) {
+        public GameMapActor getGameMapActorById(int id) {
         return gameMapActorMap.get(id);
     }
+
+//    public Dungeon copyDunGeon(int dunGeonId) {
+//        GameMap map = getMapByMapId(dunGeonId);
+//
+//    }
 
     public Map<Integer, GameMap> getGameMapCollection() {
         return gameMapCollection;

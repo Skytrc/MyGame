@@ -22,19 +22,19 @@ import java.util.Map;
 public class NpcManager {
 
     @Autowired
-    ReadNpc readNpc;
+    private ReadNpc readNpc;
 
     @Autowired
-    NpcOptionManager npcOptionManager;
+    private NpcOptionManager npcOptionManager;
 
     @Autowired
-    NpcShopManager npcShopManager;
+    private NpcShopManager npcShopManager;
 
     @Autowired
-    NpcInfo npcInfo;
+    private NpcInfo npcInfo;
 
     @Autowired
-    MapManager mapManager;
+    private MapManager mapManager;
 
     private Map<Integer, NonPlayerCharacter> npcMap;
 

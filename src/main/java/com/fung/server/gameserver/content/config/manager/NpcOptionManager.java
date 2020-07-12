@@ -20,7 +20,7 @@ import java.util.Map;
 public class NpcOptionManager {
 
     @Autowired
-    ReadNpcOption readNpcOption;
+    private ReadNpcOption readNpcOption;
 
     /**
      * key NPCid  value npc 选项
