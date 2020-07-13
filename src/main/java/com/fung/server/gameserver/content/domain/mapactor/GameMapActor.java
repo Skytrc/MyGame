@@ -1,5 +1,6 @@
 package com.fung.server.gameserver.content.domain.mapactor;
 
+import com.fung.server.gameserver.content.config.map.Dungeon;
 import com.fung.server.gameserver.content.config.map.GameMap;
 import com.fung.server.gameserver.message.MessageHandler;
 
@@ -10,7 +11,7 @@ import com.fung.server.gameserver.message.MessageHandler;
  */
 public class GameMapActor extends MessageHandler<GameMapActor> implements IGameMap<GameMapActor> {
 
-    private GameMap gameMap;
+    private Dungeon gameMap;
 
     @Override
     public String getName() {
@@ -22,12 +23,18 @@ public class GameMapActor extends MessageHandler<GameMapActor> implements IGameM
         return gameMap.getId();
     }
 
-    public GameMap getGameMap() {
+    @Override
+    public String getUuid() {
+        return gameMap.getUuid();
+
+    }
+
+    public Dungeon getGameMap() {
         return gameMap;
     }
 
     public void setGameMap(GameMap gameMap) {
-        this.gameMap = gameMap;
+        this.gameMap = (Dungeon) gameMap;
     }
 
 }

@@ -2,6 +2,7 @@ package com.fung.server.gameserver.content.domain.monster;
 
 import com.fung.server.gameserver.channelstore.WriteMessage2Client;
 import com.fung.server.gameserver.content.config.manager.SkillManager;
+import com.fung.server.gameserver.content.config.monster.BaseHostileMonster;
 import com.fung.server.gameserver.content.config.monster.BaseMonster;
 import com.fung.server.gameserver.content.config.skill.DamageSkill;
 import com.fung.server.gameserver.content.domain.calculate.AttackCalculate;
@@ -87,14 +88,13 @@ public class MonsterAction {
             Thread.sleep(damageSkill.getCd() * 1000);
         }
         monster.setAttacking(false);
-        monster.setCurrentAttackPlayer(null);
     }
 
-    public void attackPlayer0(String channelId, Player player, BaseMonster monster, GameMapActor gameMapActor) {
+    public void attackPlayer0(String channelId, Player player, BaseHostileMonster monster, GameMapActor gameMapActor) {
         attackPlayer1(channelId, player, 0, monster,gameMapActor);
     }
 
-    public void attackPlayer1(String channelId, Player player, int unleashSkillCount, BaseMonster monster, GameMapActor gameMapActor) {
+    public void attackPlayer1(String channelId, Player player, int unleashSkillCount, BaseHostileMonster monster, GameMapActor gameMapActor) {
         monster.setAttacking(true);
 
         // 玩家下線
@@ -143,11 +143,11 @@ public class MonsterAction {
     /**
      * 重生
      */
-    public void rebirth(BaseMonster monster) {
+    public void rebirth(BaseHostileMonster monster) {
         monster.setHealthPoint(monster.getMaxHealthPoint());
     }
 
-    public void rebirth(BaseMonster monster, GameMapActor gameMapActor) {
+    public void rebirth(BaseHostileMonster monster, GameMapActor gameMapActor) {
         gameMapActor.schedule(actor -> {
             rebirth(monster);
         }, 15, TimeUnit.SECONDS);
@@ -156,7 +156,7 @@ public class MonsterAction {
     /**
      * 检查攻击目标
      */
-    public void checkAttackTarget(String channelId, BaseMonster monster, Player player, int time, GameMapActor gameMapActor) {
+    public void checkAttackTarget(String channelId, BaseHostileMonster monster, Player player, int time, GameMapActor gameMapActor) {
         // 检查间隔时间
         if (time + checkAttackTime < hatedTime) {
             // 判断玩家是否在攻击范围内

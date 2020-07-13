@@ -5,8 +5,9 @@ import com.fung.server.gameserver.content.config.good.FallingGood;
 import com.fung.server.gameserver.content.config.manager.MapManager;
 import com.fung.server.gameserver.content.config.manager.SkillManager;
 import com.fung.server.gameserver.content.config.map.GameMap;
-import com.fung.server.gameserver.content.config.monster.BaseMonster;
+import com.fung.server.gameserver.content.config.monster.BaseHostileMonster;
 import com.fung.server.gameserver.content.config.monster.NormalMonster;
+import com.fung.server.gameserver.content.domain.Dungeon.DungeonManager;
 import com.fung.server.gameserver.content.domain.calculate.AttackCalculate;
 import com.fung.server.gameserver.content.domain.equipment.EquipmentDurable;
 import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
@@ -46,6 +47,9 @@ public class AttackServiceImpl implements AttackService {
 
     @Autowired
     private MapManager mapManager;
+
+    @Autowired
+    private DungeonManager dungeonManager;
 
     @Autowired
     private EquipmentDurable equipmentDurable;
@@ -105,12 +109,18 @@ public class AttackServiceImpl implements AttackService {
     @Override
     public String attack1(String channelId, int x, int y, int skillId) {
         Player player = onlinePlayer.getPlayerByChannelId(channelId);
-        GameMapActor mapActor = mapManager.getGameMapActorById(player.getInMapId());
+        // 判斷是否在副本內
+        GameMapActor mapActor;
+        if (player.getTempStatus().getDungeonId() != null) {
+            mapActor = dungeonManager.getDungeonActorByUuid(player.getTempStatus().getDungeonId());
+        } else {
+            mapActor = mapManager.getGameMapActorById(player.getInMapId());
+        }
         // 丢到对应地图线程中处理
         mapActor.addMessage(gameMapActor -> {
             LOGGER.info(Thread.currentThread().getName());
             GameMap currentPlayerMap = mapActor.getGameMap();
-            NormalMonster monster = currentPlayerMap.getMonsterByXy(x, y);
+            BaseHostileMonster monster = currentPlayerMap.getMonsterByXy(x, y);
             if (monster == null) {
                 writeMessage2Client.writeMessage(channelId, "\n位置[" + x + "," + y + "] 没有敌对生物");
                 return;
@@ -140,7 +150,7 @@ public class AttackServiceImpl implements AttackService {
         return "";
     }
 
-    public void monsterDeathSettlement(NormalMonster monster, Player player, String channelId, GameMapActor gameMapActor) {
+    public void monsterDeathSettlement(BaseHostileMonster monster, Player player, String channelId, GameMapActor gameMapActor) {
         // 死亡结算 TODO  数据库保存
         player.getPlayerCommConfig().addMoney(monster.getValue());
         player.addExp(monster.getExp());
@@ -148,7 +158,7 @@ public class AttackServiceImpl implements AttackService {
         monsterDrop(monster, player, channelId);
     }
 
-    public void monsterDrop(NormalMonster monster, Player player, String channelId) {
+    public void monsterDrop(BaseHostileMonster monster, Player player, String channelId) {
         List<FallingGood> fallingGoods = monsterDropCreated.goodsCreated(monster, player);
         if (fallingGoods != null) {
             GameMap map = mapManager.getMapByMapId(monster.getInMapId());

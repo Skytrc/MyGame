@@ -58,4 +58,14 @@ public class NpcServiceImpl implements NpcService {
         dungeonService.enterDungeon(channel, dungeon);
         return null;
     }
+
+    @Override
+    public String joinDungeon(String channelId, String dungeonId) {
+        Player player = playerInfo.getCurrentPlayer(channelId);
+        String res = dungeonService.enterDungeon(channelId, dungeonId);
+        if ("".equals(res)) {
+            return "副本编号: " + dungeonId + " 副本不存在";
+        }
+        return "成功进入副本: " + res + " 副本编号为: " + dungeonId;
+    }
 }

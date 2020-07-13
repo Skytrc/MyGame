@@ -63,10 +63,31 @@ public class MonsterCreateManager {
         }
     }
 
+    /**
+     * 用于生成副本内的怪兽
+     */
+    public void configMonsterByGameMap(GameMap gameMap) {
+        Map<Integer, List<MonsterDistribution>> mapMonsterMap = monsterDistributionManager.getGameMapMonsterMap();
+        List<MonsterDistribution> monsterDistributionList = mapMonsterMap.get(gameMap.getInMapId());
+        monsterDistributionList.forEach(monsterDistribution -> {
+            int position = gameMap.xy2Location(monsterDistribution.getInMapX(), monsterDistribution.getInMapY());
+            putMonsterInMap(gameMap, position, monsterDistribution.getMonsterId());
+        });
+    }
+
     public void putMonsterInMap(int gameMapId, int position, int monsterId)  {
         GameMap map = mapManager.getMapByMapId(gameMapId);
         // 设置怪物初始信息
         NormalMonster normalMonster = createMonster(monsterId, gameMapId , position);
+        map.putMonsterInMap(position, normalMonster);
+        map.addElement(position, normalMonster);
+    }
+
+    /**
+     * 用作于生成新副本中的怪兽
+     */
+    public void putMonsterInMap(GameMap map, int position, int monsterId) {
+        NormalMonster normalMonster = createMonster(monsterId, map.getInMapId() , position);
         map.putMonsterInMap(position, normalMonster);
         map.addElement(position, normalMonster);
     }

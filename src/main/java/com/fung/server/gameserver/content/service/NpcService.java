@@ -34,4 +34,12 @@ public interface NpcService {
      * @return 是否开启副本
      */
     String openDungeon(String channel);
+
+    /**
+     * 加入副本
+     * @param channelId channel id
+     * @param dungeonId 副本id
+     * @return 是否加入副本
+     */
+    String joinDungeon(String channelId, String dungeonId);
 }

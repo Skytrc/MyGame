@@ -6,6 +6,7 @@ import com.fung.server.gameserver.content.config.readconfig.ReadMapGates;
 import com.fung.server.gameserver.content.config.map.GameMap;
 import com.fung.server.gameserver.content.config.map.GameMapGates;
 import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
+import com.fung.server.gameserver.content.util.Uuid;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +36,12 @@ public class MapManager {
      */
     private Map<Integer, GameMapActor> gameMapActorMap;
 
+    /**
+     * 用于存储地图传送门信息
+     * key map id  value gameMapGate
+     */
+    private Map<Integer, List<GameMapGates>> gameMapGateMap;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(MapManager.class);
 
     @Autowired
@@ -41,6 +50,9 @@ public class MapManager {
     @Autowired
     private ReadMapGates readMapGates;
 
+    @Autowired
+    private MonsterCreateManager monsterCreateManager;
+
     public MapManager() {
         gameMapActorMap = new HashMap<>();
     }
@@ -48,6 +60,19 @@ public class MapManager {
     public void mapInit() throws IOException, InvalidFormatException {
         readMap.init();
         readMapGates.init();
+
+        gameMapGateMap = new HashMap<>();
+        HashMap<Integer, GameMapGates> modelMap = readMapGates.getModelMap();
+        modelMap.forEach((integer, gameMapGates)-> {
+            int thisMapId = gameMapGates.getThisMapId();
+            if (!gameMapGateMap.containsKey(thisMapId)) {
+                List<GameMapGates> gameMapGatesList = new ArrayList<>();
+                gameMapGatesList.add(gameMapGates);
+                gameMapGateMap.put(thisMapId, gameMapGatesList);
+            } else {
+                gameMapGateMap.get(thisMapId).add(gameMapGates);
+            }
+        });
 
         // 初始化各张地图实体
         gameMapCollection = readMap.getModelMap();
@@ -61,35 +86,13 @@ public class MapManager {
         });
 
         // 增加传送门
-        Map<Integer, GameMapGates> gamMapGates = readMapGates.getModelMap();
-        gamMapGates.forEach((id, item) -> {
-//            gameMapCollection.get(item.getThisMapId()).addGate(item.getLocation(), gameMapCollection.get(item.getNextMapId()));
+        modelMap.forEach((id, item) -> {
             GameMap currentMap = gameMapCollection.get(item.getThisMapId());
             GameMap nextMap = gameMapCollection.get(item.getNextMapId());
             currentMap.addGate(item.getLocation(), nextMap);
         });
 
-        // 增加Element
-
         LOGGER.info("地图初始化成功");
-    }
-
-    /**
-     * 初始化一张地图的基本信息
-     * @param gameMap 需要初始化地图实例
-     * @param id 地图id
-     * @param name 地图名字
-     * @param x x轴
-     * @param y y轴
-     */
-    @Deprecated
-    public void setMapBasicInfo(GameMap gameMap, int id, String name, int x, int y) {
-        gameMap.setId(id);
-        gameMap.setName(name);
-        gameMap.setX(x);
-        gameMap.setY(y);
-        gameMap.setElements(new HashMap<>(x * y));
-        gameMap.setGates(new HashMap<>());
     }
 
     public void gameMapInit(GameMap gameMap) {
@@ -100,8 +103,6 @@ public class MapManager {
         gameMap.setFallingGoodMap(new HashMap<>());
     }
 
-    // todo
-
     public GameMap getMapByMapId(int i) {
         return gameMapCollection.get(i);
     }
@@ -109,10 +110,16 @@ public class MapManager {
         return gameMapActorMap.get(id);
     }
 
-//    public Dungeon copyDunGeon(int dunGeonId) {
-//        GameMap map = getMapByMapId(dunGeonId);
-//
-//    }
+    public Dungeon createNewDungeon(int dungeonId) {
+        Dungeon dungeon = new Dungeon();
+        dungeon.setUuid(Uuid.createUuid());
+        dungeon.setId(dungeonId);
+        gameMapInit(dungeon);
+        // 初始化dungeon怪物
+        monsterCreateManager.configMonsterByGameMap(dungeon);
+        // Todo 副本多地图连接
+        return dungeon;
+    }
 
     public Map<Integer, GameMap> getGameMapCollection() {
         return gameMapCollection;

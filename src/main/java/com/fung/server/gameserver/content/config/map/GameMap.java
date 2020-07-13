@@ -12,7 +12,7 @@ import java.util.Map;
 
 
 /**
- * 地图实体
+ * 地图实体 注意需要copy的类型
  * @author skytrc@163.com
  * @date 2020/5/13 18:16
  */
@@ -42,6 +42,10 @@ public class GameMap extends BaseElement implements Model {
      */
     private Map<Integer, List<Player>> playerInPosition;
 
+    /**
+     * 地图中玩家数量
+     */
+    private int playerQuantity;
 
     /**
      * key position  value 怪物 地图存储
@@ -212,6 +216,7 @@ public class GameMap extends BaseElement implements Model {
      * @param player 玩家信息
      */
     public void addPlayer(Player player) {
+        playerQuantity++;
         int position = xy2Location(player.getInMapX(), player.getInMapY());
         if (!playerInPosition.containsKey(position)){
             playerInPosition.put(position, new ArrayList<>());
@@ -225,6 +230,7 @@ public class GameMap extends BaseElement implements Model {
      * @param player 玩家
      */
     public void removePlayer(Player player) {
+        playerQuantity--;
         playerInPosition.get(xy2Location(player.getInMapX(), player.getInMapY())).remove(player);
     }
 
@@ -301,6 +307,10 @@ public class GameMap extends BaseElement implements Model {
         }
     }
 
+    public boolean hasPlayer() {
+        return playerQuantity > 0;
+    }
+
     public NormalMonster getMonsterByPosition(int position) {
         return monsterMap.get(position);
     }
@@ -359,5 +369,13 @@ public class GameMap extends BaseElement implements Model {
 
     public void setFallingGoodMap(Map<Integer, List<FallingGood>> fallingGoodMap) {
         this.fallingGoodMap = fallingGoodMap;
+    }
+
+    public int getPlayerQuantity() {
+        return playerQuantity;
+    }
+
+    public void setPlayerQuantity(int playerQuantity) {
+        this.playerQuantity = playerQuantity;
     }
 }

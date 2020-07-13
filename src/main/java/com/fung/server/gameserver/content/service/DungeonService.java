@@ -6,7 +6,9 @@ package com.fung.server.gameserver.content.service;
  **/
 public interface DungeonService {
 
-    void enterDungeon(String channelId, int dungeonId);
+    String enterDungeon(String channelId, int dungeonId);
 
-    void leaveDungeon(String channelId);
+    String enterDungeon(String channelId, String dungeonUuid);
+
+    String leaveDungeon(String channelId);
 }
