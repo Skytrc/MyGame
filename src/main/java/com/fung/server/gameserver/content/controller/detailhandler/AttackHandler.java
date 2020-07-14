@@ -21,7 +21,7 @@ public class AttackHandler extends BaseInstructionHandler{
         if (("monster").equals(ins.remove(0))) {
             return attackMonster(ins);
         }
-        return null;
+        return "攻击指令错误";
     }
 
     public String attackMonster(List<String> ins) {

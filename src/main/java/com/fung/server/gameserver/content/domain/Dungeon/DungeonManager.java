@@ -53,8 +53,6 @@ public class DungeonManager {
         if (!idleDungeon.containsKey(dungeonId) || (idleDungeon.get(dungeonId).size() == 0)) {
             Dungeon newDungeon = createdNewDungeon(dungeonId);
             newDungeon.setBeforeMapId(player.getInMapId());
-            newDungeon.setX(player.getInMapX());
-            newDungeon.setY(player.getInMapY());
             GameMapActor mapActor = new GameMapActor();
             mapActor.setGameMap(newDungeon);
             dungeonManger.put(newDungeon.getUuid(), mapActor);
@@ -69,7 +67,7 @@ public class DungeonManager {
             return false;
         }
         GameMapActor mapActor = dungeonManger.get(player.getTempStatus().getDungeonId());
-        Dungeon dungeon = mapActor.getGameMap();
+        Dungeon dungeon = (Dungeon) mapActor.getGameMap();
         dungeon.removePlayer(player);
         GameMap nextMap = mapManager.getMapByMapId(dungeon.getBeforeMapId());
         nextMap.addPlayer(player);
@@ -84,7 +82,7 @@ public class DungeonManager {
      * 判断玩家离开副本后，副本是否还有人。如果没有人，重新设置副本的内容并加入空闲副本中
      */
     public void dungeonPlayerCheck(GameMapActor gameMapActor) {
-        Dungeon gameMap = gameMapActor.getGameMap();
+        Dungeon gameMap = (Dungeon) gameMapActor.getGameMap();
         if (!gameMap.hasPlayer()) {
             resetDungeon(gameMap);
             if (idleDungeon.containsKey(gameMap.getId())) {

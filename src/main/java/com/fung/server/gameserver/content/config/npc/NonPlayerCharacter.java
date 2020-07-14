@@ -32,10 +32,6 @@ public class NonPlayerCharacter extends BaseElement implements Model {
 
     private int magicPower;
 
-    private int inMapX;
-
-    private int inMapY;
-
     private List<Integer> goodsId;
 
     /**

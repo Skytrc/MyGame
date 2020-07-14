@@ -55,14 +55,17 @@ public class GoodServiceImpl implements GoodService {
             backpack.addEquipment(currentPlayerEquipments.remove(bodyPosition));
         }
         // List如果不够需要扩容
-        if (currentPlayerEquipments.size() < bodyPosition) {
-            List<Equipment> list = new ArrayList<>(bodyPosition);
-            list.add(bodyPosition, equipment);
-            Collections.copy(list, currentPlayerEquipments);
-            currentPlayer.setEquipments(list);
-        } else {
-            currentPlayerEquipments.add(bodyPosition, equipment);
-        }
+//        if (currentPlayerEquipments.size() < bodyPosition) {
+//            currentPlayerEquipments.add(bodyPosition, equipment);
+//            List<Equipment> list = new ArrayList<>(4);
+//            list.add(bodyPosition - 1, equipment);
+//            Collections.copy(list, currentPlayerEquipments);
+//            currentPlayer.setEquipments(list);
+//        } else {
+//            currentPlayerEquipments.add(bodyPosition, equipment);
+//        }
+        // 装备到身上的数组中
+        currentPlayerEquipments.add(bodyPosition, equipment);
 
         equipmentDao.updateEquipment(equipment);
         // 计算基础数值

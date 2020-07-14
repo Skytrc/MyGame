@@ -68,7 +68,7 @@ public class MonsterCreateManager {
      */
     public void configMonsterByGameMap(GameMap gameMap) {
         Map<Integer, List<MonsterDistribution>> mapMonsterMap = monsterDistributionManager.getGameMapMonsterMap();
-        List<MonsterDistribution> monsterDistributionList = mapMonsterMap.get(gameMap.getInMapId());
+        List<MonsterDistribution> monsterDistributionList = mapMonsterMap.get(gameMap.getId());
         monsterDistributionList.forEach(monsterDistribution -> {
             int position = gameMap.xy2Location(monsterDistribution.getInMapX(), monsterDistribution.getInMapY());
             putMonsterInMap(gameMap, position, monsterDistribution.getMonsterId());
@@ -87,12 +87,12 @@ public class MonsterCreateManager {
      * 用作于生成新副本中的怪兽
      */
     public void putMonsterInMap(GameMap map, int position, int monsterId) {
-        NormalMonster normalMonster = createMonster(monsterId, map.getInMapId() , position);
+        NormalMonster normalMonster = createMonster(monsterId, map, position);
         map.putMonsterInMap(position, normalMonster);
         map.addElement(position, normalMonster);
     }
 
-    public NormalMonster createMonster(int monsterId, int gameMapId, int position) {
+    public NormalMonster createMonster(int monsterId, GameMap gameMap, int position) {
         NormalMonster normalMonster = monsterManager.getMonsterById(monsterId);
 
         NormalMonster newNormalMonster = new NormalMonster();
@@ -104,11 +104,32 @@ public class MonsterCreateManager {
         newNormalMonster.setLevel(normalMonster.getLevel());
         newNormalMonster.setName(normalMonster.getName());
         newNormalMonster.setMonsterSkill(monsterSkillManager.getMonsterSkillByMonsterId(monsterId));
+
         // 设置怪物所在地图信息
-        newNormalMonster.setInMapId(gameMapId);
-        newNormalMonster.setInMapX(mapManager.getMapByMapId(gameMapId).location2xy(position)[0]);
-        newNormalMonster.setInMapY(mapManager.getMapByMapId(gameMapId).location2xy(position)[1]);
-        return newNormalMonster;
+        newNormalMonster.setInMapId(gameMap.getId());
+        newNormalMonster.setInMapX(gameMap.location2xy(position)[GameMap.X]);
+        newNormalMonster.setInMapY(gameMap.location2xy(position)[GameMap.Y]);
+        return normalMonster;
+    }
+
+    public NormalMonster createMonster(int monsterId, int gameMapId, int position) {
+        GameMap map = mapManager.getMapByMapId(gameMapId);
+        return createMonster(monsterId, map, position);
+//        NormalMonster normalMonster = monsterManager.getMonsterById(monsterId);
+//
+//        NormalMonster newNormalMonster = new NormalMonster();
+//        newNormalMonster.setAttackPower(normalMonster.getAttackPower());
+//        newNormalMonster.setDefend(normalMonster.getDefend());
+//        newNormalMonster.setHealthPoint(normalMonster.getMaxHealthPoint());
+//        newNormalMonster.setMaxHealthPoint(normalMonster.getMaxHealthPoint());
+//        newNormalMonster.setId(monsterId);
+//        newNormalMonster.setLevel(normalMonster.getLevel());
+//        newNormalMonster.setName(normalMonster.getName());
+//        newNormalMonster.setMonsterSkill(monsterSkillManager.getMonsterSkillByMonsterId(monsterId));
+//        // 设置怪物所在地图信息
+//        newNormalMonster.setInMapId(gameMapId);
+//        newNormalMonster.setInMapX(mapManager.getMapByMapId(gameMapId).location2xy(position)[0]);
+//        newNormalMonster.setInMapY(mapManager.getMapByMapId(gameMapId).location2xy(position)[1]);
     }
 
     public Map<Integer, List<MonsterDrop>> getMonsterDropByIdMap() {

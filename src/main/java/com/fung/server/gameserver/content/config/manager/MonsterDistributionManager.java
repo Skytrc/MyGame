@@ -45,7 +45,7 @@ public class MonsterDistributionManager {
                 monsterDistributionList.add(value);
                 gameMapMonsterMap.put(value.getInMapId(), monsterDistributionList);
             } else {
-                gameMapMonsterMap.get(value.getId()).add(value);
+                gameMapMonsterMap.get(value.getInMapId()).add(value);
             }
         }
     }

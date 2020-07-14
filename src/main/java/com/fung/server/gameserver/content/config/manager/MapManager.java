@@ -101,6 +101,7 @@ public class MapManager {
         gameMap.setPlayerInPosition(new HashMap<>());
         gameMap.setMonsterMap(new HashMap<>());
         gameMap.setFallingGoodMap(new HashMap<>());
+        gameMap.setPlayerInPosition(new HashMap<>());
     }
 
     public GameMap getMapByMapId(int i) {
@@ -111,7 +112,11 @@ public class MapManager {
     }
 
     public Dungeon createNewDungeon(int dungeonId) {
+        GameMap templateMap = getMapByMapId(dungeonId);
         Dungeon dungeon = new Dungeon();
+        dungeon.setX(templateMap.getX());
+        dungeon.setY(templateMap.getY());
+        dungeon.setName(templateMap.getName());
         dungeon.setUuid(Uuid.createUuid());
         dungeon.setId(dungeonId);
         gameMapInit(dungeon);

@@ -13,7 +13,5 @@ public interface IGameMap<H extends IMessageHandler<?>> {
 
     int getId();
 
-    String getUuid();
-
     void addMessage(IMessage<H> message);
 }

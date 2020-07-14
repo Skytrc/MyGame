@@ -127,9 +127,18 @@ public class PlayerServiceImpl implements PlayerService {
         Map<Integer, EquipmentCreated> equipmentCreatedMap = createdManager.getEquipmentCreatedMap();
         // 挂载装备
         if (player.getEquipments() == null) {
-            player.setEquipments(new ArrayList<>(5));
+           List<Equipment> equipmentList = new ArrayList<>(5);
+            for (int i = 0; i < 5; i++) {
+                equipmentList.add(null);
+            }
+            player.setEquipments(equipmentList);
             List<Equipment> equipments = equipmentDao.findEquipmentsByPlayerId(player.getUuid());
-            equipments.forEach(equipment -> setEquipmentType(equipment, equipmentCreatedMap));
+            for (Equipment equipment : equipments) {
+                setEquipmentType(equipment, equipmentCreatedMap);
+                // 放入EquipmentList 中
+                int position = equipment.getType().getPosition();
+                equipmentList.add(position, equipment);
+            }
             player.setEquipments(equipments);
         }
         // 背包

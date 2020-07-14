@@ -48,6 +48,9 @@ public class Controller {
     private TeamHandler teamHandler;
 
     @Autowired
+    private DungeonHandler dungeonHandler;
+
+    @Autowired
     private Controller controller;
 
     @Autowired
@@ -65,6 +68,7 @@ public class Controller {
         map.put("attack", attackHandler);
         map.put("npc", npcHandler);
         map.put("team", teamHandler);
+        map.put("dungeon", dungeonHandler);
     }
 
     public String handleMessage(String msg, String channelId) throws InterruptedException {

@@ -19,12 +19,6 @@ public class Equipment extends Good {
     private int level;
 
     /**
-     * 装备名称
-     */
-    @Transient
-    private String name;
-
-    /**
      * 装备类型
      */
     @Transient
@@ -78,12 +72,6 @@ public class Equipment extends Good {
     private int defense;
 
     /**
-     * 装备描述
-     */
-    @Transient
-    private String description;
-
-    /**
      * 词条
      */
     private String entriesNum;
@@ -94,6 +82,22 @@ public class Equipment extends Good {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public EquipmentType getType() {
+        return type;
+    }
+
+    public void setType(EquipmentType type) {
+        this.type = type;
+    }
+
+    public int getMaxDurable() {
+        return maxDurable;
+    }
+
+    public void setMaxDurable(int maxDurable) {
+        this.maxDurable = maxDurable;
     }
 
     public int getDurable() {
@@ -166,21 +170,5 @@ public class Equipment extends Good {
 
     public void setEntriesNum(String entriesNum) {
         this.entriesNum = entriesNum;
-    }
-
-    public EquipmentType getType() {
-        return type;
-    }
-
-    public void setType(EquipmentType type) {
-        this.type = type;
-    }
-
-    public int getMaxDurable() {
-        return maxDurable;
-    }
-
-    public void setMaxDurable(int maxDurable) {
-        this.maxDurable = maxDurable;
     }
 }

@@ -11,7 +11,7 @@ import com.fung.server.gameserver.message.MessageHandler;
  */
 public class GameMapActor extends MessageHandler<GameMapActor> implements IGameMap<GameMapActor> {
 
-    private Dungeon gameMap;
+    private GameMap gameMap;
 
     @Override
     public String getName() {
@@ -23,18 +23,13 @@ public class GameMapActor extends MessageHandler<GameMapActor> implements IGameM
         return gameMap.getId();
     }
 
-    @Override
-    public String getUuid() {
-        return gameMap.getUuid();
 
-    }
-
-    public Dungeon getGameMap() {
+    public GameMap getGameMap() {
         return gameMap;
     }
 
     public void setGameMap(GameMap gameMap) {
-        this.gameMap = (Dungeon) gameMap;
+        this.gameMap = gameMap;
     }
 
 }

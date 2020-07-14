@@ -14,7 +14,7 @@ import java.util.List;
 public class BackpackHandler extends BaseInstructionHandler {
 
     @Autowired
-    GoodService goodService;
+    private GoodService goodService;
 
     @Override
     public String handler(List<String> ins) {

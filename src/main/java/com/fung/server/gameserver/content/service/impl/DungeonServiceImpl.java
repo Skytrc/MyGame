@@ -33,8 +33,12 @@ public class DungeonServiceImpl implements DungeonService {
         Player player = playerInfo.getCurrentPlayer(channelId);
         GameMapActor mapActor = dungeonManager.playerGotDungeon(dungeonId, player);
         GameMap currentMap = playerInfo.getCurrentPlayerMap(channelId);
-        Dungeon nextMap = mapActor.getGameMap();
+        Dungeon nextMap = (Dungeon) mapActor.getGameMap();
         currentMap.removePlayer(player);
+        // reset玩家位置
+        player.setInMapId(dungeonId);
+        player.setInMapX(1);
+        player.setInMapY(1);
         nextMap.addPlayer(player);
         // 在临时状态中设置副本uuid
         player.getTempStatus().setDungeonId(nextMap.getUuid());
@@ -49,7 +53,7 @@ public class DungeonServiceImpl implements DungeonService {
             return "";
         }
         GameMap currentMap = playerInfo.getCurrentPlayerMap(player);
-        Dungeon dungeon = mapActor.getGameMap();
+        Dungeon dungeon = (Dungeon) mapActor.getGameMap();
         currentMap.removePlayer(player);
         dungeon.addPlayer(player);
         // 在临时状态中设置副本uuid

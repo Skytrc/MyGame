@@ -10,7 +10,7 @@ public interface IMessage<H extends IMessageHandler<?>> {
      * 执行事务
      * @param h 事务
      */
-    void execute(H h);
+    void execute(H h) throws InterruptedException;
 
     /**
      * 返回 class 名称

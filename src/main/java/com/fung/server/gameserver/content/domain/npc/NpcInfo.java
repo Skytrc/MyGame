@@ -136,8 +136,8 @@ public class NpcInfo {
     public int enterDungeon(Player player) {
         NonPlayerCharacter npc = getNpcByPlayerInfo(player);
         int dungeonId = -1;
-        for (Integer integer : npc.getNpcOptionMap().keySet()) {
-            if (integer >= 100) {
+        for (NpcOption npcOption : npc.getNpcOptionMap().values()) {
+            if (npcOption.getId() >= 100) {
                 dungeonId = 100;
                 break;
             }

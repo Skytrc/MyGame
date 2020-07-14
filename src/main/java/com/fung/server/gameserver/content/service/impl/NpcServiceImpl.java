@@ -55,8 +55,7 @@ public class NpcServiceImpl implements NpcService {
         if (dungeon == -1) {
             return "该Npc没有副本功能";
         }
-        dungeonService.enterDungeon(channel, dungeon);
-        return null;
+        return dungeonService.enterDungeon(channel, dungeon);
     }
 
     @Override

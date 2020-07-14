@@ -18,9 +18,9 @@ import java.util.Map;
  */
 public class GameMap extends BaseElement implements Model {
 
-    private static final int X = 0;
+    public static final int X = 0;
 
-    private static final int Y = 1;
+    public static final int Y = 1;
 
     /**
      * 地图x轴
@@ -206,9 +206,14 @@ public class GameMap extends BaseElement implements Model {
         newMap.addPlayer(player);
     }
 
+    /**
+     * 玩家移动
+     */
     public void playerMove(Player player, int oldX, int oldY) {
         playerInPosition.get(xy2Location(oldX, oldY)).remove(player);
-        addPlayer(player);
+        int newPosition = xy2Location(player.getInMapX(), player.getInMapY());
+        checkPositionMap(newPosition);
+        playerInPosition.get(newPosition).add(player);
     }
 
     /**
@@ -218,11 +223,17 @@ public class GameMap extends BaseElement implements Model {
     public void addPlayer(Player player) {
         playerQuantity++;
         int position = xy2Location(player.getInMapX(), player.getInMapY());
+        checkPositionMap(position);
+        playerInPosition.get(position).add(player);
+    }
+
+    /**
+     * 检查是否存在 playerInPosition 是否存在list
+     */
+    public void checkPositionMap(int position) {
         if (!playerInPosition.containsKey(position)){
             playerInPosition.put(position, new ArrayList<>());
         }
-        playerInPosition.get(position).add(player);
-//        mapPlayers.put(player.getUuid(), player);
     }
 
     /**

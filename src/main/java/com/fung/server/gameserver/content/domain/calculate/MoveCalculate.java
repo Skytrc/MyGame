@@ -2,6 +2,7 @@ package com.fung.server.gameserver.content.domain.calculate;
 
 import com.fung.server.gameserver.channelstore.WriteMessage2Client;
 import com.fung.server.gameserver.content.config.map.GameMap;
+import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
 import com.fung.server.gameserver.content.domain.player.PlayerInfo;
 import com.fung.server.gameserver.content.entity.Player;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,10 @@ import org.springframework.stereotype.Component;
 public class MoveCalculate {
 
     @Autowired
-    WriteMessage2Client writeMessage2Client;
+    private WriteMessage2Client writeMessage2Client;
 
     @Autowired
-    PlayerInfo playerInfo;
+    private PlayerInfo playerInfo;
 
     /**
      * 第一种情况，移动固定距离
@@ -64,7 +65,7 @@ public class MoveCalculate {
         writeMessage2Client.writeMessage(channelId, "\n玩家移动到坐标: [" + player.getInMapX() + " , " + player.getInMapY() + "] ");
     }
 
-    public void moveGrid(Player player, String channelId,int x1, int y1) throws InterruptedException {
+    public void moveGrid(GameMapActor gameMapActor, Player player, String channelId, int x1, int y1) throws InterruptedException {
 
         int x0 = player.getInMapX();
         int y0 = player.getInMapY();
@@ -72,20 +73,26 @@ public class MoveCalculate {
 
         float dx = (x1 - x0) / length;
         float dy = (y1 - y0) / length;
-        float x = x0;
-        float y = y0;
-        for (int i = 0; i <= length; i++) {
+        gameMapActor.addMessage(gameMapActor1 -> {
+            moveGrid0(gameMapActor, player, channelId, x0, y0, dx, dy, 0, length);
+        });
+    }
+
+    public void moveGrid0(GameMapActor gameMapActor, Player player, String channelId,
+                          float x1, float y1, float dx, float dy, int playerHasMoveDistance, float distance) {
+        if (playerHasMoveDistance <= distance) {
             int oldX = player.getInMapX();
             int oldY = player.getInMapY();
-            player.setInMapX((int) (x + 0.5));
-            player.setInMapY((int) (y + 0.5));
-            // 设置玩家在地图上的位置
-            GameMap currentPlayerMap = playerInfo.getCurrentPlayerMap(player);
-            currentPlayerMap.playerMove(player, oldX, oldY);
-            Thread.sleep(1000);
+            player.setInMapX((int) (x1 + 0.5));
+            player.setInMapY((int) (y1 + 0.5));
+            GameMap gameMap = gameMapActor.getGameMap();
+            gameMap.playerMove(player, oldX, oldY);
             writeMessage2Client.writeMessage(channelId, "\n玩家移动到坐标: [" + player.getInMapX() + " , " + player.getInMapY() + "] ");
-            x = x + dx;
-            y = y + dy;
+            gameMapActor.schedule(gameMapActor1 -> {
+                moveGrid0(gameMapActor, player, channelId, x1 + dx, y1 + dy, dx, dy, playerHasMoveDistance + 1, distance);
+            }, 1000);
+        } else {
+            writeMessage2Client.writeMessage(channelId, "移动完成");
         }
     }
 }
