@@ -64,10 +64,10 @@ public class MonsterDropCreated {
 
     public Good goodCreated(int goodId, float probability, int maxCreatedQuantity) {
         int rate = (int) (probability * 10_000);
-        if (rate > RANDOM.nextInt(10_000)){
+        int randomNumber = RANDOM.nextInt(10_000);
+        if (rate > randomNumber){
             int quantity = RANDOM.nextInt(maxCreatedQuantity);
             return goodCreatedFactory.createNoBelongingGood(goodId, quantity);
-
         }
         return null;
     }

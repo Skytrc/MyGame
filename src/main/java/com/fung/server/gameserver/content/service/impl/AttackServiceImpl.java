@@ -129,6 +129,9 @@ public class AttackServiceImpl implements AttackService {
                 writeMessage2Client.writeMessage(channelId, "\n攻击距离不够  当前攻击距离为: " + player.getAttackDistance());
                 return;
             }
+            if (monster.getHealthPoint() <= 0) {
+                writeMessage2Client.writeMessage(channelId, "\n" + monster.getName());
+            }
             int minusHp = attackCalculate.defenderHpCalculate(player.getTotalAttackPower(),
                     player.getTotalCriticalRate(), skillManager.getSkillById(skillId).getPhysicalDamage(),
                     monster.getDefend());
@@ -137,12 +140,14 @@ public class AttackServiceImpl implements AttackService {
             if (monster.getHealthPoint() < minusHp) {
                 monster.setHealthPoint(0);
                 writeMessage2Client.writeMessage(channelId, "\n对怪物: " + monster.getName() + "  造成" + minusHp +"伤害  击败怪物\n");
+                // 怪物掉落计算
                 monsterDeathSettlement(monster, player, channelId, gameMapActor);
                 return;
             }
             monster.setHealthPoint(monster.getHealthPoint() - minusHp);
             // 开启怪物攻击
             if (!monster.isAttacking()) {
+                monster.setCurrentAttackPlayer(player);
                 mapActor.addMessage(h -> monsterAction.attackPlayer0(channelId, player, monster, gameMapActor));
             }
             writeMessage2Client.writeMessage(channelId, "\n对怪物: " + monster.getName() + " 造成 " + minusHp + " 伤害" + "  怪物目前血量: " + monster.getHealthPoint() + "\n");
@@ -171,7 +176,8 @@ public class AttackServiceImpl implements AttackService {
         StringBuilder stringBuilder = new StringBuilder("\n地图[ ");
         stringBuilder.append(x).append(" , ").append(y).append(" ] 掉落: \n");
         for (FallingGood fallingGood : fallingGoodList) {
-            stringBuilder.append(fallingGood.getName()).append(" 数量:").append(fallingGood.getGood().getQuantity()).append("\n");
+            stringBuilder.append(fallingGood.getName()).append(" 数量:").append(fallingGood.getGood().getQuantity())
+                    .append(" 属于玩家 ").append(fallingGood.getBeingToPlayer().getPlayerName()).append("\n");
         }
         return stringBuilder.toString();
     }

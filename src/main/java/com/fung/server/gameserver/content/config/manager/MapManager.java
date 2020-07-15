@@ -5,7 +5,9 @@ import com.fung.server.gameserver.content.config.readconfig.ReadMap;
 import com.fung.server.gameserver.content.config.readconfig.ReadMapGates;
 import com.fung.server.gameserver.content.config.map.GameMap;
 import com.fung.server.gameserver.content.config.map.GameMapGates;
+import com.fung.server.gameserver.content.domain.Dungeon.DungeonManager;
 import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
+import com.fung.server.gameserver.content.entity.Player;
 import com.fung.server.gameserver.content.util.Uuid;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
@@ -37,6 +39,11 @@ public class MapManager {
     private Map<Integer, GameMapActor> gameMapActorMap;
 
     /**
+     * 存储副本MapActor
+     */
+    private Map<String, GameMapActor> dungeonMapActorMap;
+
+    /**
      * 用于存储地图传送门信息
      * key map id  value gameMapGate
      */
@@ -52,6 +59,9 @@ public class MapManager {
 
     @Autowired
     private MonsterCreateManager monsterCreateManager;
+
+    @Autowired
+    private DungeonManager dungeonManager;
 
     public MapManager() {
         gameMapActorMap = new HashMap<>();
@@ -124,6 +134,14 @@ public class MapManager {
         monsterCreateManager.configMonsterByGameMap(dungeon);
         // Todo 副本多地图连接
         return dungeon;
+    }
+
+    public GameMapActor playerGotDungeon(int dungeonId, Player player) {
+        return dungeonManager.playerGotDungeon(dungeonId, player);
+    }
+
+    public boolean playerLeaveDungeon(Player player) {
+        return false;
     }
 
     public Map<Integer, GameMap> getGameMapCollection() {

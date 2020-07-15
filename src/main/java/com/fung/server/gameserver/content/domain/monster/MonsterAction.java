@@ -145,6 +145,7 @@ public class MonsterAction {
      */
     public void rebirth(BaseHostileMonster monster) {
         monster.setHealthPoint(monster.getMaxHealthPoint());
+        monster.setAttacking(false);
     }
 
     public void rebirth(BaseHostileMonster monster, GameMapActor gameMapActor) {

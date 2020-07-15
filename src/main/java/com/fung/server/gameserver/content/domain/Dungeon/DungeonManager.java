@@ -81,7 +81,7 @@ public class DungeonManager {
     /**
      * 判断玩家离开副本后，副本是否还有人。如果没有人，重新设置副本的内容并加入空闲副本中
      */
-    public void dungeonPlayerCheck(GameMapActor gameMapActor) {
+    private void dungeonPlayerCheck(GameMapActor gameMapActor) {
         Dungeon gameMap = (Dungeon) gameMapActor.getGameMap();
         if (!gameMap.hasPlayer()) {
             resetDungeon(gameMap);
@@ -98,7 +98,7 @@ public class DungeonManager {
     /**
      * 重置副本中的内容
      */
-    public void resetDungeon(Dungeon dungeon) {
+    private void resetDungeon(Dungeon dungeon) {
 
         // TODO 怪物重置
     }

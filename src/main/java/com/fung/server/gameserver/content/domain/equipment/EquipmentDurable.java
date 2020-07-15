@@ -24,6 +24,10 @@ public class EquipmentDurable {
         boolean isZero = false;
         List<Equipment> equipments = player.getEquipments();
         for (Equipment equipment : equipments) {
+            // 判断位置是否有装备
+            if (equipment.getName() == null) {
+                continue;
+            }
             // 判断是否为防御操作
             if (isDefense) {
                 if (!EquipmentType.isDefenseType(equipment)) {

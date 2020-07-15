@@ -109,7 +109,7 @@ public class MonsterCreateManager {
         newNormalMonster.setInMapId(gameMap.getId());
         newNormalMonster.setInMapX(gameMap.location2xy(position)[GameMap.X]);
         newNormalMonster.setInMapY(gameMap.location2xy(position)[GameMap.Y]);
-        return normalMonster;
+        return newNormalMonster;
     }
 
     public NormalMonster createMonster(int monsterId, int gameMapId, int position) {

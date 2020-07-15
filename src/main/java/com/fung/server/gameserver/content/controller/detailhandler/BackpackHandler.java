@@ -45,6 +45,14 @@ public class BackpackHandler extends BaseInstructionHandler {
 
     }
 
+    private String pickUp(String goodName) {
+        return "";
+    }
+
+    private String pickUp() {
+        return "";
+    }
+
     private String use(List<String> ins) {
         return null;
     }

@@ -106,14 +106,23 @@ public class PlayerInfo {
     public String showBodyEquipment(Player player) {
         List<Equipment> equipments = player.getEquipments();
         StringBuilder stringBuilder = new StringBuilder();
-        if (equipments.isEmpty()) {
+        boolean hasEquipment = false;
+        for (Equipment equipment : equipments) {
+            if (equipment.getName() != null) {
+                hasEquipment = true;
+                break;
+            }
+        }
+        if (!hasEquipment) {
             return stringBuilder.append("玩家身上没有穿戴装备").toString();
         }
         equipments.forEach(equipment -> {
-            String[] goodInfoById = goodManager.getEquipmentInfoById(equipment.getGoodId());
-            stringBuilder.append("\n装备名称: ").append(goodInfoById[GoodManager.GOOD_NAME]).append(" 等级: ")
-                    .append(equipment.getLevel()).append(" 装备部位: ").append(goodInfoById[GoodManager.EQUIPMENT_TYPE])
-                    .append(" 描述: ").append(goodInfoById[GoodManager.GOOD_DESCRIPTION]);
+            if (equipment.getName() != null) {
+                String[] goodInfoById = goodManager.getEquipmentInfoById(equipment.getGoodId());
+                stringBuilder.append("\n装备名称: ").append(goodInfoById[GoodManager.GOOD_NAME]).append(" 等级: ")
+                        .append(equipment.getLevel()).append(" 装备部位: ").append(goodInfoById[GoodManager.EQUIPMENT_TYPE])
+                        .append(" 描述: ").append(goodInfoById[GoodManager.GOOD_DESCRIPTION]);
+            }
         });
         return stringBuilder.toString();
     }

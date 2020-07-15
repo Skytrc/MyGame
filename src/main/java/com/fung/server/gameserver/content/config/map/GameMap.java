@@ -259,6 +259,10 @@ public class GameMap extends BaseElement implements Model {
         if (!fallingGoodMap.containsKey(location)) {
             return null;
         }
+        // 数组可能为空
+        if (fallingGoodMap.get(location).size() == 0){
+            return null;
+        }
         FallingGood fallingGood = fallingGoodMap.get(location).get(0);
         if (fallingGood.getBeingToPlayer() == null || fallingGood.getBeingToPlayer() == player) {
             fallingGoodMap.get(location).remove(fallingGood);
@@ -274,6 +278,10 @@ public class GameMap extends BaseElement implements Model {
         if (!fallingGoodMap.containsKey(location)) {
             return null;
         }
+        // 数组可能为空
+        if (fallingGoodMap.get(location).size() == 0){
+            return null;
+        }
         List<FallingGood> fallingGoods = fallingGoodMap.get(location);
         for (FallingGood fallingGood : fallingGoods) {
             if (fallingGood.getName().equals(fallingGoodName)) {
@@ -284,6 +292,11 @@ public class GameMap extends BaseElement implements Model {
             }
         }
         return null;
+    }
+
+    public boolean checkPositionHasFallingGood(int position) {
+        return !(fallingGoodMap.get(position) == null
+                || fallingGoodMap.get(position).size() == 0);
     }
 
     /**

@@ -30,5 +30,20 @@ public interface GoodService {
      */
     String takeOffEquipment(int equipmentPosition, String channelId);
 
+    /**
+     * 捡起物品
+     * @param channelId channel id
+     * @return 是否捡起
+     */
+    String pickUp(String channelId);
+
+    /**
+     * 捡起物品（具体名字）
+     * @param channelId channel id
+     * @param goodName 物品名字
+     * @return 是否捡起
+     */
+    String pickUp(String channelId, String goodName);
+
 
 }

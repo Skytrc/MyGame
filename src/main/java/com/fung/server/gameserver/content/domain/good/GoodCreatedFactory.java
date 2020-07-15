@@ -67,6 +67,7 @@ public class GoodCreatedFactory {
             return factory.createNoBelongingEquipment(goodId);
         }
         Good good = new Good();
+        good.setName(goodManager.getGoodNameById(goodId));
         good.setUuid(Uuid.createUuid());
         good.setGetTime(System.currentTimeMillis());
         good.setHasEquipmentValue(false);

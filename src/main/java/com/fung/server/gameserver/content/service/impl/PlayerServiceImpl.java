@@ -129,17 +129,16 @@ public class PlayerServiceImpl implements PlayerService {
         if (player.getEquipments() == null) {
            List<Equipment> equipmentList = new ArrayList<>(5);
             for (int i = 0; i < 5; i++) {
-                equipmentList.add(null);
+                equipmentList.add(new Equipment());
             }
-            player.setEquipments(equipmentList);
             List<Equipment> equipments = equipmentDao.findEquipmentsByPlayerId(player.getUuid());
             for (Equipment equipment : equipments) {
                 setEquipmentType(equipment, equipmentCreatedMap);
                 // 放入EquipmentList 中
                 int position = equipment.getType().getPosition();
-                equipmentList.add(position, equipment);
+                equipmentList.set(position, equipment);
             }
-            player.setEquipments(equipments);
+            player.setEquipments(equipmentList);
         }
         // 背包
         if (player.getPersonalBackpack() == null) {

@@ -1,5 +1,7 @@
 package com.fung.server.gameserver.content.service.impl;
 
+import com.fung.server.gameserver.content.config.manager.MapManager;
+import com.fung.server.gameserver.content.config.map.GameMap;
 import com.fung.server.gameserver.content.dao.EquipmentDao;
 import com.fung.server.gameserver.content.domain.backpack.PersonalBackpack;
 import com.fung.server.gameserver.content.domain.calculate.PlayerValueCalculate;
@@ -10,8 +12,6 @@ import com.fung.server.gameserver.content.service.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,13 +22,16 @@ import java.util.List;
 public class GoodServiceImpl implements GoodService {
 
     @Autowired
-    PlayerInfo playerInfo;
+    private PlayerInfo playerInfo;
 
     @Autowired
-    PlayerValueCalculate playerValueCalculate;
+    private PlayerValueCalculate playerValueCalculate;
 
     @Autowired
-    EquipmentDao equipmentDao;
+    private EquipmentDao equipmentDao;
+
+    @Autowired
+    private MapManager mapManager;
 
     @Override
     public String useGood(int position, String channelId) {
@@ -48,24 +51,16 @@ public class GoodServiceImpl implements GoodService {
         }
         Equipment equipment = backpack.removeEquipment(backpackPosition);
         // 需要装备到身上的位置
-        int bodyPosition = equipment.getType().getPosition();
+        int bodyPosition = equipment.getType(    ).getPosition();
         equipment.setPosition(-1);
-        // 如果装备的位置有东西，先卸到背包中
+        // 如果身上装备位置有已有装备，先卸到背包中
         if (currentPlayer.getEquipments().size() > bodyPosition && currentPlayerEquipments.get(bodyPosition) != null) {
-            backpack.addEquipment(currentPlayerEquipments.remove(bodyPosition));
+            Equipment removeEquipment = currentPlayerEquipments.get(bodyPosition);
+            currentPlayerEquipments.set(bodyPosition, new Equipment());
+            backpack.addEquipment(removeEquipment);
         }
-        // List如果不够需要扩容
-//        if (currentPlayerEquipments.size() < bodyPosition) {
-//            currentPlayerEquipments.add(bodyPosition, equipment);
-//            List<Equipment> list = new ArrayList<>(4);
-//            list.add(bodyPosition - 1, equipment);
-//            Collections.copy(list, currentPlayerEquipments);
-//            currentPlayer.setEquipments(list);
-//        } else {
-//            currentPlayerEquipments.add(bodyPosition, equipment);
-//        }
         // 装备到身上的数组中
-        currentPlayerEquipments.add(bodyPosition, equipment);
+        currentPlayerEquipments.set(bodyPosition, equipment);
 
         equipmentDao.updateEquipment(equipment);
         // 计算基础数值
@@ -79,15 +74,32 @@ public class GoodServiceImpl implements GoodService {
         Player currentPlayer = playerInfo.getCurrentPlayer(channelId);
         List<Equipment> equipments = currentPlayer.getEquipments();
         int size = equipments.size();
-        if (size > equipmentPosition && equipments.get(equipmentPosition) != null) {
+        if (size > equipmentPosition) {
             // 放入背包
-            Equipment equipment = equipments.remove(equipmentPosition);
+            Equipment currentTakeOffEquipment = equipments.get(equipmentPosition);
+            if (currentTakeOffEquipment.getName() == null) {
+                return "该位置没有装备";
+            }
+            equipments.set(equipmentPosition, new Equipment());
             PersonalBackpack personalBackpack = currentPlayer.getPersonalBackpack();
-            Equipment equipment1 = personalBackpack.addEquipment(equipment);
-            equipmentDao.updateEquipment(equipment1);
+            personalBackpack.addEquipment(currentTakeOffEquipment);
+            equipmentDao.updateEquipment(currentTakeOffEquipment);
             playerValueCalculate.calculatePlayerBaseValue(currentPlayer);
             return "脱下装备成功" + playerInfo.showPlayerValue(currentPlayer);
         }
         return "该位置没有装备";
+    }
+
+    @Override
+    public String pickUp(String channelId) {
+        Player currentPlayer = playerInfo.getCurrentPlayer(channelId);
+        GameMap map = playerInfo.getCurrentPlayerMap(currentPlayer);
+
+        return null;
+    }
+
+    @Override
+    public String pickUp(String channelId, String goodName) {
+        return null;
     }
 }

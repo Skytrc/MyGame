@@ -54,6 +54,15 @@ public class GoodManager {
         return res;
     }
 
+    public String getGoodNameById(int goodId) {
+        GoodBaseInfo goodBaseInfo;
+        goodBaseInfo = getGoodInfoImplByGoodId(goodId);
+        if (goodBaseInfo == null) {
+            return null;
+        }
+        return goodBaseInfo.getName();
+    }
+
     public int getGoodMaxStack(int goodId) {
         return getGoodInfoImplByGoodId(goodId).getMaxStacks();
     }
