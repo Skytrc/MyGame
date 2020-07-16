@@ -22,6 +22,7 @@ public class BackpackHandler extends BaseInstructionHandler {
             case "use" : return use(ins);
             case "puton" : return putOn(ins);
             case "takeoff": return takeOff(ins);
+            case "pickup": return pickUp();
             default: return "背包指令错误";
         }
     }
@@ -50,7 +51,7 @@ public class BackpackHandler extends BaseInstructionHandler {
     }
 
     private String pickUp() {
-        return "";
+        return goodService.pickUp(getChannelId());
     }
 
     private String use(List<String> ins) {

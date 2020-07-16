@@ -29,7 +29,7 @@ public class ShopServiceImpl implements ShopService {
         }
 
         // 判断背包是否存在该物品且加起来会不会超过最大丢叠数
-        if (!personalBackpack.reachMaxStack(goodId, num)) {
+        if (!personalBackpack.reachMaxStack(goodId, num, goodManager.getGoodMaxStack(goodId))) {
             return "\n超过最大堆叠数";
         }
 

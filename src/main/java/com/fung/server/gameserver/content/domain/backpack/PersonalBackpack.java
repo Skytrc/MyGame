@@ -18,7 +18,7 @@ import java.util.Map;
 public class PersonalBackpack {
 
     @Autowired
-    GoodManager goodManager;
+    private GoodManager goodManager;
 
     public static final String SUCCEED_PUT_IN_BACKPACK = "成功放入背包";
 
@@ -50,8 +50,6 @@ public class PersonalBackpack {
 
     /**
      * 获取背包所有的物品
-     * 一个小的想法。这里遍历完的数据是否可以放入缓存中，
-     * 在没有改变背包的前提下，可以重新使用？
      */
     public List<Good> getAllGood() {
         List<Good> list = new LinkedList<>();
@@ -84,59 +82,23 @@ public class PersonalBackpack {
     /**
      * 判断能否达到最大堆叠数
      */
-    public boolean reachMaxStack(int id, int num) {
+    public boolean reachMaxStack(int id, int num, int maxNum) {
         for (Good value : backpack.values()) {
             if (value.getGoodId() == id) {
                 int newNum = num + value.getQuantity();
                 // 达到最大堆叠数
-                if (newNum > goodManager.getGoodMaxStack(id)) {
-                    return false;
+                if (newNum > maxNum) {
+                    return true;
                 }
             }
         }
-        return true;
-    }
-
-    /**
-     * 需要先判断是否可以插入
-     * 插入物品，判断背  包中的物品是否有& if 背包中存在该物品，是否存在最大堆叠数
-     * 插入不了返回null，注意处理空值
-     */
-    @Deprecated
-    public Good addGood(int id, int num) {
-        Good good;
-        // 直接判断需要加入背包的数量是否大于最大堆叠数
-        if (goodManager.getGoodMaxStack(id) <= num) {
-            return null;
-        }
-
-        // 如果是装备直接加入到背包中
-        if (goodManager.isEquipment(id)) {
-
-        }
-
-        // 物品不存在背包
-        for (int i = 0; i < maxBackpackGrid; i++) {
-            if (!backpack.containsKey(i)) {
-                Good good1 = new Good();
-                good1.setGoodId(id);
-                good1.setQuantity(num);
-                good1.setGetTime(System.currentTimeMillis());
-                good1.setPlayerId(playerId);
-                good1.setPosition(i);
-                good = good1;
-                // 放入背包
-                backpack.put(i, good1);
-                return good;
-            }
-        }
-        return null;
+        return false;
     }
 
     /**
      * 检查并放入背包
      */
-    public String checkAndAddGood(Good good) {
+    public String checkAndAddGood(Good good, GoodManager goodManager) {
         // 如果是装备直接放入背包
         if (good.isHasEquipmentValue()) {
             addGood(good);
@@ -146,7 +108,8 @@ public class PersonalBackpack {
         Good getBackpackGood = getGood(good);
         if (getBackpackGood != null) {
             // 检查是否达到最大堆叠数
-            if (reachMaxStack(good.getGoodId(), good.getQuantity())) {
+            int goodMaxStack = goodManager.getGoodMaxStack(good.getGoodId());
+            if (reachMaxStack(good.getGoodId(), good.getQuantity(), goodMaxStack)) {
                 return REACH_MAX_STACKS;
             } else {
                 // 数量plus

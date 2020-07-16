@@ -39,37 +39,35 @@ public class DungeonManager {
     }
 
     /**
-     * 创建新的副本
+     * 查看容器中是否有空闲的副本
      */
-    private Dungeon createdNewDungeon(int dungeonId) {
-        return mapManager.createNewDungeon(dungeonId);
+    public boolean hasEmptyDungeon(int dungeonId) {
+        return (idleDungeon.containsKey(dungeonId) || (idleDungeon.get(dungeonId).size() > 0));
     }
 
     /**
-     * 玩家获取副本
-     * 先查看是否存在空闲副本，有返回副本（从idleDungeon中剔除），没有则创建新的副本
+     * 玩家获取新的副本
      */
-    public GameMapActor playerGotDungeon(int dungeonId, Player player) {
-        if (!idleDungeon.containsKey(dungeonId) || (idleDungeon.get(dungeonId).size() == 0)) {
-            Dungeon newDungeon = createdNewDungeon(dungeonId);
-            newDungeon.setBeforeMapId(player.getInMapId());
-            GameMapActor mapActor = new GameMapActor();
-            mapActor.setGameMap(newDungeon);
-            dungeonManger.put(newDungeon.getUuid(), mapActor);
-            return mapActor;
-        }
-        String s = idleDungeon.get(dungeonId).remove(0);
-        return dungeonManger.get(s);
+    public GameMapActor playerGotDungeon(Dungeon newDungeon, Player player) {
+        newDungeon.setBeforeMapId(player.getInMapId());
+        GameMapActor mapActor = new GameMapActor();
+        mapActor.setGameMap(newDungeon);
+        dungeonManger.put(newDungeon.getUuid(), mapActor);
+        return mapActor;
     }
 
-    public boolean playerLeaveDungeon(Player player) {
-        if (player.getTempStatus().getDungeonId() == null) {
-            return false;
-        }
+    /**
+     * 玩家获取容器中已有的副本
+     */
+    public GameMapActor playerGotDungeon(int dungeonId) {
+        List<String> dungeons = idleDungeon.get(dungeonId);
+        return dungeonManger.get(dungeons.remove(0));
+    }
+
+    public boolean playerLeaveDungeon(Player player, GameMap nextMap) {
         GameMapActor mapActor = dungeonManger.get(player.getTempStatus().getDungeonId());
         Dungeon dungeon = (Dungeon) mapActor.getGameMap();
         dungeon.removePlayer(player);
-        GameMap nextMap = mapManager.getMapByMapId(dungeon.getBeforeMapId());
         nextMap.addPlayer(player);
         player.setInMapId(dungeon.getBeforeMapId());
         player.setInMapX(1);

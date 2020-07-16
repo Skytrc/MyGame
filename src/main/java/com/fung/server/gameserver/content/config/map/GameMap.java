@@ -255,7 +255,8 @@ public class GameMap extends BaseElement implements Model {
     /**
      * 获取该位置中的一件物品(无主，或自己的物品)
      */
-    public FallingGood getFallingGood(int location, Player player) {
+    public FallingGood getFallingGood(Player player) {
+        int location = xy2Location(player.getInMapX(), player.getInMapY());
         if (!fallingGoodMap.containsKey(location)) {
             return null;
         }

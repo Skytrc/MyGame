@@ -67,6 +67,9 @@ public class MonsterDropCreated {
         int randomNumber = RANDOM.nextInt(10_000);
         if (rate > randomNumber){
             int quantity = RANDOM.nextInt(maxCreatedQuantity);
+            if (quantity == 0) {
+                return null;
+            }
             return goodCreatedFactory.createNoBelongingGood(goodId, quantity);
         }
         return null;

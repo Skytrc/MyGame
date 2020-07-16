@@ -3,9 +3,7 @@ package com.fung.server.gameserver.content.service.impl;
 import com.fung.server.gameserver.cache.mycache.PlayerCache;
 import com.fung.server.gameserver.channelstore.WriteMessage2Client;
 import com.fung.server.gameserver.content.config.manager.MapManager;
-import com.fung.server.gameserver.content.config.map.Dungeon;
 import com.fung.server.gameserver.content.config.map.GameMap;
-import com.fung.server.gameserver.content.domain.Dungeon.DungeonManager;
 import com.fung.server.gameserver.content.domain.calculate.MoveCalculate;
 import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
 import com.fung.server.gameserver.content.entity.Player;
@@ -42,9 +40,6 @@ public class MoveServiceImpl implements MoveService {
     private MapManager mapManager;
 
     @Autowired
-    private DungeonManager dungeonManager;
-
-    @Autowired
     private WriteMessage2Client writeMessage2Client;
 
     @Override
@@ -63,12 +58,7 @@ public class MoveServiceImpl implements MoveService {
     @Override
     public String move(int[] xy, String channelId) throws InterruptedException {
         Player player = playerInfo.getCurrentPlayer(channelId);
-        GameMapActor gameMapActor;
-        if (player.getTempStatus().getDungeonId() != null) {
-            gameMapActor = dungeonManager.getDungeonActorByUuid(player.getTempStatus().getDungeonId());
-        } else {
-            gameMapActor = mapManager.getGameMapActorById(player.getInMapId());
-        }
+        GameMapActor gameMapActor = mapManager.getGameMapActor(player);
         gameMapActor.addMessage(gameMapActor1 -> {
             GameMap gameMap = gameMapActor.getGameMap();
             int newX = xy[0];

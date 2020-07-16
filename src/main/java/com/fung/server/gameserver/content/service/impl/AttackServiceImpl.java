@@ -7,7 +7,6 @@ import com.fung.server.gameserver.content.config.manager.SkillManager;
 import com.fung.server.gameserver.content.config.map.GameMap;
 import com.fung.server.gameserver.content.config.monster.BaseHostileMonster;
 import com.fung.server.gameserver.content.config.monster.NormalMonster;
-import com.fung.server.gameserver.content.domain.Dungeon.DungeonManager;
 import com.fung.server.gameserver.content.domain.calculate.AttackCalculate;
 import com.fung.server.gameserver.content.domain.equipment.EquipmentDurable;
 import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
@@ -47,9 +46,6 @@ public class AttackServiceImpl implements AttackService {
 
     @Autowired
     private MapManager mapManager;
-
-    @Autowired
-    private DungeonManager dungeonManager;
 
     @Autowired
     private EquipmentDurable equipmentDurable;
@@ -110,12 +106,7 @@ public class AttackServiceImpl implements AttackService {
     public String attack1(String channelId, int x, int y, int skillId) {
         Player player = onlinePlayer.getPlayerByChannelId(channelId);
         // 判斷是否在副本內
-        GameMapActor mapActor;
-        if (player.getTempStatus().getDungeonId() != null) {
-            mapActor = dungeonManager.getDungeonActorByUuid(player.getTempStatus().getDungeonId());
-        } else {
-            mapActor = mapManager.getGameMapActorById(player.getInMapId());
-        }
+        GameMapActor mapActor = mapManager.getGameMapActor(player);
         // 丢到对应地图线程中处理
         mapActor.addMessage(gameMapActor -> {
             LOGGER.info(Thread.currentThread().getName());
@@ -130,7 +121,7 @@ public class AttackServiceImpl implements AttackService {
                 return;
             }
             if (monster.getHealthPoint() <= 0) {
-                writeMessage2Client.writeMessage(channelId, "\n" + monster.getName());
+                writeMessage2Client.writeMessage(channelId, "\n" + monster.getName() + "  已死亡");
             }
             int minusHp = attackCalculate.defenderHpCalculate(player.getTotalAttackPower(),
                     player.getTotalCriticalRate(), skillManager.getSkillById(skillId).getPhysicalDamage(),

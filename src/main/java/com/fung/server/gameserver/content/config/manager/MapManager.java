@@ -137,11 +137,31 @@ public class MapManager {
     }
 
     public GameMapActor playerGotDungeon(int dungeonId, Player player) {
-        return dungeonManager.playerGotDungeon(dungeonId, player);
+        if (dungeonManager.hasEmptyDungeon(dungeonId)) {
+            return dungeonManager.playerGotDungeon(createNewDungeon(dungeonId), player);
+        }
+        return dungeonManager.playerGotDungeon(dungeonId);
     }
 
     public boolean playerLeaveDungeon(Player player) {
-        return false;
+        if (player.getTempStatus().getDungeonId() == null) {
+            return false;
+        }
+        GameMapActor dungeonActor = dungeonManager.getDungeonActorByUuid(player.getTempStatus().getDungeonId());
+        Dungeon dungeon = (Dungeon) dungeonActor.getGameMap();
+        GameMap nextMap = getMapByMapId(dungeon.getBeforeMapId());
+        return dungeonManager.playerLeaveDungeon(player, nextMap);
+    }
+
+    public GameMapActor getGameMapActor(Player player) {
+        if (player.getTempStatus().getDungeonId() ==  null) {
+            return getGameMapActorById(player.getInMapId());
+        }
+        return dungeonManager.getDungeonActorByUuid(player.getTempStatus().getDungeonId());
+    }
+
+    public GameMapActor getDungeonActorByUuid(String uuid){
+        return dungeonManager.getDungeonActorByUuid(uuid);
     }
 
     public Map<Integer, GameMap> getGameMapCollection() {

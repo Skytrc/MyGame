@@ -1,12 +1,17 @@
 package com.fung.server.gameserver.content.service.impl;
 
+import com.fung.server.gameserver.channelstore.WriteMessage2Client;
+import com.fung.server.gameserver.content.config.good.FallingGood;
+import com.fung.server.gameserver.content.config.manager.GoodManager;
 import com.fung.server.gameserver.content.config.manager.MapManager;
 import com.fung.server.gameserver.content.config.map.GameMap;
 import com.fung.server.gameserver.content.dao.EquipmentDao;
 import com.fung.server.gameserver.content.domain.backpack.PersonalBackpack;
 import com.fung.server.gameserver.content.domain.calculate.PlayerValueCalculate;
+import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
 import com.fung.server.gameserver.content.domain.player.PlayerInfo;
 import com.fung.server.gameserver.content.entity.Equipment;
+import com.fung.server.gameserver.content.entity.Good;
 import com.fung.server.gameserver.content.entity.Player;
 import com.fung.server.gameserver.content.service.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +37,12 @@ public class GoodServiceImpl implements GoodService {
 
     @Autowired
     private MapManager mapManager;
+
+    @Autowired
+    private GoodManager goodManager;
+
+    @Autowired
+    private WriteMessage2Client writeMessage2Client;
 
     @Override
     public String useGood(int position, String channelId) {
@@ -92,10 +103,26 @@ public class GoodServiceImpl implements GoodService {
 
     @Override
     public String pickUp(String channelId) {
-        Player currentPlayer = playerInfo.getCurrentPlayer(channelId);
-        GameMap map = playerInfo.getCurrentPlayerMap(currentPlayer);
-
-        return null;
+        Player player = playerInfo.getCurrentPlayer(channelId);
+        GameMapActor gameMapActor = mapManager.getGameMapActor(player);
+        GameMap gameMap = gameMapActor.getGameMap();
+        gameMapActor.addMessage(gameMapActor1 -> {
+            FallingGood fallingGood = gameMap.getFallingGood(player);
+            Good good = fallingGood.getGood();
+            if (good == null) {
+                writeMessage2Client.writeMessage(channelId, "该位置没有物品");
+                return;
+            }
+            PersonalBackpack personalBackpack = player.getPersonalBackpack();
+            String res = personalBackpack.checkAndAddGood(good, goodManager);
+            if (res.equals(PersonalBackpack.SUCCEED_PUT_IN_BACKPACK)) {
+                res = "\n捡起: " + good.getName() + " 数量: " + good.getQuantity() + " " + res;
+            }
+            writeMessage2Client.writeMessage(channelId, res);
+            // 设置为null 等虚拟机回收
+            fallingGood = null;
+        });
+        return "";
     }
 
     @Override

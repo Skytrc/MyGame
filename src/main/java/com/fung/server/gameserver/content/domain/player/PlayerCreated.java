@@ -4,6 +4,7 @@ import com.fung.server.gameserver.content.dao.EquipmentDao;
 import com.fung.server.gameserver.content.dao.GoodDao;
 import com.fung.server.gameserver.content.dao.SkillDao;
 import com.fung.server.gameserver.content.domain.backpack.PersonalBackpack;
+import com.fung.server.gameserver.content.domain.email.MailBox;
 import com.fung.server.gameserver.content.domain.good.GoodCreatedFactory;
 import com.fung.server.gameserver.content.domain.skill.SkillLoad;
 import com.fung.server.gameserver.content.entity.*;
@@ -78,6 +79,9 @@ public class PlayerCreated {
         personalBackpack.setMaxBackpackGrid(player.getPlayerCommConfig().getMaxBackpackGrid());
         List<Good> goods = goodCreatedFactory.newPlayerGoodCreated(player.getUuid());
         List<Equipment> equipments = goodCreatedFactory.newPlayerEquipmentCreated(player.getUuid());
+
+        // 初始化邮件系统
+        player.setMailBox(new MailBox());
 
         // 物品、武器放入背包
         for (Good good : goods) {

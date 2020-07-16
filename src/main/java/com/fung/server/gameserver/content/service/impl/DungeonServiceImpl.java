@@ -4,7 +4,6 @@ import com.fung.server.gameserver.channelstore.WriteMessage2Client;
 import com.fung.server.gameserver.content.config.manager.MapManager;
 import com.fung.server.gameserver.content.config.map.Dungeon;
 import com.fung.server.gameserver.content.config.map.GameMap;
-import com.fung.server.gameserver.content.domain.Dungeon.DungeonManager;
 import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
 import com.fung.server.gameserver.content.domain.player.PlayerInfo;
 import com.fung.server.gameserver.content.entity.Player;
@@ -23,7 +22,7 @@ public class DungeonServiceImpl implements DungeonService {
     private PlayerInfo playerInfo;
 
     @Autowired
-    private DungeonManager dungeonManager;
+    private MapManager mapManager;
 
     @Autowired
     private WriteMessage2Client writeMessage2Client;
@@ -31,7 +30,7 @@ public class DungeonServiceImpl implements DungeonService {
     @Override
     public String enterDungeon(String channelId, int dungeonId) {
         Player player = playerInfo.getCurrentPlayer(channelId);
-        GameMapActor mapActor = dungeonManager.playerGotDungeon(dungeonId, player);
+        GameMapActor mapActor = mapManager.playerGotDungeon(dungeonId, player);
         GameMap currentMap = playerInfo.getCurrentPlayerMap(channelId);
         Dungeon nextMap = (Dungeon) mapActor.getGameMap();
         currentMap.removePlayer(player);
@@ -48,7 +47,7 @@ public class DungeonServiceImpl implements DungeonService {
     @Override
     public String enterDungeon(String channelId, String dungeonUuid) {
         Player player = playerInfo.getCurrentPlayer(channelId);
-        GameMapActor mapActor = dungeonManager.getDungeonActorByUuid(dungeonUuid);
+        GameMapActor mapActor = mapManager.getDungeonActorByUuid(dungeonUuid);
         if (mapActor == null) {
             return "";
         }
@@ -64,7 +63,7 @@ public class DungeonServiceImpl implements DungeonService {
     @Override
     public String leaveDungeon(String channelId) {
         Player player = playerInfo.getCurrentPlayer(channelId);
-        if (!dungeonManager.playerLeaveDungeon(player)) {
+        if (!mapManager.playerLeaveDungeon(player)) {
             return "玩家不在副本内";
         }
         return "成功退出副本";

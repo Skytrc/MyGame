@@ -1,6 +1,7 @@
 package com.fung.server.gameserver.content.entity;
 
 import com.fung.server.gameserver.content.domain.backpack.PersonalBackpack;
+import com.fung.server.gameserver.content.domain.email.MailBox;
 import com.fung.server.gameserver.content.domain.player.PlayerTempStatus;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -209,13 +210,14 @@ public class Player{
     @Transient
     private PlayerTempStatus tempStatus;
 
+    /**
+     * 个人邮箱
+     */
+    @Transient
+    private MailBox mailBox;
+
     public int addExp(int addExp) {
         exp += addExp;
-        return exp;
-    }
-
-    public int minusExp(int minusExp) {
-        exp -= minusExp;
         return exp;
     }
 
@@ -473,5 +475,13 @@ public class Player{
 
     public PlayerTempStatus getTempStatus() {
         return tempStatus;
+    }
+
+    public MailBox getMailBox() {
+        return mailBox;
+    }
+
+    public void setMailBox(MailBox mailBox) {
+        this.mailBox = mailBox;
     }
 }

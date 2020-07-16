@@ -5,11 +5,13 @@ import com.fung.server.gameserver.content.config.good.equipment.EquipmentCreated
 import com.fung.server.gameserver.content.config.good.equipment.EquipmentType;
 import com.fung.server.gameserver.content.config.manager.EquipmentCreatedManager;
 import com.fung.server.gameserver.content.config.manager.MapManager;
+import com.fung.server.gameserver.content.dao.EmailDao;
 import com.fung.server.gameserver.content.dao.EquipmentDao;
 import com.fung.server.gameserver.content.dao.GoodDao;
 import com.fung.server.gameserver.content.dao.SkillDao;
 import com.fung.server.gameserver.content.domain.backpack.PersonalBackpack;
 import com.fung.server.gameserver.content.domain.calculate.PlayerValueCalculate;
+import com.fung.server.gameserver.content.domain.email.MailBox;
 import com.fung.server.gameserver.content.domain.player.PlayerCreated;
 import com.fung.server.gameserver.content.entity.*;
 import com.fung.server.gameserver.content.service.PlayerService;
@@ -30,34 +32,37 @@ import java.util.Map;
 public class PlayerServiceImpl implements PlayerService {
 
     @Autowired
-    PlayerCache playerCache;
+    private PlayerCache playerCache;
 
     @Autowired
-    PlayerCreated playerCreated;
+    private PlayerCreated playerCreated;
 
     @Autowired
-    PlayerInfo playerInfo;
+    private PlayerInfo playerInfo;
 
     @Autowired
-    PlayerValueCalculate playerValueCalculate;
+    private PlayerValueCalculate playerValueCalculate;
 
     @Autowired
-    OnlinePlayer onlinePlayer;
+    private OnlinePlayer onlinePlayer;
 
     @Autowired
-    MapManager mapManager;
+    private MapManager mapManager;
 
     @Autowired
-    EquipmentCreatedManager createdManager;
+    private EquipmentCreatedManager createdManager;
 
     @Autowired
-    SkillDao skillDao;
+    private SkillDao skillDao;
 
     @Autowired
-    EquipmentDao equipmentDao;
+    private EquipmentDao equipmentDao;
 
     @Autowired
-    GoodDao goodDao;
+    private GoodDao goodDao;
+
+    @Autowired
+    private EmailDao emailDao;
 
     @Override
     public String register(String playerName, String password) {
@@ -161,6 +166,10 @@ public class PlayerServiceImpl implements PlayerService {
             });
             player.setPersonalBackpack(personalBackpack);
         }
+
+        // 挂载邮箱
+        MailBox mailBox = new MailBox();
+
     }
 
     public void setEquipmentType(Equipment equipment, Map<Integer, EquipmentCreated> equipmentCreatedMap) {
