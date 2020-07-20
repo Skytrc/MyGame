@@ -1,5 +1,6 @@
 package com.fung.server.gameserver.cache.mycache;
 
+import com.fung.server.gameserver.content.domain.player.OnlinePlayer;
 import com.fung.server.gameserver.content.entity.Player;
 import com.fung.server.gameserver.content.dao.PlayerDao;
 import com.fung.server.gameserver.content.entity.PlayerCommConfig;
@@ -18,6 +19,9 @@ public class PlayerCache {
 
     @Autowired
     private PlayerDao playerDao;
+
+    @Autowired
+    private OnlinePlayer onlinePlayer;
 
     /**
      * key 玩家名  value 玩家实体
@@ -50,6 +54,7 @@ public class PlayerCache {
         playerDao.playerRegister(player);
         player = playerDao.getPlayerByPlayerName(player.getPlayerName());
         playerCache.asMap().putIfAbsent(player.getPlayerName(), player);
+        onlinePlayer.addPlayerId(player.getUuid());
     }
 
     public void insertPlayerCommConfig(PlayerCommConfig playerCommConfig) {

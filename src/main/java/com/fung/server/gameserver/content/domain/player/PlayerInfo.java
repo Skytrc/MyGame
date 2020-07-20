@@ -5,6 +5,7 @@ import com.fung.server.gameserver.content.config.manager.MapManager;
 import com.fung.server.gameserver.content.config.manager.SkillManager;
 import com.fung.server.gameserver.content.config.map.GameMap;
 import com.fung.server.gameserver.content.domain.backpack.PersonalBackpack;
+import com.fung.server.gameserver.content.domain.mapactor.PlayerActor;
 import com.fung.server.gameserver.content.entity.Equipment;
 import com.fung.server.gameserver.content.entity.Player;
 import com.fung.server.gameserver.content.entity.Skill;
@@ -50,6 +51,18 @@ public class PlayerInfo {
         return mapManager.getMapByMapId(gameMapId);
     }
 
+    public PlayerActor getPlayerActorByChannelId(String channelId) {
+        return onlinePlayer.getPlayerActorByChannelId(channelId);
+    }
+
+    public PlayerActor getPlayerActorByPlayerId(String playerId) {
+        return onlinePlayer.getPlayerActorByPlayerId(playerId);
+    }
+
+    public boolean hasPlayerId(String playerId) {
+        return onlinePlayer.hasPlayerId(playerId);
+    }
+
     public Player getCurrentPlayer(String channelId) {
         return onlinePlayer.getPlayerByChannelId(channelId);
     }
@@ -86,7 +99,7 @@ public class PlayerInfo {
         personalBackpack.getBackpack().forEach((key, value) -> {
             String[] strings = goodManager.getGoodInfoById(value.getGoodId());
             stringBuilder.append("\n位置:").append(key).append(" 有").append(strings[GoodManager.GOOD_NAME]).append("，")
-                    .append(strings[GoodManager.GOOD_DESCRIPTION]);
+                    .append(strings[GoodManager.GOOD_DESCRIPTION]).append(" 数量: ").append(value.getQuantity());
         });
         return stringBuilder.toString();
     }

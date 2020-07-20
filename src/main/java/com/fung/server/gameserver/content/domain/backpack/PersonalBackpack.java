@@ -3,7 +3,6 @@ package com.fung.server.gameserver.content.domain.backpack;
 import com.fung.server.gameserver.content.config.manager.GoodManager;
 import com.fung.server.gameserver.content.entity.Equipment;
 import com.fung.server.gameserver.content.entity.Good;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -16,9 +15,6 @@ import java.util.Map;
  * @date 2020/6/2 10:47
  */
 public class PersonalBackpack {
-
-    @Autowired
-    private GoodManager goodManager;
 
     public static final String SUCCEED_PUT_IN_BACKPACK = "成功放入背包";
 
@@ -34,7 +30,7 @@ public class PersonalBackpack {
     /**
      * 存储装备详细信息， key position  value 装备信息
      */
-    private Map<Integer, Equipment> equipmentMap;
+//    private Map<Integer, Equipment> equipmentMap;
 
     /**
      * 背包最大格子数
@@ -45,7 +41,6 @@ public class PersonalBackpack {
 
     public PersonalBackpack() {
         backpack = new HashMap<>();
-        equipmentMap = new HashMap<>();
     }
 
     /**
@@ -100,8 +95,8 @@ public class PersonalBackpack {
      */
     public String checkAndAddGood(Good good, GoodManager goodManager) {
         // 如果是装备直接放入背包
-        if (good.isHasEquipmentValue()) {
-            addGood(good);
+        if (goodManager.isEquipment(good.getGoodId())) {
+            return addGood(good);
         }
 
         // 先检查背包中有没有该物品
@@ -141,21 +136,17 @@ public class PersonalBackpack {
             if (!backpack.containsKey(i)) {
                 good.setPosition(i);
                 backpack.put(i, good);
-                return "成功放入背包";
+                return SUCCEED_PUT_IN_BACKPACK;
             }
         }
-        return "背包已满";
+        return BACKPACK_FULL;
     }
 
     /**
-     * 使用物品（消耗物品）
+     * 使用物品
      * 没有操作返回null
-     * TODO 需要重写
      */
     public Good useGood(int position, int num) {
-        if (backpack.containsKey(position)) {
-            return null;
-        }
         Good good = backpack.get(position);
         int newNum = good.getQuantity() - num;
         if (newNum < 0) {
@@ -164,47 +155,21 @@ public class PersonalBackpack {
             return backpack.remove(position);
         }
         good.setQuantity(newNum);
-        // 重新把物品刷回背包
-        backpack.put(good.getPosition(), good);
         return good;
     }
 
     /**
-     * 添加装备，背包添加装备，在equipmentMap中添加
+     * 使用物品（1次）例如装备等
      */
-    public Equipment addEquipment(Equipment equipment) {
-        String message = addGood(equipment);
-        if (message != SUCCEED_PUT_IN_BACKPACK) {
-            return null;
-        }
-        equipment.setPosition(equipment.getPosition());
-        equipmentMap.put(equipment.getPosition(), equipment);
-        return equipment;
+    public Good useGood(int position) {
+        return useGood(position, 1);
     }
 
     /**
-     * 移除装备（一般将装备放到玩家身上）
+     * 检查位置有没有物品
      */
-    public Equipment removeEquipment(int position) {
-        backpack.remove(position);
-        return equipmentMap.remove(position);
-    }
-
-    /**
-     * 获取装备信息，如果没有则返回空
-     */
-    public Equipment getEquipment(int position) {
-        if (isEquipment(position)) {
-            return equipmentMap.get(position);
-        }
-        return null;
-    }
-
-    /**
-     * 判断物品是否为装备
-     */
-    public boolean isEquipment(int position) {
-        return equipmentMap.containsKey(position);
+    public boolean positionHasGood(int position) {
+        return backpack.get(position) != null;
     }
 
     public void setBackpack(Map<Integer, Good> backpack) {
@@ -231,11 +196,4 @@ public class PersonalBackpack {
         this.playerId = playerId;
     }
 
-    public void setEquipmentMap(Map<Integer, Equipment> equipments) {
-        this.equipmentMap = equipments;
-    }
-
-    public Map<Integer, Equipment> getEquipmentMap() {
-        return equipmentMap;
-    }
 }

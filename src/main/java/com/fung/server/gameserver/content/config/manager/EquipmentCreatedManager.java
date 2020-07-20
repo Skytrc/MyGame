@@ -21,7 +21,7 @@ public class EquipmentCreatedManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(EquipmentCreatedManager.class);
 
     @Autowired
-    ReadCreated readCreated;
+    private ReadCreated readCreated;
 
     /**
      * 存储 key 装备对应id  value EquipmentCreated
@@ -36,9 +36,5 @@ public class EquipmentCreatedManager {
 
     public Map<Integer, EquipmentCreated> getEquipmentCreatedMap() {
         return equipmentCreatedMap;
-    }
-
-    public void setEquipmentCreatedMap(Map<Integer, EquipmentCreated> equipmentCreatedMap) {
-        this.equipmentCreatedMap = equipmentCreatedMap;
     }
 }

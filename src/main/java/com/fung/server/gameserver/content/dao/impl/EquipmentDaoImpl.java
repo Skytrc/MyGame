@@ -2,6 +2,7 @@ package com.fung.server.gameserver.content.dao.impl;
 
 import com.fung.server.gameserver.content.dao.EquipmentDao;
 import com.fung.server.gameserver.content.entity.Equipment;
+import com.fung.server.gameserver.content.entity.Good;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
@@ -39,14 +41,8 @@ public class EquipmentDaoImpl extends HibernateDaoSupport implements EquipmentDa
     public List<Equipment> findEquipmentsByPlayerId(String playerId) {
         Session session = this.getSessionFactory().openSession();
         try {
-            return session.createNativeQuery(
-                    "SELECT * " +
-                            "FROM good,equipment " +
-                            "WHERE player_id='" + playerId + "' " +
-                            "AND equipment.uuid=good.uuid " +
-                            "AND position=-1;"
-                    , Equipment.class
-            ).getResultList();
+            return session.createNativeQuery("SELECT * FROM good WHERE player_id= '" + playerId +
+                    "' AND DTYPE='equipment' AND position = -1 ", Equipment.class).getResultList();
         } catch (NoResultException e) {
             return null;
         }

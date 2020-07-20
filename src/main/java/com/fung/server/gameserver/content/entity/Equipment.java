@@ -8,9 +8,8 @@ import javax.persistence.*;
  * @author skytrc@163.com
  * @date 2020/6/1 15:05
  */
-@Entity
-@PrimaryKeyJoinColumn()
-@Table(name = "equipment")
+@Entity(name = "equipment")
+@DiscriminatorValue("equipment")
 public class Equipment extends Good {
 
     /**
@@ -44,26 +43,31 @@ public class Equipment extends Good {
     /**
      * 装备增加血量
      */
+    @Column(name = "plus_hp")
     private int plusHp;
 
     /**
      * 装备增加魔法值
      */
+    @Column(name = "plus_mp")
     private int plusMp;
 
     /**
      * 装备增加攻击力
      */
+    @Column(name = "attack_power")
     private int attackPower;
 
     /**
      * 装备增加魔法力
      */
+    @Column(name = "magic_power")
     private int magicPower;
 
     /**
      * 装备增加暴击率
      */
+    @Column(name = "critical_rate")
     private float criticalRate;
 
     /**
@@ -74,6 +78,7 @@ public class Equipment extends Good {
     /**
      * 词条
      */
+    @Column(name = "entries_num")
     private String entriesNum;
 
     public int getLevel() {

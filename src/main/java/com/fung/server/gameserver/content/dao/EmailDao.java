@@ -1,6 +1,7 @@
 package com.fung.server.gameserver.content.dao;
 
 import com.fung.server.gameserver.content.entity.Email;
+import com.fung.server.gameserver.content.entity.EmailStatus;
 
 import java.util.List;
 
@@ -28,6 +29,21 @@ public interface EmailDao {
      * @return 邮件
      */
     Email getEmailById(String emailId);
+
+    /**
+     * 创建email状态
+     */
+    void createEmailStatus(EmailStatus emailStatus);
+
+    /**
+     * 更新email状态
+     */
+    void updateEmailStatus(EmailStatus emailStatus);
+
+    /**
+     * 删除email状态
+     */
+    void deleteEmailStatus(String emailId, String playerId);
 
     /**
      * 查找所有的邮件

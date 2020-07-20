@@ -150,6 +150,7 @@ public class AttackServiceImpl implements AttackService {
         // 死亡结算 TODO  数据库保存
         player.getPlayerCommConfig().addMoney(monster.getValue());
         player.addExp(monster.getExp());
+        writeMessage2Client.writeMessage(channelId, "增加经验: " + monster.getExp() + "\n增加金钱: " + monster.getValue());
         monsterAction.rebirth(monster, gameMapActor);
         monsterDrop(monster, player, channelId);
     }

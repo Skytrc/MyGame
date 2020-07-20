@@ -1,6 +1,7 @@
 package com.fung.server.gameserver.content.config.good.equipment;
 
 import com.fung.server.gameserver.content.domain.good.GoodBaseInfo;
+import com.fung.server.gameserver.content.entity.Good;
 import com.fung.server.gameserver.excel2class.Model;
 
 /**
@@ -8,14 +9,9 @@ import com.fung.server.gameserver.excel2class.Model;
  * @author skytrc@163.com
  * @date 2020/6/1 13:34
  */
-public class EquipmentCreated implements Model, GoodBaseInfo {
+public class EquipmentCreated extends Good implements Model, GoodBaseInfo {
 
     private int id;
-
-    private int goodId;
-
-    private String name;
-
     /**
      * 装备类型
      */
@@ -68,8 +64,6 @@ public class EquipmentCreated implements Model, GoodBaseInfo {
     private int maxDefense;
 
     private int value;
-
-    private String description;
 
     @Override
     public int getId() {
@@ -176,26 +170,12 @@ public class EquipmentCreated implements Model, GoodBaseInfo {
         this.maxDefense = maxDefense;
     }
 
-    @Override
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public int getMinLevel() {
         return minLevel;
     }
 
     public void setMinLevel(int minLevel) {
         this.minLevel = minLevel;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     @Override
@@ -206,10 +186,6 @@ public class EquipmentCreated implements Model, GoodBaseInfo {
     @Override
     public int getMaxStacks() {
         return 1;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getDurable() {
@@ -226,15 +202,6 @@ public class EquipmentCreated implements Model, GoodBaseInfo {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    @Override
-    public int getGoodId() {
-        return goodId;
-    }
-
-    public void setGoodId(int goodId) {
-        this.goodId = goodId;
     }
 
     @Override

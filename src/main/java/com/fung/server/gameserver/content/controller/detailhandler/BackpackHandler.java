@@ -55,6 +55,11 @@ public class BackpackHandler extends BaseInstructionHandler {
     }
 
     private String use(List<String> ins) {
-        return null;
+        try {
+            int position = Integer.parseInt(ins.remove(0));
+            return goodService.useGood(position, getChannelId());
+        } catch (NumberFormatException ignored) {
+            return "格子数必须为数字";
+        }
     }
 }

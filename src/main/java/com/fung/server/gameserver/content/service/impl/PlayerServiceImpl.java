@@ -106,16 +106,17 @@ public class PlayerServiceImpl implements PlayerService {
         playerValueCalculate.calculatePlayerBaseValue(player);
 
         // onlinePlayer -> 指向PlayerCache的玩家实体
-        onlinePlayer.getPlayerMap().put(channelId, playerLogin);
+        onlinePlayer.addPlayer(playerLogin, channelId);
         // 地图Map捆绑线上玩家
         mapManager.getMapByMapId(playerLogin.getInMapId()).addPlayer(playerLogin);
+        // TODO 加上邮件检测
         return "登录成功：\n " + playerInfo.showPlayerInfo(player);
     }
 
     @Override
     public String logout(String channelId) {
         if (onlinePlayer.getPlayerMap().containsKey(channelId)) {
-            Player player = onlinePlayer.getPlayerMap().remove(channelId);
+            Player player = onlinePlayer.removePlayer(channelId);
             // 地图 在线Map 移除该玩家
             playerInfo.getCurrentPlayerMap(channelId).removePlayer(player);
             return "登出成功";
@@ -132,8 +133,9 @@ public class PlayerServiceImpl implements PlayerService {
         Map<Integer, EquipmentCreated> equipmentCreatedMap = createdManager.getEquipmentCreatedMap();
         // 挂载装备
         if (player.getEquipments() == null) {
-           List<Equipment> equipmentList = new ArrayList<>(5);
-            for (int i = 0; i < 5; i++) {
+           List<Equipment> equipmentList = new ArrayList<>(PlayerCommConfig.playerBodyEquipmentNum);
+           // 创建新的空装备（用于占位）
+            for (int i = 0; i < PlayerCommConfig.playerBodyEquipmentNum; i++) {
                 equipmentList.add(new Equipment());
             }
             List<Equipment> equipments = equipmentDao.findEquipmentsByPlayerId(player.getUuid());
@@ -154,7 +156,6 @@ public class PlayerServiceImpl implements PlayerService {
             // 设置背包最大格子数
             personalBackpack.setMaxBackpackGrid(playerCommConfig.getMaxBackpackGrid());
             Map<Integer, Good> backpack = personalBackpack.getBackpack();
-            Map<Integer, Equipment> equipmentMap = personalBackpack.getEquipmentMap();
             // 背包物品放入背包中，装备放入equipmentMap中
             goods.forEach(value -> {
                 backpack.put(value.getPosition(), value);
@@ -162,7 +163,6 @@ public class PlayerServiceImpl implements PlayerService {
             equipmentList.forEach(value -> {
                 setEquipmentType(value, equipmentCreatedMap);
                 backpack.put(value.getPosition(), value);
-                equipmentMap.put(value.getPosition(), value);
             });
             player.setPersonalBackpack(personalBackpack);
         }

@@ -192,6 +192,12 @@ public class Player{
     private long createdDate;
 
     /**
+     * 是否为游戏管理员
+     */
+    @Column(name = "is_gm")
+    private boolean isGm;
+
+    /**
      * 角色最后上线日期
      */
     @Column(name = "login_date")
@@ -483,5 +489,13 @@ public class Player{
 
     public void setMailBox(MailBox mailBox) {
         this.mailBox = mailBox;
+    }
+
+    public boolean isGm() {
+        return isGm;
+    }
+
+    public void setGm(boolean gm) {
+        isGm = gm;
     }
 }

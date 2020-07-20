@@ -6,6 +6,7 @@ package com.fung.server.gameserver.content.config.good;
  * @date 2020/6/2 12:13
  * TODO 这里可以用配置取代
  */
+@Deprecated
 public enum GoodNumber {
 
     // 各类物品Id范围

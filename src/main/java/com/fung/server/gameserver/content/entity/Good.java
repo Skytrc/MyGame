@@ -7,9 +7,9 @@ import javax.persistence.*;
  * @author skytrc@163.com
  * @date 2020/5/20 11:07
  */
-@Entity
-@Inheritance(strategy=InheritanceType.JOINED)
-@Table(name = "good")
+@Entity(name = "good")
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue("good")
 public class Good {
     /**
      * 物品独有Id
@@ -44,12 +44,6 @@ public class Good {
      */
     @Column(name = "get_time")
     private long getTime;
-
-    /**
-     * 是否有装备属性
-     */
-    @Transient
-    private boolean hasEquipmentValue;
 
     /**
      * 物品名称
@@ -111,10 +105,6 @@ public class Good {
         this.position = position;
     }
 
-    public boolean isHasEquipmentValue() {
-        return hasEquipmentValue;
-    }
-
     public String getName() {
         return name;
     }
@@ -131,8 +121,4 @@ public class Good {
         this.description = description;
     }
 
-    public void setHasEquipmentValue(boolean hasEquipmentValue) {
-
-        this.hasEquipmentValue = hasEquipmentValue;
-    }
 }

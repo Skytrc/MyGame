@@ -103,6 +103,8 @@ public class MonsterCreateManager {
         newNormalMonster.setId(monsterId);
         newNormalMonster.setLevel(normalMonster.getLevel());
         newNormalMonster.setName(normalMonster.getName());
+        newNormalMonster.setExp(normalMonster.getExp());
+        newNormalMonster.setValue(normalMonster.getValue());
         newNormalMonster.setMonsterSkill(monsterSkillManager.getMonsterSkillByMonsterId(monsterId));
 
         // 设置怪物所在地图信息

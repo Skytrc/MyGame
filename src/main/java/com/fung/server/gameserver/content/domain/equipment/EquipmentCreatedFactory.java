@@ -3,14 +3,11 @@ package com.fung.server.gameserver.content.domain.equipment;
 import com.fung.server.gameserver.content.config.good.equipment.EquipmentCreated;
 import com.fung.server.gameserver.content.config.good.equipment.EquipmentType;
 import com.fung.server.gameserver.content.config.manager.EquipmentCreatedManager;
-import com.fung.server.gameserver.content.domain.player.PlayerInfo;
 import com.fung.server.gameserver.content.entity.Equipment;
 import com.fung.server.gameserver.content.util.Uuid;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -44,7 +41,6 @@ public class EquipmentCreatedFactory {
         equipment.setDurable(created.getDurable());
         equipment.setMinLevel(created.getMinLevel());
         equipment.setDescription(created.getDescription());
-        equipment.setHasEquipmentValue(true);
         // 生成装备随机数值
         equipment.setPlusHp(judgeMin(created.getMinHp(), created.getMaxHp()));
         equipment.setPlusMp(judgeMin(created.getMinMp(), created.getMaxMp()));

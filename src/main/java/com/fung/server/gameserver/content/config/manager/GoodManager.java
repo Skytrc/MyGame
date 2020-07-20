@@ -1,9 +1,13 @@
 package com.fung.server.gameserver.content.config.manager;
 
-import com.fung.server.gameserver.content.config.good.GoodNumber;
+import com.fung.server.gameserver.channelstore.WriteMessage2Client;
+import com.fung.server.gameserver.content.config.good.GoodSpecies;
 import com.fung.server.gameserver.content.config.good.Medicine;
 import com.fung.server.gameserver.content.config.good.equipment.EquipmentCreated;
 import com.fung.server.gameserver.content.domain.good.GoodBaseInfo;
+import com.fung.server.gameserver.content.domain.good.GoodEffect;
+import com.fung.server.gameserver.content.domain.mapactor.PlayerActor;
+import com.fung.server.gameserver.content.entity.Good;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,10 +23,16 @@ import java.util.Map;
 public class GoodManager {
 
     @Autowired
-    MedicineManager medicineManager;
+    private MedicineManager medicineManager;
 
     @Autowired
-    EquipmentCreatedManager equipmentCreatedManager;
+    private EquipmentCreatedManager equipmentCreatedManager;
+
+    @Autowired
+    private GoodEffect goodEffect;
+
+    @Autowired
+    private WriteMessage2Client writeMessage2Client;
 
     public static final int GOOD_ID = 0;
 
@@ -54,6 +64,9 @@ public class GoodManager {
         return res;
     }
 
+    /**
+     * 获取物品名称
+     */
     public String getGoodNameById(int goodId) {
         GoodBaseInfo goodBaseInfo;
         goodBaseInfo = getGoodInfoImplByGoodId(goodId);
@@ -71,7 +84,7 @@ public class GoodManager {
      * 判断物品是否为装备
      */
     public boolean isEquipment(int goodId) {
-        return goodId >= GoodNumber.EQUIPMENT_START.getPosition() && goodId < GoodNumber.EQUIPMENT_END.getPosition();
+        return isInRange(GoodSpecies.EQUIPMENT, goodId);
     }
 
     /**
@@ -87,16 +100,48 @@ public class GoodManager {
      */
     public GoodBaseInfo getGoodInfoImplByGoodId(int goodId) {
         GoodBaseInfo goodBaseInfo;
-        if (goodId > GoodNumber.MEDICINE_START.getPosition() && goodId < GoodNumber.MEDICINE_END.getPosition()) {
+        if (isInRange(GoodSpecies.MEDICINCE, goodId)) {
             Map<Integer, Medicine> medicineMap = medicineManager.getMedicineMap();
             goodBaseInfo = medicineMap.get(goodId);
-        } else if (isEquipment(goodId)) {
+        } else if (isInRange(GoodSpecies.EQUIPMENT, goodId)) {
             Map<Integer, EquipmentCreated> createdMap = equipmentCreatedManager.getEquipmentCreatedMap();
             goodBaseInfo = createdMap.get(goodId);
         } else {
             return null;
         }
         return goodBaseInfo;
+    }
+
+    /**
+     * 需要从manager中获得新的物品信息，背包中的good不能向下转型。
+     * 使用物品，根据物品id，分发到各个物品模块处理
+     */
+    public void useGood(Good good, PlayerActor playerActor, String channelId) {
+        int goodId = good.getGoodId();
+        // 获取物品模板
+        good = getGoodTemplateById(goodId);
+        writeMessage2Client.writeMessage(channelId, " 使用物品: " + good.getName());
+        goodEffect.medicineEffect(good, playerActor, channelId);
+    }
+
+    /**
+     * 获取物品模板， 装备则获取装备创建的模板
+     */
+    public Good getGoodTemplateById(int goodId) {
+        if (isInRange(GoodSpecies.MEDICINCE, goodId)) {
+            return medicineManager.getMedicineMap().get(goodId);
+        } else if (isInRange(GoodSpecies.EQUIPMENT, goodId)) {
+            // 返回的是装备创建的模板
+            return equipmentCreatedManager.getEquipmentCreatedMap().get(goodId);
+        }
+        return null;
+    }
+
+    /**
+     * 是否在某个范围内
+     */
+    public boolean isInRange(GoodSpecies goodSpecies, int goodId) {
+        return (goodId >= goodSpecies.getStart() && goodId <= goodSpecies.getEnd());
     }
 
     /**

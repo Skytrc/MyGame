@@ -10,6 +10,9 @@ import javax.persistence.*;
 @Table(name = "player_config")
 public class PlayerCommConfig {
 
+    @Transient
+    public static int playerBodyEquipmentNum = 5;
+
     @Id
     private String uuid;
 

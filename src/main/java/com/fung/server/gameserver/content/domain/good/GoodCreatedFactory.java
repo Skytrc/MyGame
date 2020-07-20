@@ -30,8 +30,8 @@ public class GoodCreatedFactory {
      */
     public List<Good> newPlayerGoodCreated(String playerId) {
         List<Good> goods = new ArrayList<>();
-        goods.add(createdNewGood(playerId, 1, 1));
-        goods.add(createdNewGood(playerId, 2, 1));
+        goods.add(createdNewGood(playerId, 1, 10));
+        goods.add(createdNewGood(playerId, 2, 10));
         return goods;
     }
 
@@ -70,7 +70,6 @@ public class GoodCreatedFactory {
         good.setName(goodManager.getGoodNameById(goodId));
         good.setUuid(Uuid.createUuid());
         good.setGetTime(System.currentTimeMillis());
-        good.setHasEquipmentValue(false);
         good.setGoodId(goodId);
         good.setQuantity(quantity);
         return good;

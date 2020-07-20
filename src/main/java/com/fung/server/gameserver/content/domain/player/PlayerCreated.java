@@ -22,10 +22,10 @@ import java.util.List;
 public class PlayerCreated {
 
     @Autowired
-    GoodCreatedFactory goodCreatedFactory;
+    private GoodCreatedFactory goodCreatedFactory;
 
     @Autowired
-    SkillLoad skillLoad;
+    private SkillLoad skillLoad;
 
     /**
      * 创建人物（任务初始属性、背包、其他设置、技能等）
@@ -72,7 +72,7 @@ public class PlayerCreated {
      * @param equipmentDao 装备插入
      * @param skillDao 技能插入
      */
-    public Player playerModuleCreated(Player player, GoodDao goodDao, EquipmentDao equipmentDao, SkillDao skillDao) {
+    public void playerModuleCreated(Player player, GoodDao goodDao, EquipmentDao equipmentDao, SkillDao skillDao) {
 
         // 背包模块
         PersonalBackpack personalBackpack = new PersonalBackpack();
@@ -88,7 +88,7 @@ public class PlayerCreated {
             personalBackpack.addGood(good);
         }
         for (Equipment equipment : equipments) {
-            personalBackpack.addEquipment(equipment);
+            personalBackpack.addGood(equipment);
         }
         goods.forEach(goodDao::insertGood);
         equipments.forEach(equipmentDao::insertEquipment);
@@ -99,7 +99,5 @@ public class PlayerCreated {
         List<Skill> skills = skillLoad.newPlayerSkillCreated(player.getUuid());
         skills.forEach(skillDao::insertSkill);
         player.setSkills(skills);
-
-        return player;
     }
 }

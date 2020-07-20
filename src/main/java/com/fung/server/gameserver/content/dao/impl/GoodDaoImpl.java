@@ -31,7 +31,7 @@ public class GoodDaoImpl extends HibernateDaoSupport implements GoodDao {
     public List<Good> getGoodByPlayerId(String playerId) {
         Session session = this.getSessionFactory().openSession();
         try {
-            TypedQuery<Good> query = session.createQuery("FROM Good WHERE player_id= :player_id AND position!=-1", Good.class)
+            TypedQuery<Good> query = session.createQuery("FROM good WHERE player_id= :player_id AND position!=-1", Good.class)
                     .setParameter("player_id", playerId);
             return query.getResultList();
         } catch (NoResultException e) {
@@ -43,13 +43,8 @@ public class GoodDaoImpl extends HibernateDaoSupport implements GoodDao {
     public List<Equipment> findBackpackEquipment(String playerId) {
         Session session = this.getSessionFactory().openSession();
         try {
-            return session.createNativeQuery(
-                    "SELECT * " +
-                            "FROM good,equipment " +
-                            "WHERE good.player_id='" + playerId + "' " +
-                            "AND good.uuid=equipment.uuid " +
-                            "AND good.position != -1;"
-                    , Equipment.class).getResultList();
+            return session.createNativeQuery("SELECT * FROM good WHERE player_id= '" + playerId +
+                    "' AND DTYPE='equipment' AND position > -1 ", Equipment.class).getResultList();
         } catch (NoResultException e) {
             return null;
         }

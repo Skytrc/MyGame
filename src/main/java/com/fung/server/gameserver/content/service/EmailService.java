@@ -8,7 +8,7 @@ public interface EmailService {
 
     String createEmail(String channelId, String recipientId);
 
-    String writeContent(String channelId, String emailId, String content);
+    String writeContent(String channelId, String emailId, String subject, String content);
 
     String addGood(String channelId, String emailId, int backpackPosition);
 
@@ -18,5 +18,5 @@ public interface EmailService {
 
     String gotGoodFromEmail(String channelId, String emailId);
 
-    String deleteEmail(String channelId, String email);
+    String deleteEmail(String channelId, String emailId);
 }

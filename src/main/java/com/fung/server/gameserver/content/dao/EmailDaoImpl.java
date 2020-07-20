@@ -1,8 +1,10 @@
 package com.fung.server.gameserver.content.dao;
 
 import com.fung.server.gameserver.content.entity.Email;
+import com.fung.server.gameserver.content.entity.EmailStatus;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +21,10 @@ import java.util.List;
 @Component
 public class EmailDaoImpl extends HibernateDaoSupport implements EmailDao {
 
+    @Autowired
     public void setSuperSessionFactory(SessionFactory superSessionFactory) {
         super.setSessionFactory(superSessionFactory);
     }
-
 
     @Override
     public void createNewEmail(Email email) {
@@ -43,6 +45,26 @@ public class EmailDaoImpl extends HibernateDaoSupport implements EmailDao {
             return query.getSingleResult();
         } catch (NoResultException e) {
             return null;
+        }
+    }
+
+    @Override
+    public void createEmailStatus(EmailStatus emailStatus) {
+        this.getHibernateTemplate().save(emailStatus);
+    }
+
+    @Override
+    public void updateEmailStatus(EmailStatus emailStatus) {
+        this.getHibernateTemplate().update(emailStatus);
+    }
+
+    @Override
+    public void deleteEmailStatus(String emailId, String playerId) {
+        Session session = this.getSessionFactory().openSession();
+        try {
+
+        } catch (NoResultException e) {
+            return;
         }
     }
 

@@ -9,6 +9,7 @@ import com.fung.server.gameserver.content.dao.EquipmentDao;
 import com.fung.server.gameserver.content.domain.backpack.PersonalBackpack;
 import com.fung.server.gameserver.content.domain.calculate.PlayerValueCalculate;
 import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
+import com.fung.server.gameserver.content.domain.mapactor.PlayerActor;
 import com.fung.server.gameserver.content.domain.player.PlayerInfo;
 import com.fung.server.gameserver.content.entity.Equipment;
 import com.fung.server.gameserver.content.entity.Good;
@@ -46,59 +47,91 @@ public class GoodServiceImpl implements GoodService {
 
     @Override
     public String useGood(int position, String channelId) {
-        return null;
+        PlayerActor playerActor = playerInfo.getPlayerActorByChannelId(channelId);
+        playerActor.addMessage(playerActor1 -> {
+            Player player = playerActor.getPlayer();
+            PersonalBackpack personalBackpack = player.getPersonalBackpack();
+            if (!personalBackpack.positionHasGood(position)) {
+                writeMessage2Client.writeMessage(channelId, "该位置没有物品");
+                return;
+            }
+            // 检查是否为装备
+            if (goodManager.isEquipment(personalBackpack.getGoodByPosition(position).getGoodId())) {
+                writeMessage2Client.writeMessage(channelId, "装备请使用 puton 命令");
+                return;
+            }
+            Good good = personalBackpack.useGood(position, 1);
+            // 使用物品，通过goodManager分派任务
+            if (good != null) {
+                goodManager.useGood(good, playerActor, channelId);
+            }
+        });
+
+        return "";
     }
 
     @Override
-    public String putOnEquipment(int backpackPosition, String channelId) {
-        Player currentPlayer = playerInfo.getCurrentPlayer(channelId);
-        PersonalBackpack backpack = currentPlayer.getPersonalBackpack();
-        List<Equipment> currentPlayerEquipments = currentPlayer.getEquipments();
-        if (backpack.getGoodByPosition(backpackPosition) == null) {
-            return "该格子没有物品";
-        }
-        if (!backpack.isEquipment(backpackPosition)) {
-            return "无法穿戴，该物品不是装备";
-        }
-        Equipment equipment = backpack.removeEquipment(backpackPosition);
-        // 需要装备到身上的位置
-        int bodyPosition = equipment.getType(    ).getPosition();
-        equipment.setPosition(-1);
-        // 如果身上装备位置有已有装备，先卸到背包中
-        if (currentPlayer.getEquipments().size() > bodyPosition && currentPlayerEquipments.get(bodyPosition) != null) {
-            Equipment removeEquipment = currentPlayerEquipments.get(bodyPosition);
-            currentPlayerEquipments.set(bodyPosition, new Equipment());
-            backpack.addEquipment(removeEquipment);
-        }
-        // 装备到身上的数组中
-        currentPlayerEquipments.set(bodyPosition, equipment);
+    public String putOnEquipment(int position, String channelId) {
+        PlayerActor playerActor = playerInfo.getPlayerActorByChannelId(channelId);
+        playerActor.addMessage(playerActor1 -> {
+            Player player = playerActor.getPlayer();
+            PersonalBackpack backpack = player.getPersonalBackpack();
+            List<Equipment> currentPlayerEquipments = player.getEquipments();
+            if (backpack.getGoodByPosition(position) == null) {
+                writeMessage2Client.writeMessage(channelId, "该格子没有物品");
+                return;
+            }
+            // 检查是否为装备
+            if (!goodManager.isEquipment(backpack.getGoodByPosition(position).getGoodId())) {
+                writeMessage2Client.writeMessage(channelId, "无法穿戴，该物品不是装备");
+                return;
+            }
+            Equipment equipment = (Equipment) backpack.useGood(position);
+            // 需要装备到身上的位置
+            int bodyPosition = equipment.getType().getPosition();
+            equipment.setPosition(-1);
+            // 如果身上装备位置有已有装备，先卸到背包中。
+            if (currentPlayerEquipments.get(bodyPosition).getType() != null) {
+                Equipment removeEquipment = currentPlayerEquipments.get(bodyPosition);
+                currentPlayerEquipments.set(bodyPosition, new Equipment());
+                backpack.addGood(removeEquipment);
+            }
+            // 装备到身上的数组中
+            currentPlayerEquipments.set(bodyPosition, equipment);
 
-        equipmentDao.updateEquipment(equipment);
-        // 计算基础数值
-        playerValueCalculate.calculatePlayerBaseValue(currentPlayer);
-
-        return "穿戴装备成功" + playerInfo.showPlayerValue(currentPlayer);
+            equipmentDao.updateEquipment(equipment);
+            // 计算基础数值
+            playerValueCalculate.calculatePlayerBaseValue(player);
+            writeMessage2Client.writeMessage(channelId, "穿戴装备成功" + playerInfo.showPlayerValue(player));
+        });
+        return "";
     }
 
     @Override
     public String takeOffEquipment(int equipmentPosition, String channelId) {
-        Player currentPlayer = playerInfo.getCurrentPlayer(channelId);
-        List<Equipment> equipments = currentPlayer.getEquipments();
-        int size = equipments.size();
-        if (size > equipmentPosition) {
-            // 放入背包
-            Equipment currentTakeOffEquipment = equipments.get(equipmentPosition);
-            if (currentTakeOffEquipment.getName() == null) {
-                return "该位置没有装备";
+        PlayerActor playerActor = playerInfo.getPlayerActorByChannelId(channelId);
+        playerActor.addMessage(playerActor1 -> {
+            Player player = playerActor.getPlayer();
+            List<Equipment> equipments = player.getEquipments();
+            int size = equipments.size();
+            if (size > equipmentPosition) {
+                // 放入背包
+                Equipment currentTakeOffEquipment = equipments.get(equipmentPosition);
+                if (currentTakeOffEquipment.getName() == null) {
+                    writeMessage2Client.writeMessage(channelId, "该位置没有装备");
+                    return;
+                }
+                equipments.set(equipmentPosition, new Equipment());
+                PersonalBackpack personalBackpack = player.getPersonalBackpack();
+                personalBackpack.addGood(currentTakeOffEquipment);
+                equipmentDao.updateEquipment(currentTakeOffEquipment);
+                playerValueCalculate.calculatePlayerBaseValue(player);
+                writeMessage2Client.writeMessage(channelId, "脱下装备成功" + playerInfo.showPlayerValue(player));
+                return;
             }
-            equipments.set(equipmentPosition, new Equipment());
-            PersonalBackpack personalBackpack = currentPlayer.getPersonalBackpack();
-            personalBackpack.addEquipment(currentTakeOffEquipment);
-            equipmentDao.updateEquipment(currentTakeOffEquipment);
-            playerValueCalculate.calculatePlayerBaseValue(currentPlayer);
-            return "脱下装备成功" + playerInfo.showPlayerValue(currentPlayer);
-        }
-        return "该位置没有装备";
+            writeMessage2Client.writeMessage(channelId, "该位置没有装备");
+        });
+        return "";
     }
 
     @Override

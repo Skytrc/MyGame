@@ -27,6 +27,16 @@ public class PlayerDaoImpl extends HibernateDaoSupport implements PlayerDao {
     }
 
     @Override
+    public List<String> getAllPlayerId() {
+        Session session = this.getSessionFactory().openSession();
+        try {
+            return session.createNativeQuery("SELECT player_id FROM player", String.class).getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
     public void playerRegister(Player player) {
         this.getHibernateTemplate().save(player);
     }

@@ -10,10 +10,41 @@ import com.fung.server.gameserver.excel2class.Model;
  */
 public class Medicine extends Good implements Model, GoodBaseInfo {
 
+    /**
+     * 增加血量
+     */
     private int plusHp;
 
+    /**
+     * 增加蓝量
+     */
     private int plusMp;
 
+    /**
+     * 增加攻击力
+     */
+    private int plusAttack;
+
+    /**
+     * 增加防御力
+     */
+    private int plusDefense;
+
+    /**
+     * 持续buff时间
+     * 持续X秒，每秒增加
+     */
+    private int lastTime;
+
+    /**
+     * 结束buff时间
+     * 结束时间
+     */
+    private int endTime;
+
+    /**
+     * 价值
+     */
     private int value;
 
     /**
@@ -71,5 +102,37 @@ public class Medicine extends Good implements Model, GoodBaseInfo {
 
     public void setValue(int value) {
         this.value = value;
+    }
+
+    public int getPlusAttack() {
+        return plusAttack;
+    }
+
+    public void setPlusAttack(int plusAttack) {
+        this.plusAttack = plusAttack;
+    }
+
+    public int getPlusDefense() {
+        return plusDefense;
+    }
+
+    public void setPlusDefense(int plusDefense) {
+        this.plusDefense = plusDefense;
+    }
+
+    public int getLastTime() {
+        return lastTime;
+    }
+
+    public void setLastTime(int lastTime) {
+        this.lastTime = lastTime;
+    }
+
+    public int getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(int endTime) {
+        this.endTime = endTime;
     }
 }

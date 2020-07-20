@@ -18,16 +18,10 @@ public class Email {
     private String uuid;
 
     /**
-     * 接受人id
+     * 接收人id
      */
     @Column(name = "recipient_id")
     private String recipientId;
-
-    /**
-     * 接收人名称
-     */
-    @Column(name = "recipient_name")
-    private String recipientName;
 
     /**
      * 发送人id
@@ -40,6 +34,23 @@ public class Email {
      */
     @Column(name = "sender_name")
     private String senderName;
+
+    /**
+     * 是否已经发送
+     */
+    @Column(name = "is_send")
+    private boolean isSend;
+
+    /**
+     * 是否发给全服
+     */
+    @Column(name = "is_to_all_player")
+    private boolean isToAllPlayer;
+
+    /**
+     * 邮件主题
+     */
+    private String subject;
 
     /**
      * 内容
@@ -56,13 +67,20 @@ public class Email {
      * 物品uuid
      */
     @Column(name = "goods_id")
-    private List<String> goodsId;
+    private String goodsId;
 
     /**
-     * 是否已读
+     * 创建时间
      */
-    @Column(name = "has_read")
-    private boolean hasRead;
+    @Column(name = "created_time")
+    private long createdTime;
+
+    /**
+     * 邮件是否过了7天期限
+     */
+    public boolean emailIsExpired() {
+        return System.currentTimeMillis() - createdTime > 604800000;
+    }
 
     public String getUuid() {
         return uuid;
@@ -78,14 +96,6 @@ public class Email {
 
     public void setRecipientId(String recipientId) {
         this.recipientId = recipientId;
-    }
-
-    public String getRecipientName() {
-        return recipientName;
-    }
-
-    public void setRecipientName(String recipientName) {
-        this.recipientName = recipientName;
     }
 
     public String getSenderId() {
@@ -120,19 +130,43 @@ public class Email {
         this.goods = goods;
     }
 
-    public List<String> getGoodsId() {
+    public String getGoodsId() {
         return goodsId;
     }
 
-    public void setGoodsId(List<String> goodsId) {
+    public void setGoodsId(String goodsId) {
         this.goodsId = goodsId;
     }
 
-    public boolean isHasRead() {
-        return hasRead;
+    public boolean isToAllPlayer() {
+        return isToAllPlayer;
     }
 
-    public void setHasRead(boolean hasRead) {
-        this.hasRead = hasRead;
+    public void setToAllPlayer(boolean toAllPlayer) {
+        isToAllPlayer = toAllPlayer;
+    }
+
+    public long getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(long createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public boolean isSend() {
+        return isSend;
+    }
+
+    public void setSend(boolean send) {
+        isSend = send;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 }

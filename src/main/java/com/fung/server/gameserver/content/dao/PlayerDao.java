@@ -3,11 +3,19 @@ package com.fung.server.gameserver.content.dao;
 import com.fung.server.gameserver.content.entity.Player;
 import com.fung.server.gameserver.content.entity.PlayerCommConfig;
 
+import java.util.List;
+
 /**
  * @author skytrc@163.com
  * @date 2020/5/12 16:58
  */
 public interface PlayerDao {
+
+    /**
+     * 获取所有玩家的id
+     * @return 所有玩家的id(String)
+     */
+    List<String> getAllPlayerId();
 
     /**
      * 注册玩家
