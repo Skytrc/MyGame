@@ -1,1 +1,0 @@
-[{"id":"1","name":"普通攻击","level":"0","physicalDamage":"10","magicDamage":"0","cd":"1","description":"普通一击"},{"id":"2","name":"蓄力攻击","level":"0","physicalDamage":"20","magicDamage":"0","cd":"2","description":"重力一击"},{"id":"100","name":"怪物普通攻击","level":"0","physicalDamage":"20","magicDamage":"0","cd":"4","description":"怪物普通攻击"}]

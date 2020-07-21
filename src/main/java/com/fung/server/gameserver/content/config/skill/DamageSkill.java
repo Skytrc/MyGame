@@ -9,8 +9,6 @@ import com.fung.server.gameserver.excel2class.Model;
  */
 public class DamageSkill extends Skill implements Model {
 
-    private String name;
-
     /**
      * 基础物理攻击
      */
@@ -22,22 +20,14 @@ public class DamageSkill extends Skill implements Model {
     private int magicDamage;
 
     /**
-     * 技能cd
+     * 如果是Aoe技能，最大的影响范围（不是Aoe则为0）
      */
-    private int cd;
+    private int scopeOfInfluence;
 
     /**
-     * 技能描述
+     * 蓝量需求
      */
-    private String description;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private int requireMagicPoint;
 
     public int getPhysicalDamage() {
         return physicalDamage;
@@ -53,21 +43,5 @@ public class DamageSkill extends Skill implements Model {
 
     public void setMagicDamage(int magicDamage) {
         this.magicDamage = magicDamage;
-    }
-
-    public int getCd() {
-        return cd;
-    }
-
-    public void setCd(int cd) {
-        this.cd = cd;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }

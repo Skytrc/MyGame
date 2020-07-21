@@ -6,7 +6,6 @@ import com.fung.server.gameserver.content.config.manager.MapManager;
 import com.fung.server.gameserver.content.config.manager.SkillManager;
 import com.fung.server.gameserver.content.config.map.GameMap;
 import com.fung.server.gameserver.content.config.monster.BaseHostileMonster;
-import com.fung.server.gameserver.content.config.monster.NormalMonster;
 import com.fung.server.gameserver.content.domain.calculate.AttackCalculate;
 import com.fung.server.gameserver.content.domain.equipment.EquipmentDurable;
 import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
@@ -65,47 +64,8 @@ public class AttackServiceImpl implements AttackService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AttackService.class);
 
     @Override
-    public String attack(String channelId, int x, int y, int skillId) throws InterruptedException {
-        Player player = onlinePlayer.getPlayerByChannelId(channelId);
-        // 判断位置是否有怪
-        GameMap currentPlayerMap = playerInfo.getCurrentPlayerMap(player);
-        NormalMonster normalMonster = currentPlayerMap.getMonsterByXy(x, y);
-        if (normalMonster == null) {
-            return "\n位置[" + x + "," + y + "] 没有敌对生物";
-        }
-        if (!attackCalculate.calculateAttackDistance(player, x, y)) {
-            return "\n攻击距离不够  当前攻击距离为: " + player.getAttackDistance();
-        }
-        int minusHp = 0;
-        // 开始进行攻击判断 加锁
-        synchronized (normalMonster) {
-             minusHp = attackCalculate.defenderHpCalculate(player.getTotalAttackPower(),
-                    player.getTotalCriticalRate(), skillManager.getSkillById(skillId).getPhysicalDamage(),
-                    normalMonster.getDefend());
-            equipmentDurable.equipmentDurableMinus(player, false);
-            if (normalMonster.getHealthPoint() < minusHp) {
-                normalMonster.setHealthPoint(0);
-                return "\n对怪物: " + normalMonster.getName() + "  造成" + minusHp +"伤害  击败怪物\n";
-            }
-            normalMonster.setHealthPoint(normalMonster.getHealthPoint() - minusHp);
-        }
-        // 怪物反击,判断怪物是否正在攻击
-        if (!normalMonster.isAttacking()) {
-            attackThreadPool.getThreadPoolExecutor().submit(() -> {
-                try {
-                    monsterAction.attackPlayer(channelId, player, normalMonster);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            });
-        }
-        return "\n对怪物: " + normalMonster.getName() + " 造成 " + minusHp + " 伤害" + "  怪物目前血量: " + normalMonster.getHealthPoint() + "\n";
-    }
-
-    @Override
     public String attack1(String channelId, int x, int y, int skillId) {
         Player player = onlinePlayer.getPlayerByChannelId(channelId);
-        // 判斷是否在副本內
         GameMapActor mapActor = mapManager.getGameMapActor(player);
         // 丢到对应地图线程中处理
         mapActor.addMessage(gameMapActor -> {

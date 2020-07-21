@@ -18,6 +18,12 @@ public class Skill {
     private String uuid;
 
     /**
+     * 技能名称
+     */
+    @Transient
+    private String name;
+
+    /**
      * 对应技能配置表id
      */
     private int id;
@@ -32,6 +38,24 @@ public class Skill {
      * 技能等级
      */
     private int level;
+
+    /**
+     * 释放技能最大距离
+     */
+    @Transient
+    private int skillDistance;
+
+    /**
+     * 技能cd
+     */
+    @Transient
+    private int cd;
+
+    /**
+     * 技能描述
+     */
+    @Transient
+    private String description;
 
     public String getUuid() {
         return uuid;
@@ -63,5 +87,29 @@ public class Skill {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getCd() {
+        return cd;
+    }
+
+    public void setCd(int cd) {
+        this.cd = cd;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

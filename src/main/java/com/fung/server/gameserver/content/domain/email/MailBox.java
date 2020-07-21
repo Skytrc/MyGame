@@ -124,6 +124,66 @@ public class MailBox {
         return mailBox.get(emailId).getGoods();
     }
 
+    /**
+     * 初始化邮箱
+     */
+    public void mailBoxInit(List<Email> emails) {
+        for (Email email : emails) {
+            mailBox.put(email.getUuid(), email);
+        }
+    }
+
+    /**
+     * 更新邮箱中的邮件信息（数据库也需要更新，一般用于更新已读信件）
+     */
+    public void putMail2MailBox(Email email) {
+        mailBox.put(email.getUuid(), email);
+    }
+
+    /**
+     * 初始化草稿箱
+     */
+    public void draftBoxInit(List<Email> emails) {
+        for (Email email : emails) {
+            draftBox.put(email.getUuid(), email);
+        }
+    }
+
+    /**
+     * 加入草稿箱中
+     */
+    public void putDraft2DraftBox(Email email) {
+        draftBox.put(email.getUuid(), email);
+    }
+
+    /**
+     * 从草稿箱中获得邮件
+     */
+    public Email getDraftFromDraftBox(String emailId) {
+        return draftBox.get(emailId);
+    }
+
+    /**
+     * 从邮箱中获取邮件
+     */
+    public Email getEmailFromMailBox(String emailId) {
+        return mailBox.get(emailId);
+    }
+
+    /**
+     * 删除邮件
+     */
+    public Email removeEmailFromMailBox(String emailId) {
+        return mailBox.remove(emailId);
+    }
+
+    /**
+     * 删除草稿
+     */
+    public Email removeEmailFromDraftBox(String emailId) {
+        return draftBox.remove(emailId);
+    }
+
 
     public Map<String, Email> getDraftBox() {
         return draftBox;
@@ -131,6 +191,10 @@ public class MailBox {
 
     public void setDraftBox(Map<String, Email> draftBox) {
         this.draftBox = draftBox;
+    }
+
+    public Map<String, Email> getMailBox() {
+        return mailBox;
     }
 
     public void setMailBox(Map<String, Email> mailBox) {

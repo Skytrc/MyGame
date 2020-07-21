@@ -40,7 +40,7 @@ public class EmailDaoImpl extends HibernateDaoSupport implements EmailDao {
     public Email getEmailById(String emailId) {
         Session session = this.getSessionFactory().openSession();
         try {
-            TypedQuery<Email> query = session.createQuery("FROM Email WHERE email_id= :email_id", Email.class)
+            TypedQuery<Email> query = session.createQuery("FROM Email WHERE email_id= :email_id ", Email.class)
                     .setParameter("email_id", emailId);
             return query.getSingleResult();
         } catch (NoResultException e) {
@@ -49,36 +49,28 @@ public class EmailDaoImpl extends HibernateDaoSupport implements EmailDao {
     }
 
     @Override
-    public void createEmailStatus(EmailStatus emailStatus) {
-        this.getHibernateTemplate().save(emailStatus);
-    }
-
-    @Override
-    public void updateEmailStatus(EmailStatus emailStatus) {
-        this.getHibernateTemplate().update(emailStatus);
-    }
-
-    @Override
-    public void deleteEmailStatus(String emailId, String playerId) {
+    public List<Email> getAllRecipientEmailByPlayerId(String playerId) {
         Session session = this.getSessionFactory().openSession();
         try {
-
+            TypedQuery<Email> query = session.createQuery("FROM Email WHERE recipient_id= :recipient_id " +
+                    "AND recipient_delete=0", Email.class)
+                    .setParameter("recipient_id", playerId);
+            return query.getResultList();
         } catch (NoResultException e) {
-            return;
+            return null;
         }
     }
 
     @Override
-    public List<Email> getAllEmailByPlayerId(String playerId) {
-//        Session session = this.getSessionFactory().openSession();
-//        try {
-//            TypedQuery<Email> query = session.createQuery("FROM Email WHERE sender= :email_id", Email.class)
-//                    .setParameter("email_id", emailId);
-//            return query.getSingleResult();
-//        } catch (NoResultException e) {
-//            return null;
-//        }
-        return null;
+    public List<Email> getAllSendEmailByPlayerId(String playerId) {
+        Session session = this.getSessionFactory().openSession();
+        try {
+            TypedQuery<Email> query = session.createQuery("FROM Email WHERE sender_id= :sender_id ", Email.class)
+                    .setParameter("sender_id", playerId);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override

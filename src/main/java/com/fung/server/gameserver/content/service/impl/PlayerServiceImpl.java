@@ -169,7 +169,11 @@ public class PlayerServiceImpl implements PlayerService {
 
         // 挂载邮箱
         MailBox mailBox = new MailBox();
-
+        // 初始化邮箱
+        mailBox.mailBoxInit(emailDao.getAllRecipientEmailByPlayerId(player.getUuid()));
+        // 初始化草稿箱
+        mailBox.draftBoxInit(emailDao.getAllSendEmailByPlayerId(player.getUuid()));
+        player.setMailBox(mailBox);
     }
 
     public void setEquipmentType(Equipment equipment, Map<Integer, EquipmentCreated> equipmentCreatedMap) {

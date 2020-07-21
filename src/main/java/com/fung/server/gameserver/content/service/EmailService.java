@@ -14,9 +14,18 @@ public interface EmailService {
 
     String send(String channelId, String emailId);
 
-    String checkEmail(String channelId);
+    /**
+     * 从数据库中更新个人邮箱
+     * @param channelId channel id
+     * @return 更新邮箱
+     */
+    String checkMailBox(String channelId);
+
+    String checkAEmail(String channelId, String emailId);
+
+    String checkDraftBox(String channelId);
 
     String gotGoodFromEmail(String channelId, String emailId);
 
-    String deleteEmail(String channelId, String emailId);
+    String deleteResEmail(String channelId, String emailId);
 }

@@ -8,21 +8,27 @@ import javax.persistence.*;
  * @date 2020/7/19 14:54
  */
 @Entity
-@Table(name = "email_read")
+@Table(name = "email_status")
 public class EmailStatus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @Column(name = "email_id")
     private String emailId;
 
+    @Column(name = "recipient_id")
     private String recipientId;
+
+    @Column(name = "sender_id")
+    private String senderId;
 
     /**
      * 物品是否收取
      */
-    private boolean goodHasRecipient;
+    @Column(name = "good_is_recipient")
+    private boolean goodIsRecipient;
 
     public int getId() {
         return id;
@@ -48,11 +54,19 @@ public class EmailStatus {
         this.recipientId = recipientId;
     }
 
-    public boolean isGoodHasRecipient() {
-        return goodHasRecipient;
+    public boolean isGoodIsRecipient() {
+        return goodIsRecipient;
     }
 
-    public void setGoodHasRecipient(boolean goodHasRecipient) {
-        this.goodHasRecipient = goodHasRecipient;
+    public void setGoodIsRecipient(boolean goodIsRecipient) {
+        this.goodIsRecipient = goodIsRecipient;
+    }
+
+    public String getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
     }
 }

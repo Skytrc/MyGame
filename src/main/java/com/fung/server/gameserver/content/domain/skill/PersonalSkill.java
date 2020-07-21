@@ -20,7 +20,7 @@ public class PersonalSkill {
     private static volatile long lastUseSkillTime = 0;
 
     @Autowired
-    DamageSkillManager damageSkillManager;
+    private DamageSkillManager damageSkillManager;
 
     /**
      * 返回物理基础伤害

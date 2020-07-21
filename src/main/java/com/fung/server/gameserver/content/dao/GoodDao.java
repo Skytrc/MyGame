@@ -26,6 +26,13 @@ public interface GoodDao {
     List<Equipment> findBackpackEquipment(String playerId);
 
     /**
+     * 根据物品uuid获取物品实体
+     * @param goodUuid 物品 uuid
+     * @return 物品
+     */
+    Good findGoodByGoodUuid(String goodUuid);
+
+    /**
      * 插入物品信息
      * @param good 物品信息
      */

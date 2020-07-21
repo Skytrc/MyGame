@@ -31,26 +31,18 @@ public interface EmailDao {
     Email getEmailById(String emailId);
 
     /**
-     * 创建email状态
-     */
-    void createEmailStatus(EmailStatus emailStatus);
-
-    /**
-     * 更新email状态
-     */
-    void updateEmailStatus(EmailStatus emailStatus);
-
-    /**
-     * 删除email状态
-     */
-    void deleteEmailStatus(String emailId, String playerId);
-
-    /**
-     * 查找所有的邮件
+     * 查找所有收到的邮件
      * @param playerId player id
-     * @return 所有的邮件
+     * @return 所有收到的邮件
      */
-    List<Email> getAllEmailByPlayerId(String playerId);
+    List<Email> getAllRecipientEmailByPlayerId(String playerId);
+
+    /**
+     * 查找所有发出的邮件
+     * @param playerId player id
+     * @return 所有发出的邮件
+     */
+    List<Email> getAllSendEmailByPlayerId(String playerId);
 
     /**
      * 删除email

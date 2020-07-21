@@ -51,6 +51,15 @@ public class GoodDaoImpl extends HibernateDaoSupport implements GoodDao {
     }
 
     @Override
+    public Good findGoodByGoodUuid(String goodUuid) {
+        try {
+            return this.getHibernateTemplate().get(Good.class, goodUuid);
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
     public void insertGood(Good good) {
         this.getHibernateTemplate().save(good);
     }

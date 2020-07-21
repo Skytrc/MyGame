@@ -24,22 +24,34 @@ public class Email {
     private String recipientId;
 
     /**
+     * 接收人是否已读
+     */
+    @Column(name = "recipient_has_read")
+    private boolean recipientHasRead;
+
+    /**
+     * 接受人是否已删除
+     */
+    @Column(name = "recipient_delete")
+    private boolean recipientDelete;
+
+    /**
      * 发送人id
      */
     @Column(name = "sender_id")
     private String senderId;
 
     /**
+     * 发送人是否已删除
+     */
+    @Column(name = "sender_delete")
+    private boolean senderDelete;
+
+    /**
      * 发送人名称
      */
     @Column(name = "sender_name")
     private String senderName;
-
-    /**
-     * 是否已经发送
-     */
-    @Column(name = "is_send")
-    private boolean isSend;
 
     /**
      * 是否发给全服
@@ -74,6 +86,12 @@ public class Email {
      */
     @Column(name = "created_time")
     private long createdTime;
+
+    /**
+     * 发送时间
+     */
+    @Column(name = "send_time")
+    private long sendTime;
 
     /**
      * 邮件是否过了7天期限
@@ -155,11 +173,7 @@ public class Email {
     }
 
     public boolean isSend() {
-        return isSend;
-    }
-
-    public void setSend(boolean send) {
-        isSend = send;
+        return sendTime == 0L;
     }
 
     public String getSubject() {
@@ -168,5 +182,37 @@ public class Email {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public boolean isRecipientDelete() {
+        return recipientDelete;
+    }
+
+    public void setRecipientDelete(boolean recipientDelete) {
+        this.recipientDelete = recipientDelete;
+    }
+
+    public boolean isSenderDelete() {
+        return senderDelete;
+    }
+
+    public void setSenderDelete(boolean senderDelete) {
+        this.senderDelete = senderDelete;
+    }
+
+    public long getSendTime() {
+        return sendTime;
+    }
+
+    public void setSendTime(long sendTime) {
+        this.sendTime = sendTime;
+    }
+
+    public boolean isRecipientHasRead() {
+        return recipientHasRead;
+    }
+
+    public void setRecipientHasRead(boolean recipientHasRead) {
+        this.recipientHasRead = recipientHasRead;
     }
 }
