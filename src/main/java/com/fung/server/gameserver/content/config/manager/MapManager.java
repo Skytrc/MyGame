@@ -5,7 +5,7 @@ import com.fung.server.gameserver.content.config.readconfig.ReadMap;
 import com.fung.server.gameserver.content.config.readconfig.ReadMapGates;
 import com.fung.server.gameserver.content.config.map.GameMap;
 import com.fung.server.gameserver.content.config.map.GameMapGates;
-import com.fung.server.gameserver.content.domain.Dungeon.DungeonManager;
+import com.fung.server.gameserver.content.domain.dungeon.DungeonManager;
 import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
 import com.fung.server.gameserver.content.entity.Player;
 import com.fung.server.gameserver.content.util.Uuid;
@@ -112,6 +112,7 @@ public class MapManager {
         gameMap.setMonsterMap(new HashMap<>());
         gameMap.setFallingGoodMap(new HashMap<>());
         gameMap.setPlayerInPosition(new HashMap<>());
+        gameMap.setPlayChannel(new ArrayList<>());
     }
 
     public GameMap getMapByMapId(int i) {

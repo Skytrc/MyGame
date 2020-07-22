@@ -43,6 +43,11 @@ public class GameMap extends BaseElement implements Model {
     private Map<Integer, List<Player>> playerInPosition;
 
     /**
+     * 储存在这个地图上的所有玩家channel Id
+     */
+    private List<String> playChannel;
+
+    /**
      * 地图中玩家数量
      */
     private int playerQuantity;
@@ -225,6 +230,8 @@ public class GameMap extends BaseElement implements Model {
         int position = xy2Location(player.getInMapX(), player.getInMapY());
         checkPositionMap(position);
         playerInPosition.get(position).add(player);
+        // 增加channelId
+        playChannel.add(player.getTempStatus().getChannelId());
     }
 
     /**
@@ -243,6 +250,8 @@ public class GameMap extends BaseElement implements Model {
     public void removePlayer(Player player) {
         playerQuantity--;
         playerInPosition.get(xy2Location(player.getInMapX(), player.getInMapY())).remove(player);
+        // 删除channel
+        playChannel.remove(player.getTempStatus().getChannelId());
     }
 
     /**
@@ -402,5 +411,13 @@ public class GameMap extends BaseElement implements Model {
 
     public void setPlayerQuantity(int playerQuantity) {
         this.playerQuantity = playerQuantity;
+    }
+
+    public List<String> getPlayChannel() {
+        return playChannel;
+    }
+
+    public void setPlayChannel(List<String> playChannel) {
+        this.playChannel = playChannel;
     }
 }

@@ -4,6 +4,7 @@ import com.fung.server.gameserver.content.config.manager.DamageSkillManager;
 import com.fung.server.gameserver.content.config.skill.DamageSkill;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,7 +14,15 @@ import java.util.Map;
  */
 public class PersonalSkill {
 
+    /**
+     * 技能cd
+     */
     private Map<Integer,Long> skillCd;
+
+    /**
+     * 个人技能
+     */
+    private List<Integer> skill;
 
     private static final int ALL_SKILL_CD = 1000;
 
@@ -54,5 +63,13 @@ public class PersonalSkill {
 
     public void setSkillCd(Map<Integer, Long> skillCd) {
         this.skillCd = skillCd;
+    }
+
+    public List<Integer> getSkill() {
+        return skill;
+    }
+
+    public void setSkill(List<Integer> skill) {
+        this.skill = skill;
     }
 }

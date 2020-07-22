@@ -52,6 +52,12 @@ public class Skill {
     private int cd;
 
     /**
+     * 攻击前摇
+     */
+    @Transient
+    private int attackAnimation;
+
+    /**
      * 技能描述
      */
     @Transient
@@ -111,5 +117,13 @@ public class Skill {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getSkillDistance() {
+        return skillDistance;
+    }
+
+    public void setSkillDistance(int skillDistance) {
+        this.skillDistance = skillDistance;
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "player")
-public class Player{
+public class Player implements Unit{
 
     /**
      * 玩家uuid
@@ -279,10 +279,17 @@ public class Player{
         this.maxHealthPoint = maxHealthPoint;
     }
 
+    @Override
     public int getHealthPoint() {
         return healthPoint;
     }
 
+    @Override
+    public String getName() {
+        return playerName;
+    }
+
+    @Override
     public void setHealthPoint(int healthPoint) {
         this.healthPoint = healthPoint;
     }

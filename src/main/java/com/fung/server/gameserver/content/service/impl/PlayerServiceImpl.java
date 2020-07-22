@@ -13,6 +13,7 @@ import com.fung.server.gameserver.content.domain.backpack.PersonalBackpack;
 import com.fung.server.gameserver.content.domain.calculate.PlayerValueCalculate;
 import com.fung.server.gameserver.content.domain.email.MailBox;
 import com.fung.server.gameserver.content.domain.player.PlayerCreated;
+import com.fung.server.gameserver.content.domain.player.PlayerTempStatus;
 import com.fung.server.gameserver.content.entity.*;
 import com.fung.server.gameserver.content.service.PlayerService;
 import com.fung.server.gameserver.content.domain.player.OnlinePlayer;
@@ -101,7 +102,7 @@ public class PlayerServiceImpl implements PlayerService {
         playerLogin.setLoginDate(System.currentTimeMillis());
 
         // 挂载
-        playerLoad(player, player.getPlayerCommConfig());
+        playerLoad(player, player.getPlayerCommConfig(), channelId);
 
         playerValueCalculate.calculatePlayerBaseValue(player);
 
@@ -124,7 +125,7 @@ public class PlayerServiceImpl implements PlayerService {
         return "没有角色登录";
     }
 
-    public void playerLoad(Player player, PlayerCommConfig playerCommConfig) {
+    public void playerLoad(Player player, PlayerCommConfig playerCommConfig, String channelId) {
         // 挂载技能
         if (player.getSkills() == null) {
             List<Skill> skills = skillDao.findSkillsByPlayerId(player.getUuid());
@@ -166,6 +167,9 @@ public class PlayerServiceImpl implements PlayerService {
             });
             player.setPersonalBackpack(personalBackpack);
         }
+
+        // playerTempStatus
+        player.getTempStatus().setChannelId(channelId);
 
         // 挂载邮箱
         MailBox mailBox = new MailBox();

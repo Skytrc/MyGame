@@ -1,4 +1,4 @@
-package com.fung.server.gameserver.content.domain.Dungeon;
+package com.fung.server.gameserver.content.domain.dungeon;
 
 import com.fung.server.gameserver.content.config.manager.MapManager;
 import com.fung.server.gameserver.content.config.map.Dungeon;

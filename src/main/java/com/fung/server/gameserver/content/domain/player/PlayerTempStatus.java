@@ -1,5 +1,7 @@
 package com.fung.server.gameserver.content.domain.player;
 
+import com.fung.server.gameserver.content.domain.buff.BuffManager;
+
 /**
  * TODO 下线检测机制
  * 玩家临时转态，下线后消除
@@ -11,6 +13,13 @@ public class PlayerTempStatus {
     private String teamId;
 
     private String dungeonId;
+
+    private String channelId;
+
+    /**
+     * 管理玩家身上的buff
+     */
+    private BuffManager buffManager;
 
     public String getTeamId() {
         return teamId;
@@ -26,5 +35,13 @@ public class PlayerTempStatus {
 
     public void setDungeonId(String dungeonId) {
         this.dungeonId = dungeonId;
+    }
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
     }
 }
