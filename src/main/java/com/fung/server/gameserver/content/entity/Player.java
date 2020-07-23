@@ -1,8 +1,10 @@
 package com.fung.server.gameserver.content.entity;
 
 import com.fung.server.gameserver.content.domain.backpack.PersonalBackpack;
+import com.fung.server.gameserver.content.domain.buff.UnitBuffManager;
 import com.fung.server.gameserver.content.domain.email.MailBox;
 import com.fung.server.gameserver.content.domain.player.PlayerTempStatus;
+import com.fung.server.gameserver.content.domain.skill.UnitSkillManager;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -156,10 +158,16 @@ public class Player implements Unit{
     private List<Equipment> equipments;
 
     /**
-     * 人物技能，需要在Service层处理
+     * 人物技能
      */
     @Transient
-    private List<Skill> skills;
+    private UnitSkillManager skillManager;
+
+    /**
+     * buff状态管理
+     */
+    @Transient
+    private UnitBuffManager buffManager;
 
     /**
      * 背包挂钩，需要在Service层处理
@@ -398,14 +406,6 @@ public class Player implements Unit{
         this.equipments = equipments;
     }
 
-    public List<Skill> getSkills() {
-        return skills;
-    }
-
-    public void setSkills(List<Skill> skills) {
-        this.skills = skills;
-    }
-
     public PersonalBackpack getPersonalBackpack() {
         return personalBackpack;
     }
@@ -504,5 +504,21 @@ public class Player implements Unit{
 
     public void setGm(boolean gm) {
         isGm = gm;
+    }
+
+    public UnitSkillManager getSkillManager() {
+        return skillManager;
+    }
+
+    public void setSkillManager(UnitSkillManager skillManager) {
+        this.skillManager = skillManager;
+    }
+
+    public UnitBuffManager getBuffManager() {
+        return buffManager;
+    }
+
+    public void setBuffManager(UnitBuffManager buffManager) {
+        this.buffManager = buffManager;
     }
 }

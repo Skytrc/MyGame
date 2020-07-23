@@ -35,6 +35,9 @@ public class GameServerStart {
     private SkillManager skillManager;
 
     @Autowired
+    private BuffManager buffManager;
+
+    @Autowired
     private NpcManager npcManager;
 
     @Autowired
@@ -46,6 +49,7 @@ public class GameServerStart {
     public void start(int port) throws InterruptedException, IOException, InvalidFormatException {
         mapManager.mapInit();
         goodManager.goodInit();
+        buffManager.buffInit();
         skillManager.skillInit();
         monsterCreateManager.monsterCreateInit();
         npcManager.npcModelInit();

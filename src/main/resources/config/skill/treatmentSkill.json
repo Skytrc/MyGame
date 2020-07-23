@@ -1,0 +1,1 @@
+[{"id":"101","name":"治疗术","level":"0","skillDistance":"2","cd":"8","attackAnimation":"1","requireMagicPoint":"5","treatmentAmount":"50","isRangeTreatment":"FALSE","description":"为友方单位治疗"},{"id":"102","name":"群体治疗","level":"0","skillDistance":"5","cd":"12","attackAnimation":"2","requireMagicPoint":"10","treatmentAmount":"30","isRangeTreatment":"TRUE","description":"为所有的友方单位治疗"}]

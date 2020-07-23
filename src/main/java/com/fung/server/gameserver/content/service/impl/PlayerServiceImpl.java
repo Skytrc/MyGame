@@ -5,15 +5,18 @@ import com.fung.server.gameserver.content.config.good.equipment.EquipmentCreated
 import com.fung.server.gameserver.content.config.good.equipment.EquipmentType;
 import com.fung.server.gameserver.content.config.manager.EquipmentCreatedManager;
 import com.fung.server.gameserver.content.config.manager.MapManager;
+import com.fung.server.gameserver.content.config.manager.SkillManager;
 import com.fung.server.gameserver.content.dao.EmailDao;
 import com.fung.server.gameserver.content.dao.EquipmentDao;
 import com.fung.server.gameserver.content.dao.GoodDao;
 import com.fung.server.gameserver.content.dao.SkillDao;
 import com.fung.server.gameserver.content.domain.backpack.PersonalBackpack;
+import com.fung.server.gameserver.content.domain.buff.UnitBuffManager;
 import com.fung.server.gameserver.content.domain.calculate.PlayerValueCalculate;
 import com.fung.server.gameserver.content.domain.email.MailBox;
 import com.fung.server.gameserver.content.domain.player.PlayerCreated;
 import com.fung.server.gameserver.content.domain.player.PlayerTempStatus;
+import com.fung.server.gameserver.content.domain.skill.UnitSkillManager;
 import com.fung.server.gameserver.content.entity.*;
 import com.fung.server.gameserver.content.service.PlayerService;
 import com.fung.server.gameserver.content.domain.player.OnlinePlayer;
@@ -52,6 +55,9 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Autowired
     private EquipmentCreatedManager createdManager;
+
+    @Autowired
+    private SkillManager skillManager;
 
     @Autowired
     private SkillDao skillDao;
@@ -127,10 +133,23 @@ public class PlayerServiceImpl implements PlayerService {
 
     public void playerLoad(Player player, PlayerCommConfig playerCommConfig, String channelId) {
         // 挂载技能
-        if (player.getSkills() == null) {
+        if (player.getSkillManager() == null) {
+            UnitSkillManager unitSkillManager = new UnitSkillManager();
             List<Skill> skills = skillDao.findSkillsByPlayerId(player.getUuid());
-            player.setSkills(skills);
+            List<Skill> newSkill = new ArrayList<>();
+            for (Skill skill : skills) {
+                newSkill.add(skillManager.personalSkillInit(skill));
+            }
+            // 初始化每个技能的信息
+            unitSkillManager.updateSkill(newSkill);
+            player.setSkillManager(unitSkillManager);
         }
+        // Buff状态
+        UnitBuffManager unitBuffManager = new UnitBuffManager();
+        // 双向绑定
+        player.setBuffManager(unitBuffManager);
+        unitBuffManager.setUnit(player);
+
         Map<Integer, EquipmentCreated> equipmentCreatedMap = createdManager.getEquipmentCreatedMap();
         // 挂载装备
         if (player.getEquipments() == null) {
@@ -186,5 +205,9 @@ public class PlayerServiceImpl implements PlayerService {
         equipment.setName(equipmentCreated.getName());
         equipment.setDescription(equipmentCreated.getDescription());
         equipment.setType(EquipmentType.getEquipmentTypeByPartName(type));
+    }
+
+    public void skillInit(Skill skill) {
+
     }
 }

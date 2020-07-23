@@ -1,6 +1,7 @@
 package com.fung.server.gameserver.content.config.monster;
 
-import com.fung.server.gameserver.content.entity.Player;
+import com.fung.server.gameserver.content.domain.buff.UnitBuffManager;
+import com.fung.server.gameserver.content.domain.skill.UnitSkillManager;
 import com.fung.server.gameserver.content.entity.Skill;
 import com.fung.server.gameserver.content.entity.base.BaseElement;
 
@@ -48,14 +49,19 @@ public abstract class BaseMonster extends BaseElement {
     private int attackDistance;
 
     /**
-     * 怪物技能
-     */
-    private List<Skill> monsterSkill;
-
-    /**
      * 是否正在攻击
      */
     private volatile boolean isAttacking;
+
+    /**
+     * 管理怪兽身上的buff
+     */
+    private UnitBuffManager unitBuffManager;
+
+    /**
+     * 管理技能模块
+     */
+    private List<Skill> skills;
 
     public int getLevel() {
         return level;
@@ -113,19 +119,27 @@ public abstract class BaseMonster extends BaseElement {
         this.attackDistance = attackDistance;
     }
 
-    public List<Skill> getMonsterSkill() {
-        return monsterSkill;
-    }
-
-    public void setMonsterSkill(List<Skill> monsterSkill) {
-        this.monsterSkill = monsterSkill;
-    }
-
     public boolean isAttacking() {
         return isAttacking;
     }
 
     public void setAttacking(boolean attacking) {
         isAttacking = attacking;
+    }
+
+    public UnitBuffManager getUnitBuffManager() {
+        return unitBuffManager;
+    }
+
+    public void setUnitBuffManager(UnitBuffManager unitBuffManager) {
+        this.unitBuffManager = unitBuffManager;
+    }
+
+    public List<Skill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<Skill> skills) {
+        this.skills = skills;
     }
 }

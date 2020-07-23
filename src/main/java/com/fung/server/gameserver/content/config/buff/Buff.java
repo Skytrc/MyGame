@@ -48,12 +48,12 @@ public class Buff implements Model {
     /**
      * 能否进行其他动作（特指其他的攻击动作/移动动作）
      */
-    private boolean canAction;
+    private String canAction;
 
     /**
      * 能否移动
      */
-    private boolean canMove;
+    private String canMove;
 
     /**
      * 护盾
@@ -62,7 +62,7 @@ public class Buff implements Model {
 
     @Override
     public int getId() {
-        return 0;
+        return id;
     }
 
     public String getName() {
@@ -114,18 +114,22 @@ public class Buff implements Model {
     }
 
     public boolean isCanAction() {
-        return canAction;
+        return "TRUE".equals(canAction);
     }
 
-    public void setCanAction(boolean canAction) {
+    public String getCanAction() {
+        return this.canAction;
+    }
+
+    public void setCanAction(String canAction) {
         this.canAction = canAction;
     }
 
     public boolean isCanMove() {
-        return canMove;
+        return "TRUE".equals(canMove);
     }
 
-    public void setCanMove(boolean canMove) {
+    public void setCanMove(String canMove) {
         this.canMove = canMove;
     }
 
@@ -151,5 +155,9 @@ public class Buff implements Model {
 
     public void setLayer(int layer) {
         this.layer = layer;
+    }
+
+    public String getCanMove() {
+        return this.canMove;
     }
 }

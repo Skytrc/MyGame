@@ -1,6 +1,5 @@
 package com.fung.server.gameserver.content.config.monster;
 
-import com.fung.server.gameserver.content.domain.buff.BuffManager;
 import com.fung.server.gameserver.content.entity.Player;
 import com.fung.server.gameserver.content.entity.Unit;
 
@@ -21,11 +20,6 @@ public class BaseHostileMonster extends BaseMonster implements Unit {
     private int value;
 
     private int exp;
-
-    /**
-     * 管理怪兽身上的buff
-     */
-    private BuffManager buffManager;
 
     public Player getCurrentAttackPlayer() {
         return currentAttackPlayer;

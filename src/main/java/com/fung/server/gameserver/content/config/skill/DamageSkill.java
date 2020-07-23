@@ -24,11 +24,6 @@ public class DamageSkill extends Skill implements Model {
      */
     private int scopeOfInfluence;
 
-    /**
-     * 蓝量需求
-     */
-    private int requireMagicPoint;
-
     public int getPhysicalDamage() {
         return physicalDamage;
     }
@@ -43,5 +38,13 @@ public class DamageSkill extends Skill implements Model {
 
     public void setMagicDamage(int magicDamage) {
         this.magicDamage = magicDamage;
+    }
+
+    public int getScopeOfInfluence() {
+        return scopeOfInfluence;
+    }
+
+    public void setScopeOfInfluence(int scopeOfInfluence) {
+        this.scopeOfInfluence = scopeOfInfluence;
     }
 }

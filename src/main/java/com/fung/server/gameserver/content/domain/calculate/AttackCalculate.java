@@ -32,15 +32,23 @@ public class AttackCalculate {
         return rate > randomValue;
     }
 
-    public boolean calculateAttackDistance(Player player, int monsterInx, int monsterIny) {
+    /**
+     * 计算玩家攻击距离
+     */
+    public boolean calculateAttackDistance(Player player, int skillDistance, int monsterInx, int monsterIny) {
         int playerInx = player.getInMapX();
         int playerIny = player.getInMapY();
         int distance = Math.abs(monsterInx - playerInx) + Math.abs(monsterIny - playerIny);
-        return distance <= player.getAttackDistance();
+        return distance <= player.getAttackDistance() + skillDistance;
     }
 
+    /**
+     * 计算怪物攻击距离
+     */
     public boolean calculateAttackDistance(BaseMonster monster, Player player) {
         int distance = Math.abs(monster.getInMapX() - player.getInMapX()) + Math.abs(monster.getInMapY() - player.getInMapY());
         return distance <= monster.getAttackDistance();
     }
+
+
 }

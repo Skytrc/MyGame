@@ -6,6 +6,7 @@ import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
 import com.fung.server.gameserver.content.entity.Unit;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -14,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * @author skytrc@163.com
  * @date 2020/7/22 10:51
  */
-public class BuffManager {
+public class UnitBuffManager {
 
     /**
      * 用于记录生物身上的buff
@@ -49,11 +50,15 @@ public class BuffManager {
     @Autowired
     private WriteMessage2Client writeMessage2Client;
 
+    public UnitBuffManager() {
+        buffMap = new HashMap<>();
+    }
+
     /**
      * 添加buff
      */
-    public void putOnBuff(Buff buff, String channelId) {
-        trigger(buff, channelId);
+    public void putOnBuff(Buff buff) {
+        trigger(buff);
 //        int categoryId = buff.getBuffSpecies().getBufferCategory();
 //        List<Buff> buffs;
 //        // 原本没有该种类buff
@@ -80,10 +85,10 @@ public class BuffManager {
 //        trigger(buff, channelId);
     }
 
-    public void trigger(Buff buff, String channelId) {
+    public void trigger(Buff buff) {
         switch (buff.getBuffSpecies()) {
             case MoveLimit:
-                moveBuff(buff, channelId);
+                moveBuff(buff);
                 break;
             case Dot:
                 newDotCalculate(buff);
@@ -167,7 +172,7 @@ public class BuffManager {
     /**
      * 禁锢类buff
      */
-    public void moveBuff(Buff buff, String channelId) {
+    public void moveBuff(Buff buff) {
         moveLimited = true;
         int lastTime = buff.getLastTime();
         String res = "\n" + unit.getName() + " 移除 " + buff.getName();
@@ -201,14 +206,14 @@ public class BuffManager {
     /**
      * 是否能攻击
      */
-    public boolean attackCalculate() {
+    public boolean canAction() {
         return !actionLimited;
     }
 
     /**
      * 能否移动
      */
-    public boolean moveCalculate() {
+    public boolean canMove() {
         return !moveLimited;
     }
 
@@ -218,6 +223,10 @@ public class BuffManager {
 
     public void setUnit(Unit unit) {
         this.unit = unit;
+    }
+
+    public GameMapActor getGameMapActor() {
+        return this.gameMapActor;
     }
 
     public void setGameMapActor(GameMapActor gameMapActor) {

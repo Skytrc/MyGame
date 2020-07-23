@@ -7,6 +7,7 @@ import com.fung.server.gameserver.content.domain.backpack.PersonalBackpack;
 import com.fung.server.gameserver.content.domain.email.MailBox;
 import com.fung.server.gameserver.content.domain.good.GoodCreatedFactory;
 import com.fung.server.gameserver.content.domain.skill.SkillLoad;
+import com.fung.server.gameserver.content.domain.skill.UnitSkillManager;
 import com.fung.server.gameserver.content.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -98,6 +99,7 @@ public class PlayerCreated {
         // 技能模块
         List<Skill> skills = skillLoad.newPlayerSkillCreated(player.getUuid());
         skills.forEach(skillDao::insertSkill);
-        player.setSkills(skills);
+        UnitSkillManager unitSkillManager = new UnitSkillManager();
+        unitSkillManager.updateSkill(skills);
     }
 }

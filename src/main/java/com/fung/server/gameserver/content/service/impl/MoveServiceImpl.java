@@ -60,17 +60,24 @@ public class MoveServiceImpl implements MoveService {
         Player player = playerInfo.getCurrentPlayer(channelId);
         GameMapActor gameMapActor = mapManager.getGameMapActor(player);
         gameMapActor.addMessage(gameMapActor1 -> {
+            if (!player.getBuffManager().canMove()) {
+                writeMessage2Client.writeMessage(channelId, "\n无法移动");
+                return;
+            }
             GameMap gameMap = gameMapActor.getGameMap();
             int newX = xy[0];
             int newY = xy[1];
             if (newX < 1 || newX > gameMap.getX() || newY < 1 || newY > gameMap.getY()) {
-                writeMessage2Client.writeMessage(channelId, "移动超出地图限制");
+                writeMessage2Client.writeMessage(channelId, "\n移动超出地图限制");
             }
             moveCalculate.moveGrid(gameMapActor, player, channelId, xy[0], xy[1]);
         });
         return "";
     }
 
+    /**
+     * TODO 放在个人线程中处理，并且条件判断
+     */
     @Override
     public String mapTransfer(String channelId) {
         GameMap currentGameMap = playerInfo.getCurrentPlayerMap(channelId);

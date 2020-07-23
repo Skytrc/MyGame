@@ -22,8 +22,14 @@ public class SkillLoad {
 
     public List<Skill> newPlayerSkillCreated(String playerId) {
         List<Skill> skills = new ArrayList<>();
-        skills.add(createdNewDamageSkill(playerId, 1));
-        skills.add(createdNewDamageSkill(playerId, 2));
+//        skills.add(createdNewDamageSkill(playerId, 1));
+//        skills.add(createdNewDamageSkill(playerId, 2));
+//        skills.add(createdNewDamageSkill(playerId, 3));
+//        skills.add(createdNewDamageSkill(playerId, 4));
+//        skills.add(createdNewDamageSkill(playerId, 5));
+        for (int i = 1; i < 6; i++) {
+            skills.add(createdNewDamageSkill(playerId, i));
+        }
         return skills;
     }
 

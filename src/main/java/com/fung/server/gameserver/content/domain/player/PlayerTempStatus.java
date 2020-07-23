@@ -1,6 +1,6 @@
 package com.fung.server.gameserver.content.domain.player;
 
-import com.fung.server.gameserver.content.domain.buff.BuffManager;
+import com.fung.server.gameserver.content.domain.buff.UnitBuffManager;
 
 /**
  * TODO 下线检测机制
@@ -19,7 +19,7 @@ public class PlayerTempStatus {
     /**
      * 管理玩家身上的buff
      */
-    private BuffManager buffManager;
+    private UnitBuffManager unitBuffManager;
 
     public String getTeamId() {
         return teamId;

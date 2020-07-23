@@ -4,7 +4,10 @@ import com.fung.server.gameserver.content.config.map.GameMap;
 import com.fung.server.gameserver.content.config.monster.MonsterDrop;
 import com.fung.server.gameserver.content.config.monster.NormalMonster;
 import com.fung.server.gameserver.content.config.monster.MonsterDistribution;
+import com.fung.server.gameserver.content.domain.buff.UnitBuffManager;
 import com.fung.server.gameserver.content.domain.monster.MonsterDropCreated;
+import com.fung.server.gameserver.content.domain.skill.UnitSkillManager;
+import com.fung.server.gameserver.content.entity.Skill;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,7 +108,14 @@ public class MonsterCreateManager {
         newNormalMonster.setName(normalMonster.getName());
         newNormalMonster.setExp(normalMonster.getExp());
         newNormalMonster.setValue(normalMonster.getValue());
-        newNormalMonster.setMonsterSkill(monsterSkillManager.getMonsterSkillByMonsterId(monsterId));
+        // 技能挂载&buff状态挂载
+        List<Skill> skills = monsterSkillManager.getMonsterSkillByMonsterId(monsterId);
+        newNormalMonster.setSkills(skills);
+
+        UnitBuffManager unitBuffManager = new UnitBuffManager();
+        unitBuffManager.setUnit(newNormalMonster);
+        newNormalMonster.setUnitBuffManager(unitBuffManager);
+
 
         // 设置怪物所在地图信息
         newNormalMonster.setInMapId(gameMap.getId());
@@ -117,21 +127,6 @@ public class MonsterCreateManager {
     public NormalMonster createMonster(int monsterId, int gameMapId, int position) {
         GameMap map = mapManager.getMapByMapId(gameMapId);
         return createMonster(monsterId, map, position);
-//        NormalMonster normalMonster = monsterManager.getMonsterById(monsterId);
-//
-//        NormalMonster newNormalMonster = new NormalMonster();
-//        newNormalMonster.setAttackPower(normalMonster.getAttackPower());
-//        newNormalMonster.setDefend(normalMonster.getDefend());
-//        newNormalMonster.setHealthPoint(normalMonster.getMaxHealthPoint());
-//        newNormalMonster.setMaxHealthPoint(normalMonster.getMaxHealthPoint());
-//        newNormalMonster.setId(monsterId);
-//        newNormalMonster.setLevel(normalMonster.getLevel());
-//        newNormalMonster.setName(normalMonster.getName());
-//        newNormalMonster.setMonsterSkill(monsterSkillManager.getMonsterSkillByMonsterId(monsterId));
-//        // 设置怪物所在地图信息
-//        newNormalMonster.setInMapId(gameMapId);
-//        newNormalMonster.setInMapX(mapManager.getMapByMapId(gameMapId).location2xy(position)[0]);
-//        newNormalMonster.setInMapY(mapManager.getMapByMapId(gameMapId).location2xy(position)[1]);
     }
 
     public Map<Integer, List<MonsterDrop>> getMonsterDropByIdMap() {

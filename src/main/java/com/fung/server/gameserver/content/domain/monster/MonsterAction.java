@@ -5,6 +5,7 @@ import com.fung.server.gameserver.content.config.manager.SkillManager;
 import com.fung.server.gameserver.content.config.monster.BaseHostileMonster;
 import com.fung.server.gameserver.content.config.monster.BaseMonster;
 import com.fung.server.gameserver.content.config.skill.DamageSkill;
+import com.fung.server.gameserver.content.domain.buff.UnitBuffManager;
 import com.fung.server.gameserver.content.domain.calculate.AttackCalculate;
 import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
 import com.fung.server.gameserver.content.entity.Player;
@@ -43,53 +44,6 @@ public class MonsterAction {
         lock = new ReentrantLock();
     }
 
-    /**
-     * 固定攻击单一玩家
-     * @param player 玩家
-     */
-    @Deprecated
-    public void attackPlayer(String channelId, Player player, BaseMonster monster) throws InterruptedException {
-        int unleashSkillCount = 0;
-        monster.setAttacking(true);
-        while (true) {
-            lock.lock();
-            try {
-                // 检测怪物是否死亡
-                if (monster.getHealthPoint() <= 0) {
-                    break;
-                }
-                // 判断玩家是否在攻击范围内
-                if (!attackCalculate.calculateAttackDistance(monster, player)) {
-                    break;
-                }
-                // 判断玩家血量是否为空
-                if (player.getHealthPoint() <= 0) {
-                    break;
-                }
-            } finally {
-                lock.unlock();
-            }
-
-            // 怪物技能模块
-            Skill skill = monsterSelectSkill(monster.getMonsterSkill(), unleashSkillCount++);
-            DamageSkill damageSkill = skillManager.getSkillById(skill.getId());
-            int totalDamage;
-            lock.lock();
-            try {
-                totalDamage = attackCalculate.defenderHpCalculate(monster.getAttackPower(), damageSkill.getPhysicalDamage(), player.getTotalDefense());
-                player.setHealthPoint(player.getHealthPoint() - totalDamage);
-            } finally {
-                lock.unlock();
-            }
-
-            String message = "\n 怪物使用技能: " + damageSkill.getName() + " 造成伤害: " + totalDamage + " 玩家还剩血量: " + player.getHealthPoint();
-            writeMessage2Client.writeMessage(channelId, message);
-
-            Thread.sleep(damageSkill.getCd() * 1000);
-        }
-        monster.setAttacking(false);
-    }
-
     public void attackPlayer0(String channelId, Player player, BaseHostileMonster monster, GameMapActor gameMapActor) {
         attackPlayer1(channelId, player, 0, monster,gameMapActor);
     }
@@ -121,10 +75,17 @@ public class MonsterAction {
             monster.setCurrentAttackPlayer(null);
             return;
         }
+        // 如果中了不可行动的buff，重复检查
+        UnitBuffManager unitBuffManager = monster.getUnitBuffManager();
+        if (!unitBuffManager.canAction()){
+            gameMapActor.schedule(gameMapActor1 -> {
+                attackPlayer1(channelId, player, unleashSkillCount, monster, gameMapActor);
+            }, 1, TimeUnit.SECONDS);
+        }
 
-        // TODO 技能模塊需要單獨拉出來寫
+
         // 怪物技能模块
-        Skill skill = monsterSelectSkill(monster.getMonsterSkill(), unleashSkillCount);
+        Skill skill = monsterSelectSkill(monster.getSkills(), unleashSkillCount);
         DamageSkill damageSkill = skillManager.getSkillById(skill.getId());
         int totalDamage = attackCalculate.defenderHpCalculate(monster.getAttackPower(), damageSkill.getPhysicalDamage(), player.getTotalDefense());
         player.setHealthPoint(player.getHealthPoint() - totalDamage);
@@ -136,7 +97,7 @@ public class MonsterAction {
 
         // 发送怪物攻击消息
         String message = "\n 怪物使用技能: " + damageSkill.getName() + " 造成伤害: " + totalDamage + " 玩家还剩血量: " + player.getHealthPoint();
-        writeMessage2Client.writeMessage(channelId, message);
+        writeMessage2Client.writeMessage2MapPlayer(gameMapActor.getGameMap(), message);
 
     }
 

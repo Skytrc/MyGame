@@ -59,7 +59,7 @@ public class PlayerModuleServiceImpl implements PlayerModuleService {
         List<Equipment> equipments = equipmentDao.findEquipmentsByPlayerId(currentPlayer.getUuid());
         currentPlayer.setEquipments(equipments);
         // 技能挂载
-        List<Skill> skills = skillDao.findSkillsByPlayerId(currentPlayer.getUuid());
-        currentPlayer.setSkills(skills);
+//        List<Skill> skills = skillDao.findSkillsByPlayerId(currentPlayer.getUuid());
+//        currentPlayer.setSkills(skills);
     }
 }

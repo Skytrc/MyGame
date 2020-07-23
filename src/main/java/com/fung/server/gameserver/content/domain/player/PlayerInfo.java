@@ -105,7 +105,7 @@ public class PlayerInfo {
     }
 
     public String showSkill(Player player) {
-        List<Skill> skills = player.getSkills();
+        List<Skill> skills = player.getSkillManager().getAllSkill();
         StringBuilder stringBuilder = new StringBuilder();
         skills.forEach(skill -> {
             String[] strings = skillManager.getSkillInfoById(skill.getId());
