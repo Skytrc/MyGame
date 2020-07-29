@@ -1,9 +1,13 @@
 package com.fung.server.gameserver.content.domain.calculate;
 
+import com.fung.server.gameserver.content.config.map.GameMap;
 import com.fung.server.gameserver.content.config.monster.BaseMonster;
 import com.fung.server.gameserver.content.entity.Player;
+import com.fung.server.gameserver.content.entity.Skill;
+import com.fung.server.gameserver.content.entity.Unit;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -49,6 +53,25 @@ public class AttackCalculate {
         int distance = Math.abs(monster.getInMapX() - player.getInMapX()) + Math.abs(monster.getInMapY() - player.getInMapY());
         return distance <= monster.getAttackDistance();
     }
+
+    /**
+     * 计算攻击距离
+     */
+    public boolean calculateAttackDistance(Unit unit, Unit beAttackUnit, Skill skill) {
+        double distance = Math.sqrt(Math.pow(Math.abs(unit.getTempX() - beAttackUnit.getTempX()), 2) + Math.pow(Math.abs(unit.getTempY() - beAttackUnit.getTempY()), 2));
+        return distance <= unit.getAttackDistance() + skill.getSkillDistance();
+
+    }
+
+    /**
+     * TODO AOE计算
+     */
+    public List<Integer> calculateAoeRange(GameMap gameMap, int centerX, int centerY, int distance) {
+        int gameMapX = gameMap.getX();
+        int gameMapY = gameMap.getY();
+        return null;
+    }
+
 
 
 }

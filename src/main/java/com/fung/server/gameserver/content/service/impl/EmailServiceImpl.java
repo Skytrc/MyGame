@@ -58,6 +58,7 @@ public class EmailServiceImpl implements EmailService {
             email.setSenderId(player.getUuid());
             email.setSenderName(player.getPlayerName());
             email.setCreatedTime(System.currentTimeMillis());
+            email.setRecipientId(recipientId);
             // 更新草稿箱&数据库
             mailBox.putDraft2DraftBox(email);
             emailDao.createNewEmail(email);
@@ -139,9 +140,10 @@ public class EmailServiceImpl implements EmailService {
                 mailBox.putMail2MailBox(email);
                 emailDao.updateEmail(email);
             }
-            writeMessage2Client.writeMessage(channelId, mailInfo(email));
+            String res = mailInfo(email);
+            writeMessage2Client.writeMessage(channelId, res);
         });
-        return null;
+        return "";
     }
 
     @Override
@@ -192,12 +194,13 @@ public class EmailServiceImpl implements EmailService {
     }
 
     public String mailInfo(Email email) {
-        return "邮件Id: " + email.getUuid() + "\n邮件主题: " + nullHandle(email.getSubject())
+        String res = "邮件Id: " + email.getUuid() + "\n邮件主题: " + nullHandle(email.getSubject())
                 + "\n邮件收件玩家Id: " + nullHandle(email.getRecipientId())
                 + "\n邮件发送人Id: " + nullHandle(email.getSenderId())
                 + "\n邮件是否发送: " + (email.isSend() ? "是" : "否")
                 + "\n邮件是否面向所有人发送: " + email.isToAllPlayer()
                 + "\n邮件是否有物品: " + (email.getGoods() == null ? "不是" : "是");
+        return res;
     }
 
     public String checkMail(List<Email> emails, MailBox mailBox) {

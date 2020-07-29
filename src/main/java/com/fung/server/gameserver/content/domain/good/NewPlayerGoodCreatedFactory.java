@@ -16,7 +16,7 @@ import java.util.List;
  * @date 2020/6/5 9:54
  */
 @Component
-public class GoodCreatedFactory {
+public class NewPlayerGoodCreatedFactory {
 
     @Autowired
     private EquipmentCreatedFactory factory;
@@ -30,8 +30,8 @@ public class GoodCreatedFactory {
      */
     public List<Good> newPlayerGoodCreated(String playerId) {
         List<Good> goods = new ArrayList<>();
-        goods.add(createdNewGood(playerId, 1, 10));
-        goods.add(createdNewGood(playerId, 2, 10));
+        goods.add(goodManager.createNewGood(1, 10, playerId));
+        goods.add(goodManager.createNewGood(2, 10, playerId));
         return goods;
     }
 
@@ -49,36 +49,29 @@ public class GoodCreatedFactory {
         return equipments;
     }
 
-    /**
-     * 创建一个新的物品
-     * @param quantity 数量
-     */
-    public Good createdNewGood(String playerId, int goodId, int quantity) {
-        Good good = createNoBelongingGood(goodId, quantity);
-        good.setPlayerId(playerId);
-        return good;
-    }
-
-    /**
-     * 创建没有PlayerID的物品
-     */
-    public Good createNoBelongingGood(int goodId, int quantity) {
-        if (isEquipment(goodId)) {
-            return factory.createNoBelongingEquipment(goodId);
-        }
-        Good good = new Good();
-        good.setName(goodManager.getGoodNameById(goodId));
-        good.setUuid(Uuid.createUuid());
-        good.setGetTime(System.currentTimeMillis());
-        good.setGoodId(goodId);
-        good.setQuantity(quantity);
-        return good;
-    }
-
-    /**
-     * 判断是否为装备
-     */
-    public boolean isEquipment(int goodId) {
-        return goodManager.isEquipment(goodId);
-    }
+//    /**
+//     * 创建一个新的物品
+//     * @param quantity 数量
+//     */
+//    public Good createdNewGood(String playerId, int goodId, int quantity) {
+//        Good good = createNoBelongingGood(goodId, quantity);
+//        good.setPlayerId(playerId);
+//        return good;
+//    }
+//
+//    /**
+//     * 创建没有PlayerID的物品
+//     */
+//    public Good createNoBelongingGood(int goodId, int quantity) {
+//        if (isEquipment(goodId)) {
+//            return factory.createNoBelongingEquipment(goodId);
+//        }
+//        Good good = new Good();
+//        good.setName(goodManager.getGoodNameById(goodId));
+//        good.setUuid(Uuid.createUuid());
+//        good.setGetTime(System.currentTimeMillis());
+//        good.setGoodId(goodId);
+//        good.setQuantity(quantity);
+//        return good;
+//    }
 }

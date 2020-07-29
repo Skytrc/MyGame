@@ -1,6 +1,7 @@
 package com.fung.server.gameserver.content.config.map;
 
 import com.fung.server.gameserver.content.config.good.FallingGood;
+import com.fung.server.gameserver.content.config.monster.BaseHostileMonster;
 import com.fung.server.gameserver.content.config.monster.NormalMonster;
 import com.fung.server.gameserver.content.entity.Player;
 import com.fung.server.gameserver.content.entity.base.BaseElement;
@@ -9,6 +10,7 @@ import com.fung.server.gameserver.excel2class.Model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -55,7 +57,7 @@ public class GameMap extends BaseElement implements Model {
     /**
      * key position  value 怪物 地图存储
      */
-    private Map<Integer, NormalMonster> monsterMap;
+    private Map<Integer, BaseHostileMonster> monsterMap;
 
     /**
      * 元素对应的地图坐标（坐标需要计算）key location  value 基础元素
@@ -239,7 +241,7 @@ public class GameMap extends BaseElement implements Model {
      */
     public void checkPositionMap(int position) {
         if (!playerInPosition.containsKey(position)){
-            playerInPosition.put(position, new ArrayList<>());
+            playerInPosition.put(position, new CopyOnWriteArrayList<>());
         }
     }
 
@@ -257,7 +259,7 @@ public class GameMap extends BaseElement implements Model {
     /**
      * 获取怪兽实体 x y
      */
-    public NormalMonster getMonsterByXy(int x, int y) {
+    public BaseHostileMonster getMonsterByXy(int x, int y) {
         return monsterMap.get(xy2Location(x, y));
     }
 
@@ -345,11 +347,11 @@ public class GameMap extends BaseElement implements Model {
         return playerQuantity > 0;
     }
 
-    public NormalMonster getMonsterByPosition(int position) {
+    public BaseHostileMonster getMonsterByPosition(int position) {
         return monsterMap.get(position);
     }
 
-    public void putMonsterInMap(int position, NormalMonster normalMonster) {
+    public void putMonsterInMap(int position, BaseHostileMonster normalMonster) {
         monsterMap.put(position, normalMonster);
     }
 
@@ -385,11 +387,11 @@ public class GameMap extends BaseElement implements Model {
         this.elements = elements;
     }
 
-    public Map<Integer, NormalMonster> getMonsterMap() {
+    public Map<Integer, BaseHostileMonster> getMonsterMap() {
         return monsterMap;
     }
 
-    public void setMonsterMap(Map<Integer, NormalMonster> monsterMap) {
+    public void setMonsterMap(Map<Integer, BaseHostileMonster> monsterMap) {
         this.monsterMap = monsterMap;
     }
 

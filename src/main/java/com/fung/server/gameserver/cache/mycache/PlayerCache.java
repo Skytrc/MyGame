@@ -58,7 +58,7 @@ public class PlayerCache {
     }
 
     public void insertPlayerCommConfig(PlayerCommConfig playerCommConfig) {
-        playerDao.insertPlayerCommConfig(playerCommConfig);
+        playerDao.insertOrUpdatePlayerCommConfig(playerCommConfig);
     }
 
     public void updatePlayer(Player player) {

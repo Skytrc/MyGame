@@ -36,11 +36,12 @@ public interface GoodDao {
      * 插入物品信息
      * @param good 物品信息
      */
-    void insertGood(Good good);
+    void insertOrUpdateGood(Good good);
 
     /**
-     * 更新物品信息
-     * @param good 物品信息
+     * 删除物品
+     * @param good good
      */
-    void updateGood(Good good);
+    void deleteGood(Good good);
+
 }

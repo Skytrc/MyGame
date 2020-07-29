@@ -1,13 +1,11 @@
 package com.fung.server.gameserver.content.domain.backpack;
 
-import com.fung.server.gameserver.content.config.manager.GoodManager;
-import com.fung.server.gameserver.content.entity.Equipment;
 import com.fung.server.gameserver.content.entity.Good;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 在使用前先给playerId、maxBackpackGrid赋值
@@ -40,7 +38,7 @@ public class PersonalBackpack {
     private String playerId;
 
     public PersonalBackpack() {
-        backpack = new HashMap<>();
+        backpack = new ConcurrentHashMap<>();
     }
 
     /**
@@ -75,16 +73,14 @@ public class PersonalBackpack {
     }
 
     /**
-     * 判断能否达到最大堆叠数
+     * 判断能否达到最大堆叠数, 注意装备除外！
      */
     public boolean reachMaxStack(int id, int num, int maxNum) {
         for (Good value : backpack.values()) {
             if (value.getGoodId() == id) {
                 int newNum = num + value.getQuantity();
                 // 达到最大堆叠数
-                if (newNum > maxNum) {
-                    return true;
-                }
+                return newNum > maxNum;
             }
         }
         return false;
@@ -93,9 +89,12 @@ public class PersonalBackpack {
     /**
      * 检查并放入背包
      */
-    public String checkAndAddGood(Good good, GoodManager goodManager) {
+    public String checkAndAddGood(Good good) {
         // 如果是装备直接放入背包
-        if (goodManager.isEquipment(good.getGoodId())) {
+//        if (goodManager.isEquipment(good.getGoodId())) {
+//            return addGood(good);
+//        }
+        if (good.isEquipment()) {
             return addGood(good);
         }
 
@@ -103,8 +102,8 @@ public class PersonalBackpack {
         Good getBackpackGood = getGood(good);
         if (getBackpackGood != null) {
             // 检查是否达到最大堆叠数
-            int goodMaxStack = goodManager.getGoodMaxStack(good.getGoodId());
-            if (reachMaxStack(good.getGoodId(), good.getQuantity(), goodMaxStack)) {
+//            int goodMaxStack = goodManager.getGoodMaxStack(good.getGoodId());
+            if (reachMaxStack(good.getGoodId(), good.getQuantity(), good.getMaxStack())) {
                 return REACH_MAX_STACKS;
             } else {
                 // 数量plus

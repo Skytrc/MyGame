@@ -366,6 +366,7 @@ public class Player implements Unit{
         this.loginDate = loginDate;
     }
 
+    @Override
     public int getInMapId() {
         return inMapId;
     }
@@ -374,6 +375,7 @@ public class Player implements Unit{
         this.inMapId = inMapId;
     }
 
+    @Override
     public int getInMapX() {
         return inMapX;
     }
@@ -382,7 +384,18 @@ public class Player implements Unit{
         this.inMapX = inMapX;
     }
 
+    @Override
     public int getInMapY() {
+        return inMapY;
+    }
+
+    @Override
+    public int getTempX() {
+        return inMapX;
+    }
+
+    @Override
+    public int getTempY() {
         return inMapY;
     }
 
@@ -470,6 +483,7 @@ public class Player implements Unit{
         this.playerCommConfig = playerCommConfig;
     }
 
+    @Override
     public int getAttackDistance() {
         return attackDistance;
     }

@@ -1,5 +1,7 @@
 package com.fung.server.gameserver.content.domain.buff;
 
+import com.fung.server.gameserver.content.config.buff.Buff;
+
 /**
  * @author skytrc@163.com
  * @date 2020/7/22 11:38

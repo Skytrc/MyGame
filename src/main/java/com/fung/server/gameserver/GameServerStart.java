@@ -52,6 +52,7 @@ public class GameServerStart {
         buffManager.buffInit();
         skillManager.skillInit();
         monsterCreateManager.monsterCreateInit();
+
         npcManager.npcModelInit();
 
         playerInit.init();

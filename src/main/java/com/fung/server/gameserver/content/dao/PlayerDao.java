@@ -71,5 +71,5 @@ public interface PlayerDao {
      * 插入玩家通常配置
      * @param playerCommConfig 玩家通常配置
      */
-    void insertPlayerCommConfig(PlayerCommConfig playerCommConfig);
+    void insertOrUpdatePlayerCommConfig(PlayerCommConfig playerCommConfig);
 }

@@ -4,6 +4,7 @@ import com.fung.server.gameserver.cache.mycache.PlayerCache;
 import com.fung.server.gameserver.content.config.good.equipment.EquipmentCreated;
 import com.fung.server.gameserver.content.config.good.equipment.EquipmentType;
 import com.fung.server.gameserver.content.config.manager.EquipmentCreatedManager;
+import com.fung.server.gameserver.content.config.manager.GoodManager;
 import com.fung.server.gameserver.content.config.manager.MapManager;
 import com.fung.server.gameserver.content.config.manager.SkillManager;
 import com.fung.server.gameserver.content.dao.EmailDao;
@@ -15,7 +16,6 @@ import com.fung.server.gameserver.content.domain.buff.UnitBuffManager;
 import com.fung.server.gameserver.content.domain.calculate.PlayerValueCalculate;
 import com.fung.server.gameserver.content.domain.email.MailBox;
 import com.fung.server.gameserver.content.domain.player.PlayerCreated;
-import com.fung.server.gameserver.content.domain.player.PlayerTempStatus;
 import com.fung.server.gameserver.content.domain.skill.UnitSkillManager;
 import com.fung.server.gameserver.content.entity.*;
 import com.fung.server.gameserver.content.service.PlayerService;
@@ -52,6 +52,9 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Autowired
     private MapManager mapManager;
+
+    @Autowired
+    private GoodManager goodManager;
 
     @Autowired
     private EquipmentCreatedManager createdManager;
@@ -177,9 +180,14 @@ public class PlayerServiceImpl implements PlayerService {
             personalBackpack.setMaxBackpackGrid(playerCommConfig.getMaxBackpackGrid());
             Map<Integer, Good> backpack = personalBackpack.getBackpack();
             // 背包物品放入背包中，装备放入equipmentMap中
-            goods.forEach(value -> {
-                backpack.put(value.getPosition(), value);
-            });
+            for (Good good : goods) {
+                String[] goodInfoById = goodManager.getGoodInfo(good.getGoodId());
+                good.setName(goodInfoById[GoodManager.GOOD_NAME]);
+                good.setDescription(goodInfoById[GoodManager.GOOD_DESCRIPTION]);
+                good.setValue(Integer.parseInt(goodInfoById[GoodManager.GOOD_VALUE]));
+                good.setMaxStack(Integer.parseInt(goodInfoById[GoodManager.GOOD_MAX_STACKS]));
+                backpack.put(good.getPosition(), good);
+            }
             equipmentList.forEach(value -> {
                 setEquipmentType(value, equipmentCreatedMap);
                 backpack.put(value.getPosition(), value);
@@ -204,6 +212,8 @@ public class PlayerServiceImpl implements PlayerService {
         String type = equipmentCreated.getType();
         equipment.setName(equipmentCreated.getName());
         equipment.setDescription(equipmentCreated.getDescription());
+        equipment.setMaxStack(1);
+        equipment.setValue(equipmentCreated.getValue());
         equipment.setType(EquipmentType.getEquipmentTypeByPartName(type));
     }
 

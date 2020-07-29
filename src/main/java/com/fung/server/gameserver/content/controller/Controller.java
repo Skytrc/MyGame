@@ -51,6 +51,12 @@ public class Controller {
     private DungeonHandler dungeonHandler;
 
     @Autowired
+    private EmailHandler emailHandler;
+
+    @Autowired
+    private ShopHandler shopHandler;
+
+    @Autowired
     private Controller controller;
 
     @Autowired
@@ -69,6 +75,8 @@ public class Controller {
         map.put("npc", npcHandler);
         map.put("team", teamHandler);
         map.put("dungeon", dungeonHandler);
+        map.put("email", emailHandler);
+        map.put("shop", shopHandler);
     }
 
     public String handleMessage(String msg, String channelId) throws InterruptedException {

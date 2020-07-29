@@ -39,9 +39,6 @@ public class MapInfo {
      */
     public String showMapOnlinePlayer(GameMap gameMap) {
         StringBuilder res = new StringBuilder("地图: " + gameMap.getName() + " 有玩家: " );
-//        for (Map.Entry<String, ChatPlayer> entry: gameMap.getMapPlayers().entrySet()) {
-//            res.append(entry.getValue().getUuid()).append(" 、");
-//        }
         for (Map.Entry<Integer, List<Player>> entry : gameMap.getPlayerInPosition().entrySet()) {
             entry.getValue().forEach(value -> {
                 res.append(value.getPlayerName()).append("、 ");

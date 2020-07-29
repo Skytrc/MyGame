@@ -10,7 +10,7 @@ public interface TeamReturnMessage {
 
     String JOIN_TEAM_SUCCESS = "成功加入队伍";
 
-    String TEAM_FULL_OR_NOT_EXISTS = "队伍已满或不存在";
+    String TEAM_FULL = "队伍已满";
 
     String SUCCESSFULLY_LEAVE_THE_TEAM = "成功离开队伍";
 

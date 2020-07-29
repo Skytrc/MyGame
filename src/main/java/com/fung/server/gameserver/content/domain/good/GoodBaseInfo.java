@@ -19,12 +19,6 @@ public interface GoodBaseInfo {
     String getName();
 
     /**
-     * 获取物品数量
-     * @return 物品数量
-     */
-    int getQuantity();
-
-    /**
      * 获取物品价值
      * @return 物品价值
      */

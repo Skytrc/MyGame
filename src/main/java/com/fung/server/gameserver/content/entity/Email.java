@@ -173,7 +173,7 @@ public class Email {
     }
 
     public boolean isSend() {
-        return sendTime == 0L;
+        return sendTime != 0L;
     }
 
     public String getSubject() {

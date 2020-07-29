@@ -1,6 +1,7 @@
 package com.fung.server.gameserver.content.config.monster;
 
 import com.fung.server.gameserver.content.domain.buff.UnitBuffManager;
+import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
 import com.fung.server.gameserver.content.domain.skill.UnitSkillManager;
 import com.fung.server.gameserver.content.entity.Skill;
 import com.fung.server.gameserver.content.entity.base.BaseElement;
@@ -54,9 +55,24 @@ public abstract class BaseMonster extends BaseElement {
     private volatile boolean isAttacking;
 
     /**
+     * 移动后临时坐标x
+     */
+    private int tempX;
+
+    /**
+     * 移动后临时坐标y
+     */
+    private int tempY;
+
+    /**
      * 管理怪兽身上的buff
      */
     private UnitBuffManager unitBuffManager;
+
+    /**
+     * 处理怪物事件地图线程
+     */
+    private GameMapActor gameMapActor;
 
     /**
      * 管理技能模块
@@ -141,5 +157,29 @@ public abstract class BaseMonster extends BaseElement {
 
     public void setSkills(List<Skill> skills) {
         this.skills = skills;
+    }
+
+    public GameMapActor getGameMapActor() {
+        return gameMapActor;
+    }
+
+    public void setGameMapActor(GameMapActor gameMapActor) {
+        this.gameMapActor = gameMapActor;
+    }
+
+    public int getTempX() {
+        return tempX;
+    }
+
+    public void setTempX(int tempX) {
+        this.tempX = tempX;
+    }
+
+    public int getTempY() {
+        return tempY;
+    }
+
+    public void setTempY(int tempY) {
+        this.tempY = tempY;
     }
 }

@@ -11,4 +11,16 @@ public interface Unit {
     void setHealthPoint(int healthPoint);
 
     int getHealthPoint();
+
+    int getInMapId();
+
+    int getInMapX();
+
+    int getInMapY();
+
+    int getTempX();
+
+    int getTempY();
+
+    int getAttackDistance();
 }

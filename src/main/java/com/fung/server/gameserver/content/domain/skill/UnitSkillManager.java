@@ -1,8 +1,8 @@
 package com.fung.server.gameserver.content.domain.skill;
 
 import com.fung.server.gameserver.content.config.skill.DamageSkill;
+import com.fung.server.gameserver.content.config.skill.TreatmentSkill;
 import com.fung.server.gameserver.content.entity.Skill;
-import com.fung.server.gameserver.content.entity.Unit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,10 +27,27 @@ public class UnitSkillManager {
     }
 
     /**
-     * 使用技能，返回技能(用于计算)
+     * 使用伤害技能，返回技能(用于计算)
      * @return 技能
      */
     public DamageSkill useDamageSkill(int skillId) {
+        return (DamageSkill) checkNullAndCd(skillId);
+    }
+
+    public TreatmentSkill useTreatmentSkill(int skillId) {
+        return (TreatmentSkill) checkNullAndCd(skillId);
+    }
+
+    public boolean inCd(Skill skill, long nowTime) {
+        // 检查公共cd
+        if (lastUseSkillTime == 0 || lastUseSkillTime + ALL_SKILL_CD < nowTime) {
+            // 检查cd
+            return (nowTime < skill.getLastUseTime() + skill.getCd() * 1000);
+        }
+        return true;
+    }
+
+    public Skill checkNullAndCd(int skillId) {
         Skill skill = skillMap.get(skillId);
         long nowTime = System.currentTimeMillis();
         if (skill == null) {
@@ -41,16 +58,7 @@ public class UnitSkillManager {
         }
         lastUseSkillTime = nowTime;
         skill.setLastUseTime(nowTime);
-        return (DamageSkill) skill;
-    }
-
-    public boolean inCd(Skill skill, long nowTime) {
-        // 检查公共cd
-        if (lastUseSkillTime == 0 || lastUseSkillTime + ALL_SKILL_CD < nowTime) {
-            // 检查cd
-            return (skill.getLastUseTime() != 0 || skill.getCd() + nowTime < skill.getLastUseTime());
-        }
-        return true;
+        return skill;
     }
 
     public void updateSkill(List<Skill> skills) {

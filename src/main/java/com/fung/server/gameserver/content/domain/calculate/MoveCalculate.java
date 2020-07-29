@@ -2,6 +2,7 @@ package com.fung.server.gameserver.content.domain.calculate;
 
 import com.fung.server.gameserver.channelstore.WriteMessage2Client;
 import com.fung.server.gameserver.content.config.map.GameMap;
+import com.fung.server.gameserver.content.config.monster.BaseHostileMonster;
 import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
 import com.fung.server.gameserver.content.domain.player.PlayerInfo;
 import com.fung.server.gameserver.content.entity.Player;
@@ -20,6 +21,8 @@ public class MoveCalculate {
 
     @Autowired
     private PlayerInfo playerInfo;
+
+    public static final int MOVE_CD = 1000;
 
     /**
      * 第一种情况，移动固定距离
@@ -90,7 +93,7 @@ public class MoveCalculate {
             writeMessage2Client.writeMessage(channelId, "\n玩家移动到坐标: [" + player.getInMapX() + " , " + player.getInMapY() + "] ");
             gameMapActor.schedule(gameMapActor1 -> {
                 moveGrid0(gameMapActor, player, channelId, x1 + dx, y1 + dy, dx, dy, playerHasMoveDistance + 1, distance);
-            }, 1000);
+            }, MOVE_CD);
         } else {
             writeMessage2Client.writeMessage(channelId, "移动完成");
         }

@@ -1,10 +1,10 @@
 package com.fung.server.gameserver.content.domain.monster;
 
 import com.fung.server.gameserver.content.config.good.FallingGood;
-import com.fung.server.gameserver.content.config.manager.MonsterCreateManager;
+import com.fung.server.gameserver.content.config.manager.GoodManager;
 import com.fung.server.gameserver.content.config.monster.BaseMonster;
 import com.fung.server.gameserver.content.config.monster.MonsterDrop;
-import com.fung.server.gameserver.content.domain.good.GoodCreatedFactory;
+import com.fung.server.gameserver.content.domain.good.NewPlayerGoodCreatedFactory;
 import com.fung.server.gameserver.content.entity.Good;
 import com.fung.server.gameserver.content.entity.Player;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class MonsterDropCreated {
     private final Random RANDOM = new Random();
 
     @Autowired
-    private GoodCreatedFactory goodCreatedFactory;
+    private GoodManager goodManager;
 
     private Map<Integer, List<MonsterDrop>> monsterDropMap;
 
@@ -38,24 +38,25 @@ public class MonsterDropCreated {
      * 返回怪物掉落物List<Good> 随机到没有物品掉落，
      */
     public List<FallingGood> goodsCreated(BaseMonster monster, Player player) {
-        long gettingTime = System.currentTimeMillis();
         List<MonsterDrop> monsterDrops = monsterDropMap.get(monster.getId());
         List<FallingGood> returnGoods = new ArrayList<>();
-        monsterDrops.forEach(monsterDrop -> {
+        for (MonsterDrop monsterDrop : monsterDrops) {
             Good good = goodCreated(monsterDrop.getGoodId(), monsterDrop.getDropProbability(), monsterDrop.getMaxQuantity());
             if (good != null) {
-                FallingGood fallingGood = new FallingGood();
-                fallingGood.setName(good.getName());
-                fallingGood.setGettingTime(gettingTime);
-                fallingGood.setBeingToPlayer(player);
-                fallingGood.setInMapId(monster.getInMapId());
-                fallingGood.setInMapX(monster.getInMapX());
-                fallingGood.setInMapY(monster.getInMapY());
-                fallingGood.setGood(good);
-                fallingGood.setFriendly(true);
+//                FallingGood fallingGood = new FallingGood();
+//                fallingGood.setName(good.getName());
+//                fallingGood.setGettingTime(gettingTime);
+//                fallingGood.setBeingToPlayer(player);
+//                fallingGood.setInMapId(monster.getInMapId());
+//                fallingGood.setInMapX(monster.getInMapX());
+//                fallingGood.setInMapY(monster.getInMapY());
+//                fallingGood.setGood(good);
+//                fallingGood.setFriendly(true);
+                FallingGood fallingGood = new FallingGood.Builder(good, monster.getTempX(), monster.getTempY()
+                        , monster.getInMapId()).beingToPlayer(player).build();
                 returnGoods.add(fallingGood);
             }
-        });
+        }
         if (!returnGoods.isEmpty()) {
             return returnGoods;
         }
@@ -70,7 +71,7 @@ public class MonsterDropCreated {
             if (quantity == 0) {
                 return null;
             }
-            return goodCreatedFactory.createNoBelongingGood(goodId, quantity);
+            return goodManager.createNoBeingGood(goodId, quantity);
         }
         return null;
     }

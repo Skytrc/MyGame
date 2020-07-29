@@ -33,15 +33,21 @@ public class TeamServerImpl implements TeamService {
 
     @Override
     public String joinInTeam(String teamId, String channelId) {
-        if (!storedTeam.checkHasTeam(teamId)) {
+        Player player = onlinePlayer.getPlayerByChannelId(channelId);
+        int teamLocation = storedTeam.joinTeam(teamId, onlinePlayer.getPlayerByChannelId(channelId));
+        if (teamLocation == StoredTeam.TEAM_FULL) {
+            return TeamReturnMessage.TEAM_FULL;
+        } else if (teamLocation == StoredTeam.TEAM_NOT_EXITS) {
             return TeamReturnMessage.TEAM_NOT_EXISTS;
         }
-        if (!storedTeam.joinTeam(teamId, onlinePlayer.getPlayerByChannelId(channelId))) {
-            return TeamReturnMessage.TEAM_FULL_OR_NOT_EXISTS;
+        List<Player> players = storedTeam.getAllPlayerByTeamId(teamId);
+        // 通知所有的队友
+        for (Player player1 : players) {
+            String teamMemberChannelId = onlinePlayer.getChannelIdByPlayerId(player1.getUuid());
+            writeMessage2Client.writeMessage(teamMemberChannelId, messageWrapper.showNewTeamMember(player.getPlayerName(), teamLocation));
         }
-        // 返回队伍内所有玩家名称
-        writeMessage2Client.writeMessage(channelId, messageWrapper.showTeamMessage(storedTeam.getAllPlayerByTeamId(teamId), teamId));
-        return TeamReturnMessage.JOIN_TEAM_SUCCESS;
+        // 返回消息给当事人
+        return messageWrapper.showTeamMessage(players, teamId, teamLocation);
     }
 
     @Override
@@ -70,6 +76,6 @@ public class TeamServerImpl implements TeamService {
             return TeamReturnMessage.PLAYER_HAS_NO_TEAM;
         }
         List<Player> players = storedTeam.getAllPlayerByTeamId(teamId);
-        return messageWrapper.showTeamMessage(players, teamId);
+        return messageWrapper.showTeamMessage(players, teamId, player.getTempStatus().getTeamLocation());
     }
 }

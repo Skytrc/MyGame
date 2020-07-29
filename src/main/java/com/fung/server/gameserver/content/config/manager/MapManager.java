@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author skytrc@163.com
@@ -37,11 +38,6 @@ public class MapManager {
      * GameMapActor 封装Map，用于申请多线程处理地图中的事件
      */
     private Map<Integer, GameMapActor> gameMapActorMap;
-
-    /**
-     * 存储副本MapActor
-     */
-    private Map<String, GameMapActor> dungeonMapActorMap;
 
     /**
      * 用于存储地图传送门信息
@@ -108,10 +104,9 @@ public class MapManager {
     public void gameMapInit(GameMap gameMap) {
         gameMap.setElements(new HashMap<>());
         gameMap.setGates(new HashMap<>());
-        gameMap.setPlayerInPosition(new HashMap<>());
+        gameMap.setPlayerInPosition(new ConcurrentHashMap<>());
         gameMap.setMonsterMap(new HashMap<>());
         gameMap.setFallingGoodMap(new HashMap<>());
-        gameMap.setPlayerInPosition(new HashMap<>());
         gameMap.setPlayChannel(new ArrayList<>());
     }
 

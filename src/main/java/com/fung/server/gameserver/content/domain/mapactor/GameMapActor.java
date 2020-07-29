@@ -1,6 +1,5 @@
 package com.fung.server.gameserver.content.domain.mapactor;
 
-import com.fung.server.gameserver.content.config.map.Dungeon;
 import com.fung.server.gameserver.content.config.map.GameMap;
 import com.fung.server.gameserver.message.MessageHandler;
 

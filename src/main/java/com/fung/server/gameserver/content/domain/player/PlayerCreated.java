@@ -5,7 +5,7 @@ import com.fung.server.gameserver.content.dao.GoodDao;
 import com.fung.server.gameserver.content.dao.SkillDao;
 import com.fung.server.gameserver.content.domain.backpack.PersonalBackpack;
 import com.fung.server.gameserver.content.domain.email.MailBox;
-import com.fung.server.gameserver.content.domain.good.GoodCreatedFactory;
+import com.fung.server.gameserver.content.domain.good.NewPlayerGoodCreatedFactory;
 import com.fung.server.gameserver.content.domain.skill.SkillLoad;
 import com.fung.server.gameserver.content.domain.skill.UnitSkillManager;
 import com.fung.server.gameserver.content.entity.*;
@@ -23,7 +23,7 @@ import java.util.List;
 public class PlayerCreated {
 
     @Autowired
-    private GoodCreatedFactory goodCreatedFactory;
+    private NewPlayerGoodCreatedFactory newPlayerGoodCreatedFactory;
 
     @Autowired
     private SkillLoad skillLoad;
@@ -78,8 +78,8 @@ public class PlayerCreated {
         // 背包模块
         PersonalBackpack personalBackpack = new PersonalBackpack();
         personalBackpack.setMaxBackpackGrid(player.getPlayerCommConfig().getMaxBackpackGrid());
-        List<Good> goods = goodCreatedFactory.newPlayerGoodCreated(player.getUuid());
-        List<Equipment> equipments = goodCreatedFactory.newPlayerEquipmentCreated(player.getUuid());
+        List<Good> goods = newPlayerGoodCreatedFactory.newPlayerGoodCreated(player.getUuid());
+        List<Equipment> equipments = newPlayerGoodCreatedFactory.newPlayerEquipmentCreated(player.getUuid());
 
         // 初始化邮件系统
         player.setMailBox(new MailBox());
@@ -91,7 +91,7 @@ public class PlayerCreated {
         for (Equipment equipment : equipments) {
             personalBackpack.addGood(equipment);
         }
-        goods.forEach(goodDao::insertGood);
+        goods.forEach(goodDao::insertOrUpdateGood);
         equipments.forEach(equipmentDao::insertEquipment);
 
         player.setPersonalBackpack(personalBackpack);

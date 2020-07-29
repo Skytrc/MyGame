@@ -6,6 +6,7 @@ import com.fung.server.gameserver.content.config.manager.GoodManager;
 import com.fung.server.gameserver.content.config.manager.MapManager;
 import com.fung.server.gameserver.content.config.map.GameMap;
 import com.fung.server.gameserver.content.dao.EquipmentDao;
+import com.fung.server.gameserver.content.dao.GoodDao;
 import com.fung.server.gameserver.content.domain.backpack.PersonalBackpack;
 import com.fung.server.gameserver.content.domain.calculate.PlayerValueCalculate;
 import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
@@ -35,6 +36,9 @@ public class GoodServiceImpl implements GoodService {
 
     @Autowired
     private EquipmentDao equipmentDao;
+
+    @Autowired
+    private GoodDao goodDao;
 
     @Autowired
     private MapManager mapManager;
@@ -147,10 +151,12 @@ public class GoodServiceImpl implements GoodService {
                 return;
             }
             PersonalBackpack personalBackpack = player.getPersonalBackpack();
-            String res = personalBackpack.checkAndAddGood(good, goodManager);
+            String res = personalBackpack.checkAndAddGood(good);
             if (res.equals(PersonalBackpack.SUCCEED_PUT_IN_BACKPACK)) {
                 res = "\n捡起: " + good.getName() + " 数量: " + good.getQuantity() + " " + res;
             }
+            good.setPlayerId(player.getUuid());
+            goodDao.insertOrUpdateGood(good);
             writeMessage2Client.writeMessage(channelId, res);
             // 设置为null 等虚拟机回收
             fallingGood = null;

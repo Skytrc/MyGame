@@ -1,7 +1,9 @@
 package com.fung.server.gameserver.content.config.manager;
 
 import com.fung.server.gameserver.content.config.readconfig.ReadMedicine;
-import com.fung.server.gameserver.content.config.good.Medicine;
+import com.fung.server.gameserver.content.entity.Medicine;
+import com.fung.server.gameserver.content.util.Uuid;
+import com.google.gson.Gson;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,13 +30,24 @@ public class MedicineManager{
     private static final Logger LOGGER = LoggerFactory.getLogger(MedicineManager.class);
 
     @Autowired
-    ReadMedicine readMedicine;
+    private ReadMedicine readMedicine;
 
-    public void medicineInit() throws IOException, InvalidFormatException {
+    private Gson gson;
+
+    public void medicineInit(Gson gson) throws IOException, InvalidFormatException {
         // 从配置中读取药品
         readMedicine.init();
-
         medicineMap = readMedicine.getModelMap();
+        this.gson = gson;
+    }
+
+    public Medicine createNoBeingNewMedicine(int medicineId, int goodQuantity) {
+        Medicine templateMedicine = medicineMap.get(medicineId);
+        // 使用Gson序列化
+        Medicine copyMedicine = gson.fromJson(gson.toJson(templateMedicine), Medicine.class);
+        copyMedicine.setUuid(Uuid.createUuid());
+        copyMedicine.setQuantity(goodQuantity);
+        return copyMedicine;
     }
 
     public String getGoodName() {

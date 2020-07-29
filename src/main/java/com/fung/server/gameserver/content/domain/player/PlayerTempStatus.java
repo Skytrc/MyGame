@@ -1,6 +1,9 @@
 package com.fung.server.gameserver.content.domain.player;
 
 import com.fung.server.gameserver.content.domain.buff.UnitBuffManager;
+import com.fung.server.gameserver.content.entity.Player;
+
+import java.util.Map;
 
 /**
  * TODO 下线检测机制
@@ -11,6 +14,8 @@ import com.fung.server.gameserver.content.domain.buff.UnitBuffManager;
 public class PlayerTempStatus {
 
     private String teamId;
+
+    private int teamLocation;
 
     private String dungeonId;
 
@@ -43,5 +48,13 @@ public class PlayerTempStatus {
 
     public void setChannelId(String channelId) {
         this.channelId = channelId;
+    }
+
+    public int getTeamLocation() {
+        return teamLocation;
+    }
+
+    public void setTeamLocation(int teamLocation) {
+        this.teamLocation = teamLocation;
     }
 }

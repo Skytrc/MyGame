@@ -39,6 +39,23 @@ public class NonPlayerCharacter extends BaseElement implements Model {
      */
     private Map<Integer, NpcOption> npcOptionMap;
 
+    /**
+     * @return 是否有商店功能
+     */
+    public boolean hasShop() {
+        return goodsId != null;
+    }
+
+    /**
+     * 是否出售某件商品
+     */
+    public boolean containGood(int goodId) {
+        if (goodsId == null){
+            return false;
+        }
+        return goodsId.contains(goodId);
+    }
+
     public NonPlayerCharacter() {
         this.setFriendly(true);
     }

@@ -1,13 +1,16 @@
 package com.fung.server.gameserver.content.config.manager;
 
 import com.fung.server.gameserver.content.config.map.GameMap;
+import com.fung.server.gameserver.content.config.monster.BaseHostileMonster;
 import com.fung.server.gameserver.content.config.monster.MonsterDrop;
 import com.fung.server.gameserver.content.config.monster.NormalMonster;
 import com.fung.server.gameserver.content.config.monster.MonsterDistribution;
 import com.fung.server.gameserver.content.domain.buff.UnitBuffManager;
+import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
+import com.fung.server.gameserver.content.domain.monster.MonsterAction;
 import com.fung.server.gameserver.content.domain.monster.MonsterDropCreated;
-import com.fung.server.gameserver.content.domain.skill.UnitSkillManager;
 import com.fung.server.gameserver.content.entity.Skill;
+import com.google.gson.Gson;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +47,16 @@ public class MonsterCreateManager {
     private MonsterDropCreated monsterDropCreated;
 
     @Autowired
+    private MonsterAction monsterAction;
+
+    @Autowired
     private MapManager mapManager;
+
+    private Gson gson;
+
+    public MonsterCreateManager() {
+        this.gson = new Gson();
+    }
 
     public void monsterCreateInit() throws IOException, InvalidFormatException {
         monsterDistributionManager.monsterDistributionInit();
@@ -63,6 +75,7 @@ public class MonsterCreateManager {
             MonsterDistribution value = entry.getValue();
             int position = mapManager.getMapByMapId(value.getInMapId()).xy2Location(value.getInMapX(), value.getInMapY());
             putMonsterInMap(value.getInMapId(), position, value.getMonsterId());
+
         }
     }
 
@@ -78,58 +91,85 @@ public class MonsterCreateManager {
         });
     }
 
+    /**
+     * 将怪物放入地图，并开启stand by状态
+     */
     public void putMonsterInMap(int gameMapId, int position, int monsterId)  {
-        GameMap map = mapManager.getMapByMapId(gameMapId);
+        GameMapActor gameMapActor = mapManager.getGameMapActorById(gameMapId);
+        GameMap gameMap = gameMapActor.getGameMap();
         // 设置怪物初始信息
-        NormalMonster normalMonster = createMonster(monsterId, gameMapId , position);
-        map.putMonsterInMap(position, normalMonster);
-        map.addElement(position, normalMonster);
+        BaseHostileMonster monster = createMonster(monsterId,  gameMap, position);
+        gameMap.putMonsterInMap(position, monster);
+        gameMap.addElement(position, monster);
+
+        // 开启怪物StandBy状态
+        if (monster.getIsAutoAttack() == 1) {
+            monsterEnterStandByState(monster, gameMapActor);
+        }
     }
 
     /**
      * 用作于生成新副本中的怪兽
      */
     public void putMonsterInMap(GameMap map, int position, int monsterId) {
-        NormalMonster normalMonster = createMonster(monsterId, map, position);
-        map.putMonsterInMap(position, normalMonster);
-        map.addElement(position, normalMonster);
+        BaseHostileMonster monster = createMonster(monsterId, map, position);
+        map.putMonsterInMap(position, monster);
+        map.addElement(position, monster);
     }
 
-    public NormalMonster createMonster(int monsterId, GameMap gameMap, int position) {
-        NormalMonster normalMonster = monsterManager.getMonsterById(monsterId);
+    public BaseHostileMonster createMonster(int monsterId, GameMap gameMap, int position) {
+        BaseHostileMonster templateMonster = monsterManager.getMonsterById(monsterId);
 
-        NormalMonster newNormalMonster = new NormalMonster();
-        newNormalMonster.setAttackPower(normalMonster.getAttackPower());
-        newNormalMonster.setDefend(normalMonster.getDefend());
-        newNormalMonster.setHealthPoint(normalMonster.getMaxHealthPoint());
-        newNormalMonster.setMaxHealthPoint(normalMonster.getMaxHealthPoint());
-        newNormalMonster.setId(monsterId);
-        newNormalMonster.setLevel(normalMonster.getLevel());
-        newNormalMonster.setName(normalMonster.getName());
-        newNormalMonster.setExp(normalMonster.getExp());
-        newNormalMonster.setValue(normalMonster.getValue());
+        // 使用序列化進行深複製 TODO 建造者模式
+        BaseHostileMonster monster = gson.fromJson(gson.toJson(templateMonster), BaseHostileMonster.class);
+
+//        NormalMonster monster = new NormalMonster();
+//        monster.setAttackPower(normalMonster.getAttackPower());
+//        monster.setDefend(normalMonster.getDefend());
+        monster.setHealthPoint(monster.getMaxHealthPoint());
+//        monster.setMaxHealthPoint(normalMonster.getMaxHealthPoint());
+//        monster.setId(monsterId);
+//        monster.setLevel(normalMonster.getLevel());
+//        monster.setName(normalMonster.getName());
+//        monster.setExp(normalMonster.getExp());
+//        monster.setValue(normalMonster.getValue());
+//        monster.setSensingRange(normalMonster.getSensingRange());
+
         // 技能挂载&buff状态挂载
         List<Skill> skills = monsterSkillManager.getMonsterSkillByMonsterId(monsterId);
-        newNormalMonster.setSkills(skills);
+        monster.setSkills(skills);
 
         UnitBuffManager unitBuffManager = new UnitBuffManager();
-        unitBuffManager.setUnit(newNormalMonster);
-        newNormalMonster.setUnitBuffManager(unitBuffManager);
+        unitBuffManager.setUnit(monster);
+        monster.setUnitBuffManager(unitBuffManager);
 
 
         // 设置怪物所在地图信息
-        newNormalMonster.setInMapId(gameMap.getId());
-        newNormalMonster.setInMapX(gameMap.location2xy(position)[GameMap.X]);
-        newNormalMonster.setInMapY(gameMap.location2xy(position)[GameMap.Y]);
-        return newNormalMonster;
+        monster.setInMapId(gameMap.getId());
+        monster.setInMapX(gameMap.location2xy(position)[GameMap.X]);
+        monster.setInMapY(gameMap.location2xy(position)[GameMap.Y]);
+        monster.setTempX(monster.getInMapX());
+        monster.setTempY(monster.getInMapY());
+        monster.setGameMapActor(mapManager.getGameMapActorById(gameMap.getId()));
+        return monster;
     }
 
-    public NormalMonster createMonster(int monsterId, int gameMapId, int position) {
+    @Deprecated
+    public BaseHostileMonster createMonster(int monsterId, int gameMapId, int position) {
         GameMap map = mapManager.getMapByMapId(gameMapId);
         return createMonster(monsterId, map, position);
     }
 
     public Map<Integer, List<MonsterDrop>> getMonsterDropByIdMap() {
         return monsterDropManager.getMonsterDropByIdMap();
+    }
+
+    /**
+     * 开启怪物stand By状态
+     */
+    public void monsterEnterStandByState(BaseHostileMonster monster, GameMapActor gameMapActor) {
+        gameMapActor.addMessage(gameMapActor1 -> {
+            monsterAction.standBy(monster, gameMapActor);
+        });
     }
 }

@@ -1,6 +1,6 @@
 package com.fung.server.gameserver.content.config.readconfig;
 
-import com.fung.server.gameserver.content.config.good.Medicine;
+import com.fung.server.gameserver.content.entity.Medicine;
 import com.fung.server.gameserver.excel2class.AbstractJsonModelListManager;
 import org.springframework.stereotype.Component;
 

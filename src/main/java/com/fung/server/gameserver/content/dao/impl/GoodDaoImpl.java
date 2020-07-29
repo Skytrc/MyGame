@@ -60,12 +60,12 @@ public class GoodDaoImpl extends HibernateDaoSupport implements GoodDao {
     }
 
     @Override
-    public void insertGood(Good good) {
-        this.getHibernateTemplate().save(good);
+    public void insertOrUpdateGood(Good good) {
+        this.getHibernateTemplate().saveOrUpdate(good);
     }
 
     @Override
-    public void updateGood(Good good) {
-        this.getHibernateTemplate().update(good);
+    public void deleteGood(Good good) {
+        this.getHibernateTemplate().delete(good);
     }
 }

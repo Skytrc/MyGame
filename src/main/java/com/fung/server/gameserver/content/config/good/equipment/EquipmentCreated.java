@@ -63,8 +63,6 @@ public class EquipmentCreated extends Good implements Model, GoodBaseInfo {
 
     private int maxDefense;
 
-    private int value;
-
     @Override
     public int getId() {
         return id;
@@ -202,14 +200,5 @@ public class EquipmentCreated extends Good implements Model, GoodBaseInfo {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    @Override
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
     }
 }

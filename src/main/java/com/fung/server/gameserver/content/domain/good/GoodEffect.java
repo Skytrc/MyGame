@@ -1,8 +1,7 @@
 package com.fung.server.gameserver.content.domain.good;
 
 import com.fung.server.gameserver.channelstore.WriteMessage2Client;
-import com.fung.server.gameserver.content.config.good.Medicine;
-import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
+import com.fung.server.gameserver.content.entity.Medicine;
 import com.fung.server.gameserver.content.domain.mapactor.PlayerActor;
 import com.fung.server.gameserver.content.entity.Good;
 import com.fung.server.gameserver.content.entity.Player;

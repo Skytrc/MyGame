@@ -2,12 +2,14 @@ package com.fung.server.gameserver.content.config.manager;
 
 import com.fung.server.gameserver.channelstore.WriteMessage2Client;
 import com.fung.server.gameserver.content.config.good.GoodSpecies;
-import com.fung.server.gameserver.content.config.good.Medicine;
+import com.fung.server.gameserver.content.entity.Medicine;
 import com.fung.server.gameserver.content.config.good.equipment.EquipmentCreated;
+import com.fung.server.gameserver.content.domain.equipment.EquipmentCreatedFactory;
 import com.fung.server.gameserver.content.domain.good.GoodBaseInfo;
 import com.fung.server.gameserver.content.domain.good.GoodEffect;
 import com.fung.server.gameserver.content.domain.mapactor.PlayerActor;
 import com.fung.server.gameserver.content.entity.Good;
+import com.google.gson.Gson;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,7 +22,8 @@ import java.util.Map;
  * @date 2020/6/1 11:09
  */
 @Component
-public class GoodManager {
+public class
+GoodManager {
 
     @Autowired
     private MedicineManager medicineManager;
@@ -28,11 +31,15 @@ public class GoodManager {
     @Autowired
     private EquipmentCreatedManager equipmentCreatedManager;
 
+    private EquipmentCreatedFactory equipmentCreatedFactory;
+
     @Autowired
     private GoodEffect goodEffect;
 
     @Autowired
     private WriteMessage2Client writeMessage2Client;
+
+    private Gson gson;
 
     public static final int GOOD_ID = 0;
 
@@ -40,18 +47,63 @@ public class GoodManager {
 
     public static final int GOOD_DESCRIPTION = 2;
 
-    public static final int EQUIPMENT_TYPE = 3;
+    public static final int GOOD_MAX_STACKS = 3;
+
+    public static final int GOOD_VALUE = 4;
+
+    public static final int EQUIPMENT_TYPE = 5;
+
+    public GoodManager() {
+        this.gson = new Gson();
+    }
 
     public void goodInit() throws IOException, InvalidFormatException {
-        medicineManager.medicineInit();
+        medicineManager.medicineInit(gson);
         equipmentCreatedManager.equipmentCreatedInit();
     }
+
+    /**
+     * 创建新的物品，如果是装备，无论数量多少只返回一件
+     */
+    public Good createNewGood(int goodId, int goodQuantity, String playerId) {
+        Good good = createNoBeingGood(goodId, goodQuantity);
+        good.setUuid(playerId);
+        return good;
+    }
+
+    public Good createNoBeingGood(int goodId, int goodQuantity) {
+        if (isInRange(GoodSpecies.MEDICINCE, goodId)) {
+            return medicineManager.createNoBeingNewMedicine(goodId, goodQuantity);
+        } else if (isInRange(GoodSpecies.EQUIPMENT, goodId)) {
+            return equipmentCreatedFactory.createNoBelongingEquipment(goodId);
+        }
+        return null;
+    }
+
+    /**
+     * 物品信息，用于初始化从数据库中获得的数据
+     */
+    public String[] getGoodInfo(int goodId) {
+        String[] res = new String[5];
+        GoodBaseInfo goodBaseInfo;
+        goodBaseInfo = getGoodInfoImplByGoodId(goodId);
+        if (goodBaseInfo == null) {
+            return null;
+        }
+        res[GOOD_ID] = String.valueOf(goodBaseInfo.getGoodId());
+        res[GOOD_NAME] = goodBaseInfo.getName();
+        res[GOOD_DESCRIPTION] = goodBaseInfo.getDescription();
+        res[GOOD_MAX_STACKS] = String.valueOf(goodBaseInfo.getMaxStacks());
+        res[GOOD_VALUE] = String.valueOf(goodBaseInfo.getValue());
+        return res;
+    }
+
 
     /**
      * 获取物品模板信息
      * 物品id 物品名字 物品描述
      */
-    public String[] getGoodInfoById(int goodId) {
+    public String[] getGoodBaseInfoById(int goodId) {
         String[] res = new String[3];
         GoodBaseInfo goodBaseInfo;
         goodBaseInfo = getGoodInfoImplByGoodId(goodId);
@@ -149,7 +201,7 @@ public class GoodManager {
      */
     public String[] getEquipmentInfoById(int goodId) {
         if (isEquipment(goodId)) {
-            String[] res = new String[4];
+            String[] res = new String[6];
             Map<Integer, EquipmentCreated> createdMap = equipmentCreatedManager.getEquipmentCreatedMap();
             EquipmentCreated equipmentCreated = createdMap.get(goodId);
             res[GOOD_ID] = String.valueOf(equipmentCreated.getGoodId());

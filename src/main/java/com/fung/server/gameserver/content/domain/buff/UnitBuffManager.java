@@ -4,7 +4,6 @@ import com.fung.server.gameserver.channelstore.WriteMessage2Client;
 import com.fung.server.gameserver.content.config.buff.Buff;
 import com.fung.server.gameserver.content.domain.mapactor.GameMapActor;
 import com.fung.server.gameserver.content.entity.Unit;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,10 +26,6 @@ public class UnitBuffManager {
      */
     private Unit unit;
 
-    /**
-     * 地图线程
-     */
-    private GameMapActor gameMapActor;
 
     /**
      * 是否可移动
@@ -47,18 +42,16 @@ public class UnitBuffManager {
      */
     private int shield;
 
-    @Autowired
-    private WriteMessage2Client writeMessage2Client;
-
     public UnitBuffManager() {
         buffMap = new HashMap<>();
+
     }
 
     /**
      * 添加buff
      */
-    public void putOnBuff(Buff buff) {
-        trigger(buff);
+    public void putOnBuff(Buff buff, GameMapActor gameMapActor, WriteMessage2Client writeMessage2Client) {
+        trigger(buff, gameMapActor, writeMessage2Client);
 //        int categoryId = buff.getBuffSpecies().getBufferCategory();
 //        List<Buff> buffs;
 //        // 原本没有该种类buff
@@ -85,22 +78,20 @@ public class UnitBuffManager {
 //        trigger(buff, channelId);
     }
 
-    public void trigger(Buff buff) {
-        switch (buff.getBuffSpecies()) {
-            case MoveLimit:
-                moveBuff(buff);
-                break;
-            case Dot:
-                newDotCalculate(buff);
-                break;
-            case Shield:
-                shieldJudgement(buff);
-                break;
-            case ActionLimit:
-                actionBuff(buff);
-                break;
-            default:
+    public void trigger(Buff buff, GameMapActor gameMapActor, WriteMessage2Client writeMessage2Client) {
+        if (isInRange(BuffSpecies.MoveLimit, buff.getId())) {
+            moveBuff(buff, gameMapActor, writeMessage2Client);
+        } else if (isInRange(BuffSpecies.Dot, buff.getId())) {
+            newDotCalculate(buff, gameMapActor, writeMessage2Client);
+        } else if (isInRange(BuffSpecies.Shield, buff.getId())) {
+            shieldJudgement(buff, gameMapActor, writeMessage2Client);
+        } else if (isInRange(BuffSpecies.ActionLimit, buff.getId())) {
+            actionBuff(buff, gameMapActor, writeMessage2Client);
         }
+    }
+
+    public boolean isInRange(BuffSpecies buffSpecies, int id) {
+        return buffSpecies.getStart() <= id && id <= buffSpecies.getEnd();
     }
 
     /**
@@ -113,7 +104,7 @@ public class UnitBuffManager {
     /**
      * 护盾判断
      */
-    public void shieldJudgement(Buff buff) {
+    public void shieldJudgement(Buff buff, GameMapActor gameMapActor, WriteMessage2Client writeMessage2Client) {
         if (shield < buff.getShield()) {
             shield = buff.getShield();
         }
@@ -123,7 +114,7 @@ public class UnitBuffManager {
     /**
      * 新的dot处理
      */
-    public void newDotCalculate(Buff buff) {
+    public void newDotCalculate(Buff buff, GameMapActor gameMapActor, WriteMessage2Client writeMessage2Client) {
         int buffId = buff.getId();
         // 判断是否有同类buff
         if (buffMap.containsKey(buffId)) {
@@ -131,23 +122,24 @@ public class UnitBuffManager {
             // 重置持续时间
             buff1.setLastTime(0);
             // 检查层数
-            if (buff1.getLayer() + 1 < buff1.getMaxLastTime()) {
+            if (buff1.getLayer() + 1 < buff1.getMaxLayer()) {
                 buff1.setLayer(buff1.getLayer() + 1);
             }
             buff = buff1;
         } else {
             buffMap.put(buffId, buff);
+            buff.setLayer(1);
         }
         Buff finalBuff = buff;
         gameMapActor.addMessage(gameMapActor1 -> {
-            dotCalculate(finalBuff);
+            dotCalculate(finalBuff, gameMapActor, writeMessage2Client);
         });
     }
 
     /**
      * 持续状态计算
      */
-    public void dotCalculate(Buff buff) {
+    public void dotCalculate(Buff buff, GameMapActor gameMapActor, WriteMessage2Client writeMessage2Client) {
         // 判断是否超过时间
         if (buff.getLastTime() > buff.getMaxLastTime()) {
             // 需要remove掉buff
@@ -161,28 +153,28 @@ public class UnitBuffManager {
         unit.setHealthPoint(Math.max(unit.getHealthPoint() - minusHp, 0));
         // 持续时间 + 1
         buff.setLastTime(buff.getLastTime() + 1);
-        String res = unit.getName() + " 身上buff: " + buff.getName()
+        String res = "\n" + unit.getName() + " 身上buff: " + buff.getName()
                 + " 层数: " + buff.getLayer() + (minusHp > 0 ? " 扣除: " : " 增加: ") + minusHp
-                + " 剩余: " + remainingTime + "秒";
+                + " 剩余: " + remainingTime + "秒" + "\n剩余血量: " + unit.getHealthPoint();
         writeMessage2Client.writeMessage2MapPlayer(gameMapActor.getGameMap(), res);
         // 加入地图线程队列
-        gameMapActor.schedule(gameMapActor1 -> dotCalculate(buff), 1, TimeUnit.SECONDS);
+        gameMapActor.schedule(gameMapActor1 -> dotCalculate(buff, gameMapActor, writeMessage2Client), 1, TimeUnit.SECONDS);
     }
 
     /**
      * 禁锢类buff
      */
-    public void moveBuff(Buff buff) {
+    public void moveBuff(Buff buff, GameMapActor gameMapActor, WriteMessage2Client writeMessage2Client) {
         moveLimited = true;
-        int lastTime = buff.getLastTime();
-        String res = "\n" + unit.getName() + " 移除 " + buff.getName();
+        int lastTime = buff.getMaxLastTime();
+        String res = "\n" + unit.getName() + " 中了 " + buff.getName() + " 持续: " + buff.getMaxLastTime() + " 无法行动";
         writeMessage2Client.writeMessage2MapPlayer(gameMapActor.getGameMap(), res);
         gameMapActor.schedule(gameMapActor1 -> {
-            moveBuffLift(buff.getName());
+            moveBuffLift(buff.getName(), gameMapActor, writeMessage2Client);
         }, lastTime, TimeUnit.SECONDS);
     }
 
-    public void moveBuffLift(String buffName) {
+    public void moveBuffLift(String buffName, GameMapActor gameMapActor, WriteMessage2Client writeMessage2Client) {
         moveLimited = false;
         writeMessage2Client.writeMessage2MapPlayer(gameMapActor.getGameMap(), "\n" + unit.getName() + " 解除" + buffName);
     }
@@ -190,15 +182,17 @@ public class UnitBuffManager {
     /**
      * 晕眩类buff(如冰冻、晕眩等)
      */
-    public void actionBuff(Buff buff) {
+    public void actionBuff(Buff buff, GameMapActor gameMapActor, WriteMessage2Client writeMessage2Client) {
         actionLimited = true;
-        int lastTime = buff.getLastTime();
+        int lastTime = buff.getMaxLastTime();
+        writeMessage2Client.writeMessage2MapPlayer(gameMapActor.getGameMap(), "\n"+ unit.getName() + " 中了: " + buff.getName()
+                + " 持续: " + buff.getMaxLastTime() + " 无法行动");
         gameMapActor.schedule(gameMapActor1 -> {
-            actionBuffLift(buff.getName());
+            actionBuffLift(buff.getName(), gameMapActor, writeMessage2Client);
         }, lastTime, TimeUnit.SECONDS);
     }
 
-    public void actionBuffLift(String buffName) {
+    public void actionBuffLift(String buffName, GameMapActor gameMapActor, WriteMessage2Client writeMessage2Client) {
         actionLimited = false;
         writeMessage2Client.writeMessage2MapPlayer(gameMapActor.getGameMap(), "\n" + unit.getName() + " 解除: " + buffName);
     }
@@ -207,7 +201,7 @@ public class UnitBuffManager {
      * 是否能攻击
      */
     public boolean canAction() {
-        return !actionLimited;
+        return actionLimited;
     }
 
     /**
@@ -223,13 +217,5 @@ public class UnitBuffManager {
 
     public void setUnit(Unit unit) {
         this.unit = unit;
-    }
-
-    public GameMapActor getGameMapActor() {
-        return this.gameMapActor;
-    }
-
-    public void setGameMapActor(GameMapActor gameMapActor) {
-        this.gameMapActor = gameMapActor;
     }
 }

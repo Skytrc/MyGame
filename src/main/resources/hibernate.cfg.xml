@@ -24,6 +24,7 @@
 
         <mapping class="com.fung.server.gameserver.content.entity.Player"/>
         <mapping class="com.fung.server.chatserver.entity.ChatPlayer"/>
+        <mapping class="com.fung.server.gameserver.content.config.good"/>
 
     </session-factory>
 </hibernate-configuration>

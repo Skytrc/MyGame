@@ -6,6 +6,7 @@ import com.fung.server.gameserver.content.entity.Player;
 import com.fung.server.gameserver.content.util.Uuid;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,11 @@ public class MailBox {
      * 草稿箱
      */
     private Map<String, Email> draftBox;
+
+    public MailBox() {
+        mailBox = new HashMap<>();
+        draftBox = new HashMap<>();
+    }
 
     /**
      * 收取邮件

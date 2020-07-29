@@ -30,7 +30,7 @@ public class PlayerDaoImpl extends HibernateDaoSupport implements PlayerDao {
     public List<String> getAllPlayerId() {
         Session session = this.getSessionFactory().openSession();
         try {
-            return session.createNativeQuery("SELECT player_id FROM player", String.class).getResultList();
+            return session.createNativeQuery("SELECT uuid FROM player").list();
         } catch (NoResultException e) {
             return null;
         }
@@ -99,8 +99,8 @@ public class PlayerDaoImpl extends HibernateDaoSupport implements PlayerDao {
     }
 
     @Override
-    public void insertPlayerCommConfig(PlayerCommConfig playerCommConfig) {
-        this.getHibernateTemplate().save(playerCommConfig);
+    public void insertOrUpdatePlayerCommConfig(PlayerCommConfig playerCommConfig) {
+        this.getHibernateTemplate().saveOrUpdate(playerCommConfig);
     }
 
 }

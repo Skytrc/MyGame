@@ -52,10 +52,30 @@ public class Good {
     private String name;
 
     /**
+     * 价值
+     */
+    @Transient
+    private int value;
+
+    /**
+     * 最大堆叠数量
+     */
+    @Transient
+    private int maxStack;
+
+    /**
      * 物品描述
      */
     @Transient
     private String description;
+
+    /**
+     * @return 是否为装备
+     */
+    public boolean isEquipment() {
+        return this instanceof Equipment;
+    }
+
 
     public String getUuid() {
         return uuid;
@@ -69,8 +89,8 @@ public class Good {
         return playerId;
     }
 
-    public void setPlayerId(String playerName) {
-        this.playerId = playerName;
+    public void setPlayerId(String playerId) {
+        this.playerId = playerId;
     }
 
     public int getGoodId() {
@@ -121,4 +141,19 @@ public class Good {
         this.description = description;
     }
 
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public int getMaxStack() {
+        return maxStack;
+    }
+
+    public void setMaxStack(int maxStack) {
+        this.maxStack = maxStack;
+    }
 }

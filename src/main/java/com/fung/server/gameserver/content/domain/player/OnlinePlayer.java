@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 /**
+ * TODO 有线程安全的问题
  * 用于记录服务器在线玩家
  * @author skytrc@163.com
  * @date 2020/5/13 15:08
@@ -41,6 +42,7 @@ public class OnlinePlayer {
         playerActorMap = new HashMap<>();
         allPlayerId = new HashSet<>();
         idChannelMap = new HashMap<>();
+        getAllPlayerId();
     }
 
     /**

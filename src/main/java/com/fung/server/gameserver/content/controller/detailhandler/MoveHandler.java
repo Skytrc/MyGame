@@ -40,7 +40,7 @@ public class MoveHandler extends BaseInstructionHandler {
             case "map":
                 return map();
             default:
-                return "移动指令错误";
+                return "\n移动指令错误";
         }
     }
 
@@ -49,7 +49,7 @@ public class MoveHandler extends BaseInstructionHandler {
             int distance = Integer.parseInt(ins.remove(0));
             return moveService.move(-distance, 0, getChannelId());
         } catch (NumberFormatException ignored) {
-            return "移动步数必须为数字";
+            return "\n移动步数必须为数字";
         }
     }
 
@@ -58,7 +58,7 @@ public class MoveHandler extends BaseInstructionHandler {
             int distance = Integer.parseInt(ins.remove(0));
             return moveService.move(distance, 0, getChannelId());
         } catch (NumberFormatException ignored) {
-            return "移动步数必须为数字";
+            return "\n移动步数必须为数字";
         }
     }
 
@@ -67,7 +67,7 @@ public class MoveHandler extends BaseInstructionHandler {
             int distance = Integer.parseInt(ins.remove(0));
             return moveService.move(0, -distance, getChannelId());
         } catch (NumberFormatException ignored) {
-            return "移动步数必须为数字";
+            return "\n移动步数必须为数字";
         }
     }
 
@@ -76,7 +76,7 @@ public class MoveHandler extends BaseInstructionHandler {
             int distance = Integer.parseInt(ins.remove(0));
             return moveService.move(0, distance, getChannelId());
         } catch (NumberFormatException ignored) {
-            return "移动步数必须为数字";
+            return "\n移动步数必须为数字";
         }
     }
 
@@ -87,7 +87,7 @@ public class MoveHandler extends BaseInstructionHandler {
             xy[1] = Integer.parseInt(ins.remove(0));
             return moveService.move(xy, getChannelId());
         } catch (NumberFormatException ignored) {
-            return "移动步数必须为数字";
+            return "\n移动步数必须为数字";
         }
     }
 

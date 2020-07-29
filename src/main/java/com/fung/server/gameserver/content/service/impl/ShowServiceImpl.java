@@ -1,6 +1,7 @@
 package com.fung.server.gameserver.content.service.impl;
 
 import com.fung.server.gameserver.content.config.map.GameMap;
+import com.fung.server.gameserver.content.config.monster.BaseHostileMonster;
 import com.fung.server.gameserver.content.config.monster.NormalMonster;
 import com.fung.server.gameserver.content.domain.monster.MonsterInfo;
 import com.fung.server.gameserver.content.service.ShowService;
@@ -58,7 +59,7 @@ public class ShowServiceImpl implements ShowService {
     @Override
     public String showMonster(String channelId, int x, int y) {
         GameMap currentPlayerMap = playerInfo.getCurrentPlayerMap(channelId);
-        NormalMonster normalMonster = currentPlayerMap.getMonsterByXy(x, y);
+        BaseHostileMonster normalMonster = currentPlayerMap.getMonsterByXy(x, y);
         if (normalMonster == null) {
             return "该格子没有怪兽";
         }

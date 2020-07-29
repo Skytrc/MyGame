@@ -122,12 +122,17 @@ public class SkillManager {
 
     public void copySkill(Skill template, Skill need2Copy) {
         need2Copy.setBuff(template.getBuff());
+        need2Copy.setName(template.getName());
         need2Copy.setAttackAnimation(template.getAttackAnimation());
         need2Copy.setBuffId(template.getBuffId());
         need2Copy.setCd(template.getCd());
         need2Copy.setDescription(template.getDescription());
         need2Copy.setRequireMagicPoint(template.getRequireMagicPoint());
         need2Copy.setSkillDistance(template.getSkillDistance());
+        if(template.getBuff() != null) {
+            need2Copy.setBuff(template.getBuff());
+            need2Copy.setBuffId(template.getId());
+        }
     }
 
     public boolean isInRange(SkillRange skillRange, int skillId) {

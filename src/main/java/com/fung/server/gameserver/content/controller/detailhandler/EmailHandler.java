@@ -20,7 +20,7 @@ public class EmailHandler extends BaseInstructionHandler{
     public String handler(List<String> ins) throws InterruptedException {
         String remove = ins.remove(0);
         switch (remove){
-            case("create"): return create(ins.remove(0));
+            case("create"): return create(ins);
             case("write"): return write(ins);
             case("checkmailbox"): return checkMailBox();
             case("checkemail"): return checkEmail(ins.remove(0));
@@ -29,8 +29,11 @@ public class EmailHandler extends BaseInstructionHandler{
         }
     }
 
-    public String create(String recipientId) {
-        return emailService.createEmail(getChannelId(), recipientId);
+    public String create(List<String> ins) {
+        if (ins.size() == 0){
+            return "\n收信人ID不能为空";
+        }
+        return emailService.createEmail(getChannelId(), ins.remove(0));
     }
 
     public String write(List<String> list) {

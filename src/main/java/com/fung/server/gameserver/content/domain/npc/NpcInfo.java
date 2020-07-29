@@ -116,18 +116,34 @@ public class NpcInfo {
         if (npc == null) {
             return "当前玩家位置没有npc";
         }
-        if (npc.getGoodsId()== null) {
+        if (!npcHasShop(npc)) {
             return "该npc没有商店功能";
         }
         List<Integer> goodsId = npc.getGoodsId();
         StringBuilder stringBuilder = new StringBuilder("\n");
         stringBuilder.append("商店有: ");
         goodsId.forEach(goodId ->{
-            String[] goodInfoById = goodManager.getGoodInfoById(goodId);
+            String[] goodInfoById = goodManager.getGoodBaseInfoById(goodId);
             stringBuilder.append(goodInfoById[GoodManager.GOOD_ID]).append("  ").append(goodInfoById[GoodManager.GOOD_NAME])
                     .append("  ").append(goodInfoById[GoodManager.GOOD_DESCRIPTION]).append("\n");
         });
         return stringBuilder.toString();
+    }
+
+    /**
+     * npc是否有商店功能
+     */
+    public boolean npcHasShop(NonPlayerCharacter npc) {
+        return npc.getGoodsId() != null;
+    }
+
+    /**
+     * 商店是否含有商品
+     */
+    public boolean shopHasGood(int goodId, Player player) {
+        NonPlayerCharacter npc = getNpcByPlayerInfo(player);
+        List<Integer> goodsId = npc.getGoodsId();
+        return goodsId.contains(goodId);
     }
 
     /**

@@ -40,7 +40,7 @@ public class EmailDaoImpl extends HibernateDaoSupport implements EmailDao {
     public Email getEmailById(String emailId) {
         Session session = this.getSessionFactory().openSession();
         try {
-            TypedQuery<Email> query = session.createQuery("FROM Email WHERE email_id= :email_id ", Email.class)
+            TypedQuery<Email> query = session.createQuery("FROM Email WHERE uuid = :email_id ", Email.class)
                     .setParameter("email_id", emailId);
             return query.getSingleResult();
         } catch (NoResultException e) {

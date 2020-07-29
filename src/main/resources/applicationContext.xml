@@ -38,6 +38,7 @@
             <list>
                 <value>com.fung.server.gameserver.content.entity</value>
                 <value>com.fung.server.chatserver.entity</value>
+                <value>com.fung.server.gameserver.content.config</value>
             </list>
         </property>
     </bean>

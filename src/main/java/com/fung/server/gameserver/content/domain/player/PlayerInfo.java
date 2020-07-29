@@ -97,7 +97,7 @@ public class PlayerInfo {
         PersonalBackpack personalBackpack = player.getPersonalBackpack();
         StringBuilder stringBuilder = new StringBuilder("背包: ");
         personalBackpack.getBackpack().forEach((key, value) -> {
-            String[] strings = goodManager.getGoodInfoById(value.getGoodId());
+            String[] strings = goodManager.getGoodBaseInfoById(value.getGoodId());
             stringBuilder.append("\n位置:").append(key).append(" 有").append(strings[GoodManager.GOOD_NAME]).append("，")
                     .append(strings[GoodManager.GOOD_DESCRIPTION]).append(" 数量: ").append(value.getQuantity());
         });

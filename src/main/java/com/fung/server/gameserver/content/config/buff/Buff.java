@@ -1,6 +1,5 @@
 package com.fung.server.gameserver.content.config.buff;
 
-import com.fung.server.gameserver.content.domain.buff.BuffSpecies;
 import com.fung.server.gameserver.excel2class.Model;
 
 /**
@@ -22,8 +21,6 @@ public class Buff implements Model {
      * 当前持续时间
      */
     private int lastTime;
-
-    private BuffSpecies buffSpecies;
 
     /**
      * 描述
@@ -141,14 +138,6 @@ public class Buff implements Model {
         this.shield = shield;
     }
 
-    public BuffSpecies getBuffSpecies() {
-        return buffSpecies;
-    }
-
-    public void setBuffSpecies(BuffSpecies buffSpecies) {
-        this.buffSpecies = buffSpecies;
-    }
-
     public int getLayer() {
         return layer;
     }
@@ -159,5 +148,9 @@ public class Buff implements Model {
 
     public String getCanMove() {
         return this.canMove;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

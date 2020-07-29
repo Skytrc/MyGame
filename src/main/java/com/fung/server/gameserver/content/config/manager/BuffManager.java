@@ -2,6 +2,7 @@ package com.fung.server.gameserver.content.config.manager;
 
 import com.fung.server.gameserver.content.config.buff.Buff;
 import com.fung.server.gameserver.content.config.readconfig.ReadBuff;
+import com.fung.server.gameserver.content.domain.buff.BuffSpecies;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -44,6 +45,8 @@ public class BuffManager {
         buff.setCanAction(templateBuff.getCanAction());
         buff.setCanMove(templateBuff.getCanMove());
         buff.setShield(templateBuff.getShield());
+        buff.setId(templateBuff.getId());
         return buff;
     }
+
 }
