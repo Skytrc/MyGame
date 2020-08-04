@@ -72,7 +72,7 @@ public class PlayerInfo {
     }
 
     public String showPlayerBase(Player player) {
-        return "\n玩家姓名: " + player.getPlayerName() + " 玩家id: " + player.getUuid() + "\n";
+        return "\n玩家姓名: " + player.getPlayerName() + " 玩家id: " + player.getUuid() + " 玩家等级: " + player.getLevel() +"\n";
     }
 
     public String showPlayerValue(Player player) {

@@ -25,7 +25,9 @@ public class EmailHandler extends BaseInstructionHandler{
             case("checkmailbox"): return checkMailBox();
             case("checkemail"): return checkEmail(ins.remove(0));
             case("send"): return sendEmail(ins.remove(0));
-            default: return "邮件指令错误";
+            case("add"): return add(ins);
+            case("getgood"): return getGood(ins.remove(0));
+            default: return "\n邮件指令错误";
         }
     }
 
@@ -38,9 +40,27 @@ public class EmailHandler extends BaseInstructionHandler{
 
     public String write(List<String> list) {
         if (list.size() < 3) {
-            return "邮件编写命令错误";
+            return "\n邮件编写命令错误";
         }
         return emailService.writeContent(getChannelId(), list.remove(0), list.remove(0), list.remove(0));
+    }
+
+    public String add(List<String> ins) {
+        if (ins.size() < 3) {
+            return "\n邮件添加物品命令错误";
+        }
+        try {
+            String emailId = ins.remove(0);
+            int position = Integer.parseInt(ins.remove(0));
+            int quantity = Integer.parseInt(ins.remove(0));
+            return emailService.addGood(getChannelId(), emailId, position, quantity);
+        } catch (NumberFormatException ignored) {
+            return "\n物品位置，数量必须为数字";
+        }
+    }
+
+    public String getGood(String emailId) {
+        return emailService.gotGoodFromEmail(getChannelId(), emailId);
     }
 
     public String delete(String emailId) {

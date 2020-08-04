@@ -2,6 +2,7 @@ package com.fung.server.gameserver;
 
 import com.fung.server.gameserver.content.config.manager.*;
 import com.fung.server.gameserver.content.controller.Controller;
+import com.fung.server.gameserver.content.domain.guild.GuildInit;
 import com.fung.server.gameserver.content.domain.player.PlayerInit;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
@@ -44,6 +45,9 @@ public class GameServerStart {
     private PlayerInit playerInit;
 
     @Autowired
+    private GuildInit guildInit;
+
+    @Autowired
     private Controller controller;
 
     public void start(int port) throws InterruptedException, IOException, InvalidFormatException {
@@ -56,6 +60,7 @@ public class GameServerStart {
         npcManager.npcModelInit();
 
         playerInit.init();
+        guildInit.guildInit();
         controller.init();
         controller.severStart(port);
     }

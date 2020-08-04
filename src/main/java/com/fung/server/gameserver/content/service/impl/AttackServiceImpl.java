@@ -126,7 +126,7 @@ public class AttackServiceImpl implements AttackService {
             }
 
             // 开启怪物攻击
-            if (!monster.isAttacking()) {
+            if (monster.getCurrentAttackPlayer() == null) {
                 monster.setCurrentAttackPlayer(player);
                 mapActor.addMessage(h -> monsterAction.attackPlayer0(channelId, player, monster, gameMapActor));
             }
@@ -171,11 +171,11 @@ public class AttackServiceImpl implements AttackService {
             if (skill.getPhysicalDamage() != 0) {
                 minusHp = attackCalculate.defenderHpCalculate(player.getTotalAttackPower(),
                         player.getTotalCriticalRate(), skill.getPhysicalDamage(), beAttackPlayer.getTotalDefense());
-                beAttackPlayer.setHealthPoint(Math.min(beAttackPlayer.getHealthPoint() - minusHp, 0));
+                beAttackPlayer.setHealthPoint(Math.max(beAttackPlayer.getHealthPoint() - minusHp, 0));
                 writeMessage2Client.writeMessage2MapPlayer(gameMap, attackResult(player, beAttackPlayer, minusHp, true));
             } else {
                 minusHp = attackCalculate.defenderHpCalculate(player.getTotalMagicPower(), skill.getMagicDamage(), beAttackPlayer.getTotalDefense());
-                beAttackPlayer.setHealthPoint(Math.min(beAttackPlayer.getHealthPoint() - minusHp, 0));
+                beAttackPlayer.setHealthPoint(Math.max(beAttackPlayer.getHealthPoint() - minusHp, 0));
                 writeMessage2Client.writeMessage2MapPlayer(gameMap, attackResult(player, beAttackPlayer, minusHp, false));
             }
 
@@ -269,6 +269,7 @@ public class AttackServiceImpl implements AttackService {
         // 数据库更新用户状态
         playerDao.updatePlayer(player);
         writeMessage2Client.writeMessage(channelId, "增加经验: " + monster.getExp() + "\n增加金钱: " + monster.getValue());
+        monster.setCurrentAttackPlayer(null);
         monsterAction.rebirth(monster, gameMapActor);
         monsterDrop(monster, player, gameMapActor.getGameMap());
     }

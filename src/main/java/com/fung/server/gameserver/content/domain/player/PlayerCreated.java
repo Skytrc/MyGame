@@ -86,13 +86,11 @@ public class PlayerCreated {
 
         // 物品、武器放入背包
         for (Good good : goods) {
-            personalBackpack.addGood(good);
+            personalBackpack.addGood(good, goodDao);
         }
         for (Equipment equipment : equipments) {
-            personalBackpack.addGood(equipment);
+            personalBackpack.addGood(equipment, goodDao);
         }
-        goods.forEach(goodDao::insertOrUpdateGood);
-        equipments.forEach(equipmentDao::insertEquipment);
 
         player.setPersonalBackpack(personalBackpack);
 

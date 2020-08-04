@@ -24,6 +24,8 @@ public class GameMap extends BaseElement implements Model {
 
     public static final int Y = 1;
 
+    public static final int DUNGEON_ID_START = 100;
+
     /**
      * 地图x轴
      */

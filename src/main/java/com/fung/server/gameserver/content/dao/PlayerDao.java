@@ -54,6 +54,8 @@ public interface PlayerDao {
      */
     Player getPlayerByPlayerName(String playerName);
 
+    Player getPlayerById(String playerId);
+
     /**
      * 更新玩家
      * @param player 玩家实体

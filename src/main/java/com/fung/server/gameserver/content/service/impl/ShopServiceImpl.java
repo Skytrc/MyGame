@@ -78,8 +78,9 @@ public class ShopServiceImpl implements ShopService {
                 return;
             }
             Good newGood = goodManager.createNewGood(goodId, num, player.getUuid());
-            String s = personalBackpack.checkAndAddGood(newGood);
-            writeMessage2Client.writeMessage(channelId, "\n" + s);
+            String s = personalBackpack.checkAndAddGood(newGood, goodDao);
+            writeMessage2Client.writeMessage(channelId, "\n成功商品，编号为:" + goodId + " 数量为: " + num +
+                    " 花费:" + num * goodValue + " 当前余额: " + player.getPlayerCommConfig().getMoney() + "\n" + s);
         });
 
         return "";
@@ -119,11 +120,14 @@ public class ShopServiceImpl implements ShopService {
                 // 如果商品数量为0，数据库删除记录
                 if (need2ShellGood.getQuantity() == 0) {
                     goodDao.deleteGood(need2ShellGood);
+                } else {
+                    goodDao.insertOrUpdateGood(need2ShellGood);
                 }
             }
             // 加钱
             player.getPlayerCommConfig().addMoney(addMoney);
-            writeMessage2Client.writeMessage(channelId, String.format("\n成功出售商品"));
+            writeMessage2Client.writeMessage(channelId, "\n成功出售商品: " + need2ShellGood.getName() + " 获得金钱:"
+                    + addMoney + " 当前金钱数量: " + player.getPlayerCommConfig().getMoney());
         });
         return "";
     }

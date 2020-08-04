@@ -4,6 +4,7 @@ package com.fung.server.gameserver.content.domain.good;
  * @author skytrc@163.com
  * @date 2020/6/18 17:34
  */
+@Deprecated
 public interface GoodBaseInfo {
 
     /**

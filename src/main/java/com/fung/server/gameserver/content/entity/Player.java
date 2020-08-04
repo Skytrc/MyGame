@@ -152,7 +152,7 @@ public class Player implements Unit{
     private int exp;
 
     /**
-     * 人物装备，需要在Service层处理
+     * 人物装备
      */
     @Transient
     private List<Equipment> equipments;
@@ -212,7 +212,7 @@ public class Player implements Unit{
     private long loginDate;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn
+    @PrimaryKeyJoinColumn(name = "player_common_config")
     private PlayerCommConfig playerCommConfig;
 
     /**

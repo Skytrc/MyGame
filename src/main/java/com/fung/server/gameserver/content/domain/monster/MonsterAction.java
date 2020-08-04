@@ -4,6 +4,7 @@ import com.fung.server.gameserver.channelstore.WriteMessage2Client;
 import com.fung.server.gameserver.content.config.manager.SkillManager;
 import com.fung.server.gameserver.content.config.map.GameMap;
 import com.fung.server.gameserver.content.config.monster.BaseHostileMonster;
+import com.fung.server.gameserver.content.config.readconfig.ReadBuff;
 import com.fung.server.gameserver.content.config.skill.DamageSkill;
 import com.fung.server.gameserver.content.domain.buff.UnitBuffManager;
 import com.fung.server.gameserver.content.domain.calculate.AttackCalculate;
@@ -66,8 +67,6 @@ public class MonsterAction {
     }
 
     public void attackPlayer1(String channelId, Player player, int unleashSkillCount, BaseHostileMonster monster, GameMapActor gameMapActor) {
-        // TODO 确定attacking标志位有用?
-        monster.setAttacking(true);
 
         // 玩家下線
         if(channelId == null) {
@@ -78,6 +77,11 @@ public class MonsterAction {
         }
         // 检测怪物是否死亡
         if (monster.getHealthPoint() <= 0) {
+            return;
+        }
+
+        if (monster.getCurrentAttackPlayer() == null) {
+            standBy(monster, gameMapActor);
             return;
         }
 
@@ -122,6 +126,11 @@ public class MonsterAction {
         int totalDamage = attackCalculate.defenderHpCalculate(monster.getAttackPower(), damageSkill.getPhysicalDamage(), player.getTotalDefense());
         player.setHealthPoint(player.getHealthPoint() - totalDamage);
 
+        // buff 处理
+        if (skill.getBuff() != null) {
+            player.getBuffManager().putOnBuff(skill.getBuff(), gameMapActor, writeMessage2Client);
+        }
+
         // 根据技能cd 推送下次攻击
         gameMapActor.schedule(gameMapActor1 -> {
             attackPlayer1(channelId, player, unleashSkillCount + 1, monster, gameMapActor);
@@ -137,7 +146,6 @@ public class MonsterAction {
      */
     public void rebirthFinish(BaseHostileMonster monster, GameMapActor gameMapActor) {
         monster.setHealthPoint(monster.getMaxHealthPoint());
-        monster.setAttacking(false);
         monster.setRebirth(false);
         monster.setTempX(monster.getInMapX());
         monster.setTempY(monster.getInMapY());
@@ -234,7 +242,6 @@ public class MonsterAction {
         // 如果达到攻击距离攻击
         if (attackCalculate.calculateAttackDistance(monster, player, skill)) {
             gameMapActor.addMessage(gameMapActor1 -> {
-                // TODO 重写 attack
                 attackPlayer0(channelId, player, monster, gameMapActor);
             });
             return;

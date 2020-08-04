@@ -61,7 +61,7 @@ public class MoveServiceImpl implements MoveService {
         GameMapActor gameMapActor = mapManager.getGameMapActor(player);
         gameMapActor.addMessage(gameMapActor1 -> {
             if (!player.getBuffManager().canMove()) {
-                writeMessage2Client.writeMessage(channelId, "\n无法移动");
+                writeMessage2Client.writeMessage(channelId, "\n无法移动,身上buff未消除");
                 return;
             }
             GameMap gameMap = gameMapActor.getGameMap();

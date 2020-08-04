@@ -208,7 +208,7 @@ public class UnitBuffManager {
      * 能否移动
      */
     public boolean canMove() {
-        return !moveLimited;
+        return !actionLimited && !moveLimited;
     }
 
     public void setBuffMap(Map<Integer, Buff> buffMap) {

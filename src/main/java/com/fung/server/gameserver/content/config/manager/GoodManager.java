@@ -2,10 +2,10 @@ package com.fung.server.gameserver.content.config.manager;
 
 import com.fung.server.gameserver.channelstore.WriteMessage2Client;
 import com.fung.server.gameserver.content.config.good.GoodSpecies;
-import com.fung.server.gameserver.content.entity.Medicine;
+import com.fung.server.gameserver.content.config.good.Medicine;
 import com.fung.server.gameserver.content.config.good.equipment.EquipmentCreated;
 import com.fung.server.gameserver.content.domain.equipment.EquipmentCreatedFactory;
-import com.fung.server.gameserver.content.domain.good.GoodBaseInfo;
+import com.fung.server.gameserver.content.domain.good.BaseGood;
 import com.fung.server.gameserver.content.domain.good.GoodEffect;
 import com.fung.server.gameserver.content.domain.mapactor.PlayerActor;
 import com.fung.server.gameserver.content.entity.Good;
@@ -67,7 +67,7 @@ GoodManager {
      */
     public Good createNewGood(int goodId, int goodQuantity, String playerId) {
         Good good = createNoBeingGood(goodId, goodQuantity);
-        good.setUuid(playerId);
+        good.setPlayerId(playerId);
         return good;
     }
 
@@ -85,16 +85,16 @@ GoodManager {
      */
     public String[] getGoodInfo(int goodId) {
         String[] res = new String[5];
-        GoodBaseInfo goodBaseInfo;
-        goodBaseInfo = getGoodInfoImplByGoodId(goodId);
-        if (goodBaseInfo == null) {
+        BaseGood baseGood;
+        baseGood = getGoodInfoByGoodId(goodId);
+        if (baseGood == null) {
             return null;
         }
-        res[GOOD_ID] = String.valueOf(goodBaseInfo.getGoodId());
-        res[GOOD_NAME] = goodBaseInfo.getName();
-        res[GOOD_DESCRIPTION] = goodBaseInfo.getDescription();
-        res[GOOD_MAX_STACKS] = String.valueOf(goodBaseInfo.getMaxStacks());
-        res[GOOD_VALUE] = String.valueOf(goodBaseInfo.getValue());
+        res[GOOD_ID] = String.valueOf(baseGood.getGoodId());
+        res[GOOD_NAME] = baseGood.getName();
+        res[GOOD_DESCRIPTION] = baseGood.getDescription();
+        res[GOOD_MAX_STACKS] = String.valueOf(baseGood.getMaxStack());
+        res[GOOD_VALUE] = String.valueOf(baseGood.getValue());
         return res;
     }
 
@@ -105,14 +105,14 @@ GoodManager {
      */
     public String[] getGoodBaseInfoById(int goodId) {
         String[] res = new String[3];
-        GoodBaseInfo goodBaseInfo;
-        goodBaseInfo = getGoodInfoImplByGoodId(goodId);
-        if (goodBaseInfo == null) {
+        BaseGood baseGood;
+        baseGood = getGoodInfoByGoodId(goodId);
+        if (baseGood == null) {
             return null;
         }
-        res[GOOD_ID] = String.valueOf(goodBaseInfo.getGoodId());
-        res[GOOD_NAME] = goodBaseInfo.getName();
-        res[GOOD_DESCRIPTION] = goodBaseInfo.getDescription();
+        res[GOOD_ID] = String.valueOf(baseGood.getGoodId());
+        res[GOOD_NAME] = baseGood.getName();
+        res[GOOD_DESCRIPTION] = baseGood.getDescription();
         return res;
     }
 
@@ -120,16 +120,16 @@ GoodManager {
      * 获取物品名称
      */
     public String getGoodNameById(int goodId) {
-        GoodBaseInfo goodBaseInfo;
-        goodBaseInfo = getGoodInfoImplByGoodId(goodId);
-        if (goodBaseInfo == null) {
+        BaseGood baseGood;
+        baseGood = getGoodInfoByGoodId(goodId);
+        if (baseGood == null) {
             return null;
         }
-        return goodBaseInfo.getName();
+        return baseGood.getName();
     }
 
     public int getGoodMaxStack(int goodId) {
-        return getGoodInfoImplByGoodId(goodId).getMaxStacks();
+        return getGoodInfoByGoodId(goodId).getMaxStack();
     }
 
     /**
@@ -143,25 +143,25 @@ GoodManager {
      * 获取物品价值
      */
     public int getGoodValue(int goodId) {
-        return getGoodInfoImplByGoodId(goodId).getValue();
+        return getGoodInfoByGoodId(goodId).getValue();
     }
 
 
     /**
      * 通过ID获取对应的物品接口,在通过操作接口来获取对应的信息
      */
-    public GoodBaseInfo getGoodInfoImplByGoodId(int goodId) {
-        GoodBaseInfo goodBaseInfo;
+    public BaseGood getGoodInfoByGoodId(int goodId) {
+        BaseGood baseGood;
         if (isInRange(GoodSpecies.MEDICINCE, goodId)) {
             Map<Integer, Medicine> medicineMap = medicineManager.getMedicineMap();
-            goodBaseInfo = medicineMap.get(goodId);
+            baseGood = medicineMap.get(goodId);
         } else if (isInRange(GoodSpecies.EQUIPMENT, goodId)) {
             Map<Integer, EquipmentCreated> createdMap = equipmentCreatedManager.getEquipmentCreatedMap();
-            goodBaseInfo = createdMap.get(goodId);
+            baseGood = createdMap.get(goodId);
         } else {
             return null;
         }
-        return goodBaseInfo;
+        return baseGood;
     }
 
     /**

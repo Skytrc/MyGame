@@ -133,7 +133,7 @@ public class MapManager {
     }
 
     public GameMapActor playerGotDungeon(int dungeonId, Player player) {
-        if (dungeonManager.hasEmptyDungeon(dungeonId)) {
+        if (!dungeonManager.hasEmptyDungeon(dungeonId)) {
             return dungeonManager.playerGotDungeon(createNewDungeon(dungeonId), player);
         }
         return dungeonManager.playerGotDungeon(dungeonId);

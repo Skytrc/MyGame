@@ -25,6 +25,9 @@ public class OnlinePlayer {
      */
     private Map<String, Player> onlinePlayerMap;
 
+    /**
+     * key playerId   value player
+     */
     private Map<String, PlayerActor> playerActorMap;
 
     /**
@@ -92,6 +95,13 @@ public class OnlinePlayer {
 
     public PlayerActor getPlayerActorByPlayerId(String playerId) {
         return playerActorMap.get(playerId);
+    }
+
+    public Player getPlayer(String playerId) {
+        if (playerActorMap.containsKey(playerId)) {
+            return playerActorMap.get(playerId).getPlayer();
+        }
+        return playerDao.getPlayerById(playerId);
     }
 
     public String getChannelIdByPlayerId(String playerId) {

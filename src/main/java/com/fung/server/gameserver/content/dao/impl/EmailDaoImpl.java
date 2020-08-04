@@ -1,5 +1,6 @@
-package com.fung.server.gameserver.content.dao;
+package com.fung.server.gameserver.content.dao.impl;
 
+import com.fung.server.gameserver.content.dao.EmailDao;
 import com.fung.server.gameserver.content.entity.Email;
 import com.fung.server.gameserver.content.entity.EmailStatus;
 import org.hibernate.Session;
@@ -53,7 +54,7 @@ public class EmailDaoImpl extends HibernateDaoSupport implements EmailDao {
         Session session = this.getSessionFactory().openSession();
         try {
             TypedQuery<Email> query = session.createQuery("FROM Email WHERE recipient_id= :recipient_id " +
-                    "AND recipient_delete=0", Email.class)
+                    "AND recipient_delete=0 AND send_time!=0", Email.class)
                     .setParameter("recipient_id", playerId);
             return query.getResultList();
         } catch (NoResultException e) {

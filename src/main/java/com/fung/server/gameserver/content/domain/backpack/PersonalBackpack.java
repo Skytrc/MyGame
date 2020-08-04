@@ -1,6 +1,8 @@
 package com.fung.server.gameserver.content.domain.backpack;
 
+import com.fung.server.gameserver.content.dao.GoodDao;
 import com.fung.server.gameserver.content.entity.Good;
+import com.fung.server.gameserver.content.util.Uuid;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,19 +18,25 @@ public class PersonalBackpack {
 
     public static final String SUCCEED_PUT_IN_BACKPACK = "成功放入背包";
 
+    public static final String NEW_SUCCEED_PUT_IN_BACKPACK = "新物品成功放入背包";
+
+    public static final String EXISTED_GOOD_SUCCEED_ADD = "成功放入背包，背包物品增加";
+
     public static final String BACKPACK_FULL = "背包已满";
 
     public static final String REACH_MAX_STACKS = "物品达到最大堆叠数";
+
+    /** 物品特殊位置 **/
+    public static final int IN_BODY = -1;
+
+    public static final int IN_EMAIL = -2;
+
+    public static final int IN_AUCTION = -3;
 
     /**
      * 背包 key position   value good
      */
     private Map<Integer, Good> backpack;
-
-    /**
-     * 存储装备详细信息， key position  value 装备信息
-     */
-//    private Map<Integer, Equipment> equipmentMap;
 
     /**
      * 背包最大格子数
@@ -89,28 +97,28 @@ public class PersonalBackpack {
     /**
      * 检查并放入背包
      */
-    public String checkAndAddGood(Good good) {
+    public String checkAndAddGood(Good good, GoodDao goodDao) {
         // 如果是装备直接放入背包
-//        if (goodManager.isEquipment(good.getGoodId())) {
-//            return addGood(good);
-//        }
         if (good.isEquipment()) {
-            return addGood(good);
+            return addGood(good, goodDao);
         }
 
         // 先检查背包中有没有该物品
         Good getBackpackGood = getGood(good);
         if (getBackpackGood != null) {
             // 检查是否达到最大堆叠数
-//            int goodMaxStack = goodManager.getGoodMaxStack(good.getGoodId());
             if (reachMaxStack(good.getGoodId(), good.getQuantity(), good.getMaxStack())) {
                 return REACH_MAX_STACKS;
             } else {
-                // 数量plus
+                // 数量增加
                 getBackpackGood.setQuantity(getBackpackGood.getQuantity() + good.getQuantity());
+                goodDao.insertOrUpdateGood(getBackpackGood);
+                return EXISTED_GOOD_SUCCEED_ADD;
             }
         }
-        return SUCCEED_PUT_IN_BACKPACK;
+        // 背包没有，直接加入背包
+        addGood(good, goodDao);
+        return NEW_SUCCEED_PUT_IN_BACKPACK;
     }
 
     /**
@@ -130,19 +138,24 @@ public class PersonalBackpack {
      *  直接把物品（如装备）加入背包
      *  背包满返回空值
      */
-    public String addGood(Good good) {
+    public String addGood(Good good, GoodDao goodDao) {
         for (int i = 0; i < maxBackpackGrid; i++) {
             if (!backpack.containsKey(i)) {
                 good.setPosition(i);
                 backpack.put(i, good);
-                return SUCCEED_PUT_IN_BACKPACK;
+                if (good.getUuid() == null) {
+                    good.setUuid(Uuid.createUuid());
+                }
+                // 数据库保存物品
+                goodDao.insertOrUpdateGood(good);
+                return NEW_SUCCEED_PUT_IN_BACKPACK;
             }
         }
         return BACKPACK_FULL;
     }
 
     /**
-     * 使用物品
+     * 使用物品,返回剩余物品
      * 没有操作返回null
      */
     public Good useGood(int position, int num) {
@@ -151,11 +164,13 @@ public class PersonalBackpack {
         if (newNum < 0) {
             return null;
         } else if(newNum == 0) {
+            good.setQuantity(newNum);
             return backpack.remove(position);
         }
         good.setQuantity(newNum);
         return good;
     }
+
 
     /**
      * 使用物品（1次）例如装备等

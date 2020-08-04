@@ -42,6 +42,9 @@ public class DungeonManager {
      * 查看容器中是否有空闲的副本
      */
     public boolean hasEmptyDungeon(int dungeonId) {
+        if (idleDungeon.size() == 0) {
+            return false;
+        }
         return (idleDungeon.containsKey(dungeonId) || (idleDungeon.get(dungeonId).size() > 0));
     }
 

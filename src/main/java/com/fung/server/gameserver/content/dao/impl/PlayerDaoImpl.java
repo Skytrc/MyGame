@@ -79,6 +79,11 @@ public class PlayerDaoImpl extends HibernateDaoSupport implements PlayerDao {
     }
 
     @Override
+    public Player getPlayerById(String playerId) {
+        return this.getHibernateTemplate().get(Player.class, playerId);
+    }
+
+    @Override
     public void updatePlayer(Player player) {
         this.getHibernateTemplate().update(player);
     }

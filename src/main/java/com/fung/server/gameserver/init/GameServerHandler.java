@@ -18,13 +18,13 @@ public class GameServerHandler extends ChannelInboundHandlerAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GameServerHandler.class);
 
-    Controller controller;
+    private Controller controller;
 
-    InstructionPack instructionPack;
+    private InstructionPack instructionPack;
 
-    OnlinePlayer onlinePlayer;
+    private OnlinePlayer onlinePlayer;
 
-    StoredChannel storedChannel;
+    private StoredChannel storedChannel;
 
     public GameServerHandler(Controller controller, InstructionPack instructionPack, OnlinePlayer onlinePlayer, StoredChannel storedChannel) {
         this.instructionPack = instructionPack;

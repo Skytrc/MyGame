@@ -1,6 +1,5 @@
 package com.fung.server.gameserver.content.config.good.equipment;
 
-import com.fung.server.gameserver.content.domain.good.GoodBaseInfo;
 import com.fung.server.gameserver.content.entity.Good;
 import com.fung.server.gameserver.excel2class.Model;
 
@@ -9,7 +8,7 @@ import com.fung.server.gameserver.excel2class.Model;
  * @author skytrc@163.com
  * @date 2020/6/1 13:34
  */
-public class EquipmentCreated extends Good implements Model, GoodBaseInfo {
+public class EquipmentCreated extends Good implements Model {
 
     private int id;
     /**
@@ -182,7 +181,7 @@ public class EquipmentCreated extends Good implements Model, GoodBaseInfo {
     }
 
     @Override
-    public int getMaxStacks() {
+    public int getMaxStack() {
         return 1;
     }
 

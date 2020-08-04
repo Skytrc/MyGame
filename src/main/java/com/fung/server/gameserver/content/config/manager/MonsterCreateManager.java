@@ -103,7 +103,7 @@ public class MonsterCreateManager {
         gameMap.addElement(position, monster);
 
         // 开启怪物StandBy状态
-        if (monster.getIsAutoAttack() == 1) {
+        if (monster.getIsAutoAttack() == 1 && gameMap.getId() < GameMap.DUNGEON_ID_START) {
             monsterEnterStandByState(monster, gameMapActor);
         }
     }

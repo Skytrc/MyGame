@@ -68,7 +68,7 @@ public class MessageHandler<H extends IMessageHandler<?>> implements Runnable, I
     }
 
     /**
-     * 推送任务到线程队列中
+     * 将任务发送线程队列中
      */
     @Override
     public void addMessage(IMessage<H> msg) {
@@ -91,7 +91,7 @@ public class MessageHandler<H extends IMessageHandler<?>> implements Runnable, I
     }
 
     /**
-     * 定时推送任务
+     * 定时发送任务
      */
     public void schedule(IMessage<H> msg, long delay, TimeUnit unit) {
         scheduledExecutor.schedule(() -> {

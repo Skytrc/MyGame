@@ -1,5 +1,7 @@
 package com.fung.server.gameserver.content.entity;
 
+import com.fung.server.gameserver.content.domain.good.BaseGood;
+
 import javax.persistence.*;
 
 /**
@@ -10,7 +12,7 @@ import javax.persistence.*;
 @Entity(name = "good")
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue("good")
-public class Good {
+public class Good extends BaseGood {
     /**
      * 物品独有Id
      */
@@ -46,30 +48,6 @@ public class Good {
     private long getTime;
 
     /**
-     * 物品名称
-     */
-    @Transient
-    private String name;
-
-    /**
-     * 价值
-     */
-    @Transient
-    private int value;
-
-    /**
-     * 最大堆叠数量
-     */
-    @Transient
-    private int maxStack;
-
-    /**
-     * 物品描述
-     */
-    @Transient
-    private String description;
-
-    /**
      * @return 是否为装备
      */
     public boolean isEquipment() {
@@ -93,10 +71,12 @@ public class Good {
         this.playerId = playerId;
     }
 
+    @Override
     public int getGoodId() {
         return goodId;
     }
 
+    @Override
     public void setGoodId(int goodId) {
         this.goodId = goodId;
     }
@@ -125,35 +105,4 @@ public class Good {
         this.position = position;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
-    }
-
-    public int getMaxStack() {
-        return maxStack;
-    }
-
-    public void setMaxStack(int maxStack) {
-        this.maxStack = maxStack;
-    }
 }

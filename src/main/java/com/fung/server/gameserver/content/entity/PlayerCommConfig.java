@@ -19,6 +19,12 @@ public class PlayerCommConfig {
     @Column(name = "max_backpack_grid")
     private int maxBackpackGrid;
 
+    /**
+     * 公会Id
+     */
+    @Column(name = "guild_id")
+    private String guildId;
+
     private int money;
 
     /**
@@ -56,5 +62,13 @@ public class PlayerCommConfig {
 
     public void setMoney(int money) {
         this.money = money;
+    }
+
+    public String getGuildId() {
+        return guildId;
+    }
+
+    public void setGuildId(String guildId) {
+        this.guildId = guildId;
     }
 }

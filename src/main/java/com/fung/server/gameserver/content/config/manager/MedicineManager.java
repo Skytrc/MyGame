@@ -1,7 +1,8 @@
 package com.fung.server.gameserver.content.config.manager;
 
 import com.fung.server.gameserver.content.config.readconfig.ReadMedicine;
-import com.fung.server.gameserver.content.entity.Medicine;
+import com.fung.server.gameserver.content.config.good.Medicine;
+import com.fung.server.gameserver.content.entity.Good;
 import com.fung.server.gameserver.content.util.Uuid;
 import com.google.gson.Gson;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -41,13 +42,14 @@ public class MedicineManager{
         this.gson = gson;
     }
 
-    public Medicine createNoBeingNewMedicine(int medicineId, int goodQuantity) {
+    public Good createNoBeingNewMedicine(int medicineId, int goodQuantity) {
         Medicine templateMedicine = medicineMap.get(medicineId);
         // 使用Gson序列化
-        Medicine copyMedicine = gson.fromJson(gson.toJson(templateMedicine), Medicine.class);
-        copyMedicine.setUuid(Uuid.createUuid());
-        copyMedicine.setQuantity(goodQuantity);
-        return copyMedicine;
+        Good newGood = gson.fromJson(gson.toJson(templateMedicine), Good.class);
+        newGood.setUuid(Uuid.createUuid());
+        newGood.setQuantity(goodQuantity);
+        newGood.setGetTime(System.currentTimeMillis());
+        return newGood;
     }
 
     public String getGoodName() {
