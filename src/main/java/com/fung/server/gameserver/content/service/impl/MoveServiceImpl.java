@@ -71,12 +71,13 @@ public class MoveServiceImpl implements MoveService {
                 writeMessage2Client.writeMessage(channelId, "\n移动超出地图限制");
             }
             moveCalculate.moveGrid(gameMapActor, player, channelId, xy[0], xy[1]);
+            // TODO 获取最终目的地，发给触发器
         });
         return "";
     }
 
     /**
-     * TODO 放在个人线程中处理，并且条件判断
+     * TODO 放在个人线程中处理，条件判断
      */
     @Override
     public String mapTransfer(String channelId) {

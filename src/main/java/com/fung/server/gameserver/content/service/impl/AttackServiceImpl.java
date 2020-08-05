@@ -262,7 +262,7 @@ public class AttackServiceImpl implements AttackService {
     }
 
     public void monsterDeathSettlement(BaseHostileMonster monster, Player player, String channelId, GameMapActor gameMapActor) {
-        // 死亡结算
+        // 死亡结算 TODO 触发
         player.getPlayerCommConfig().addMoney(monster.getValue());
         player.addExp(monster.getExp());
         playerDao.insertOrUpdatePlayerCommConfig(player.getPlayerCommConfig());
